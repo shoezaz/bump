@@ -1,0 +1,30 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/node",
+      "config": {
+        "zeroConfig": true
+      }
+    },
+    {
+      "src": "next.config.mjs",
+      "use": "@vercel/next",
+      "config": {
+        "zeroConfig": true
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/"
+    }
+  ],
+  "build": {
+    "env": {
+      "BUNDLE_ANALYZER": "false"
+    }
+  }
+}
