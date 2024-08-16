@@ -224,7 +224,12 @@ const FavoriteListItem = React.forwardRef<
             : 'w-full justify-between'
         )}
       >
-        <div className="flex flex-row items-center gap-2 overflow-hidden">
+        <div
+          className={cn(
+            'flex flex-row items-center',
+            !isCollapsed && 'gap-2 overflow-hidden'
+          )}
+        >
           <ContactAvatar
             record={favorite.record}
             src={favorite.image}
