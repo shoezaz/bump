@@ -57,7 +57,7 @@ export default async function DashboardLayout({
       />
       <main
         id="skip"
-        className="size-full"
+        className="size-full max-w-[calc(100vw-var(--sidebar-width))]"
       >
         <MobileSheet
           favorites={favorites}

@@ -26,22 +26,28 @@ export function Sidebar({
   favorites,
   profile
 }: SidebarProps): React.JSX.Element {
-  const xlUp = useMediaQuery(MediaQueries.XlUp, {
-    ssr: true,
-    fallback: true
-  });
+  const lgUp = useMediaQuery(MediaQueries.LgUp, { ssr: true, fallback: true });
+  const xlUp = useMediaQuery(MediaQueries.XlUp, { ssr: true, fallback: true });
   const [showFullSidebar, setShowFullSidebar] = React.useState<boolean>(true);
   const isCollapsed = !xlUp || !showFullSidebar;
   const showLogo = !xlUp || showFullSidebar;
   const hideWordmark = !xlUp;
   const showSidebarToggle = xlUp;
+
+  const sidebarWidth = React.useMemo(() => {
+    if (!lgUp) return '0px';
+    return isCollapsed ? '64px' : '240px';
+  }, [lgUp, isCollapsed]);
+
+  React.useEffect(() => {
+    document.documentElement.style.setProperty('--sidebar-width', sidebarWidth);
+  }, [lgUp, sidebarWidth]);
+
   return (
     <ScrollArea className="hidden lg:block">
       <div
-        className={cn(
-          'flex h-screen flex-col gap-4 border-r px-3 pb-4',
-          isCollapsed ? 'w-16 min-w-16 max-w-16' : 'w-60 min-w-60 max-w-60'
-        )}
+        className="flex h-screen flex-col gap-4 border-r px-3 pb-4"
+        style={{ width: sidebarWidth, maxWidth: sidebarWidth }}
       >
         <SidebarHeader
           showLogo={showLogo}
