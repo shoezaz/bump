@@ -7,6 +7,7 @@ import { actionClient } from '@/actions/safe-action';
 import { Routes } from '@/constants/routes';
 import { verifyEmail } from '@/lib/auth/verification';
 import { prisma } from '@/lib/db/prisma';
+import { sendWelcomeEmail } from '@/lib/smtp/send-welcome-email';
 import { NotFoundError } from '@/lib/validation/exceptions';
 import { verifyEmailWithTokenSchema } from '@/schemas/auth/verify-email-with-token-schema';
 
@@ -23,7 +24,11 @@ export const verifyEmailWithToken = actionClient
     }
     const user = await prisma.user.findFirst({
       where: { email: verificationToken.identifier },
-      select: { emailVerified: true }
+      select: {
+        name: true,
+        email: true,
+        emailVerified: true
+      }
     });
     if (!user) {
       throw new NotFoundError('User not found.');
@@ -39,6 +44,11 @@ export const verifyEmailWithToken = actionClient
     }
 
     await verifyEmail(verificationToken.identifier);
+
+    await sendWelcomeEmail({
+      name: user.name,
+      recipient: user.email!
+    });
 
     return redirect(Routes.VerifyEmailSuccess);
   });

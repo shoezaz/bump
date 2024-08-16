@@ -7,6 +7,7 @@ import { prisma } from '@/lib/db/prisma';
 import { fetchAndResizeRemoteImage } from '@/lib/imaging/fetch-and-resize-remote-image';
 import { resizeImage } from '@/lib/imaging/resize-image';
 import { sendConnectedAccountSecurityAlertEmail } from '@/lib/smtp/send-connected-account-security-alert-email';
+import { sendWelcomeEmail } from '@/lib/smtp/send-welcome-email';
 import { getUserImageUrl } from '@/lib/urls/get-user-image-url';
 import { OAuthIdentityProvider } from '@/types/identity-provider';
 
@@ -28,10 +29,22 @@ export const events = {
         if (account?.provider === OAuthIdentityProvider.Google) {
           await verifyEmail(user.email);
           await tryCopyGoogleImage(user, profile);
+          if (user.name) {
+            await sendWelcomeEmail({
+              name: user.name,
+              recipient: user.email!
+            });
+          }
         }
         if (account?.provider === OAuthIdentityProvider.MicrosoftEntraId) {
           await verifyEmail(user.email);
           await tryCopyMicrosoftGraphImage(user, account);
+          if (user.name) {
+            await sendWelcomeEmail({
+              name: user.name,
+              recipient: user.email!
+            });
+          }
         }
       }
     }
