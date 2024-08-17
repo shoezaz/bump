@@ -30,7 +30,9 @@ export const metadata: Metadata = {
   title: createTitle('Contacts')
 };
 
-export default async function ContactsPage({ searchParams }: NextPageProps) {
+export default async function ContactsPage({
+  searchParams
+}: NextPageProps): Promise<React.JSX.Element> {
   searchParamsCache.parse(searchParams);
 
   const [{ contacts, totalCount }, tags] = await Promise.all([

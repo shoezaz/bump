@@ -22,7 +22,6 @@ export enum Routes {
 
   Dashboard = '/dashboard',
   Home = '/dashboard/home',
-  Tasks = '/dashboard/tasks',
   Contacts = '/dashboard/contacts',
   Settings = '/dashboard/settings',
   Account = '/dashboard/settings/account',
