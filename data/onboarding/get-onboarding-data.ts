@@ -16,8 +16,6 @@ import { NotFoundError } from '@/lib/validation/exceptions';
 
 type Organization = {
   name: string;
-  address?: string;
-  website?: string;
   completedOnboarding: boolean;
 };
 
@@ -25,7 +23,6 @@ type User = {
   name: string;
   email?: string;
   image?: string;
-  locale: string;
   completedOnboarding: boolean;
 };
 
@@ -49,7 +46,6 @@ export async function getOnboardingData(): Promise<OnboardingData> {
           organizationId: true,
           image: true,
           name: true,
-          locale: true,
           email: true,
           completedOnboarding: true
         }
@@ -62,8 +58,6 @@ export async function getOnboardingData(): Promise<OnboardingData> {
         where: { id: session.user.organizationId },
         select: {
           name: true,
-          address: true,
-          website: true,
           completedOnboarding: true
         }
       });
@@ -74,15 +68,12 @@ export async function getOnboardingData(): Promise<OnboardingData> {
       return {
         organization: {
           name: organization.name,
-          address: organization.address ?? undefined,
-          website: organization.website ?? undefined,
           completedOnboarding: organization.completedOnboarding
         },
         user: {
           name: user.name,
           email: user.email ?? undefined,
           image: user.image ?? undefined,
-          locale: user.locale,
           completedOnboarding: user.completedOnboarding
         }
       };
