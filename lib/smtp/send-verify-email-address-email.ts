@@ -1,4 +1,4 @@
-import { renderAsync } from '@react-email/render';
+import { render } from '@react-email/render';
 import nodemailer from 'nodemailer';
 
 import {
@@ -12,8 +12,8 @@ export async function sendVerifyEmailAddressEmail(
   data: VerifyEmailAddressEmailData
 ): Promise<void> {
   const component = VerifyEmailAddressEmail(data);
-  const html = await renderAsync(component);
-  const text = await renderAsync(component, { plainText: true });
+  const html = await render(component);
+  const text = await render(component, { plainText: true });
   const payload: NodeMailerPayload = {
     from: serverConfig.from,
     to: data.recipient,

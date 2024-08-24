@@ -1,4 +1,4 @@
-import { renderAsync } from '@react-email/render';
+import { render } from '@react-email/render';
 import nodemailer from 'nodemailer';
 
 import { AppInfo } from '@/constants/app-info';
@@ -8,8 +8,8 @@ import { serverConfig } from '@/lib/smtp/mailer/server-config';
 
 export async function sendWelcomeEmail(data: WelcomeEmailData): Promise<void> {
   const component = WelcomeEmail(data);
-  const html = await renderAsync(component);
-  const text = await renderAsync(component, { plainText: true });
+  const html = await render(component);
+  const text = await render(component, { plainText: true });
   const payload: NodeMailerPayload = {
     from: serverConfig.from,
     to: data.recipient,
