@@ -1,4 +1,6 @@
 /* eslint-disable jsx-a11y/role-supports-aria-props */
+'use client';
+
 import * as React from 'react';
 import { ChevronDownIcon, ChevronUpIcon } from 'lucide-react';
 
