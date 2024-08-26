@@ -16,7 +16,6 @@ import { FormProvider } from '@/components/ui/form';
 import { Logo } from '@/components/ui/logo';
 import type { getOnboardingData } from '@/data/onboarding/get-onboarding-data';
 import { useZodForm } from '@/hooks/use-zod-form';
-import { DEFAULT_LOCALE } from '@/lib/i18n/locale';
 import { cn } from '@/lib/utils';
 import {
   completeOnboardingSchema,
@@ -79,7 +78,6 @@ export function OnboardingWizard({
       action: FileUploadAction.None,
       image: user?.image,
       name: user?.name ?? 'Unkown',
-      locale: user?.locale ?? DEFAULT_LOCALE,
       theme: (theme as 'light' | 'dark' | 'system') ?? 'system'
     }
   });
@@ -131,7 +129,6 @@ export function OnboardingWizard({
         image: variables.image,
         name: variables.name,
         phone: variables.phone,
-        locale: variables.locale,
         theme: variables.theme
       });
       if (result?.serverError || result?.validationErrors) {

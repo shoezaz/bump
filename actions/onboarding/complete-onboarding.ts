@@ -10,7 +10,6 @@ import { Caching, OrganizationCacheKey, UserCacheKey } from '@/data/caching';
 import { stripeServer } from '@/lib/billing/stripe-server';
 import { addExampleData } from '@/lib/db/example-data';
 import { prisma } from '@/lib/db/prisma';
-import { DEFAULT_LOCALE } from '@/lib/i18n/locale';
 import { decodeBase64Image } from '@/lib/imaging/decode-base64-image';
 import { resizeImage } from '@/lib/imaging/resize-image';
 import { getUserImageUrl } from '@/lib/urls/get-user-image-url';
@@ -104,7 +103,6 @@ export const completeOnboarding = authActionClient
           image: imageUrl,
           name: parsedInput.name,
           phone: parsedInput.phone,
-          locale: parsedInput.locale ?? DEFAULT_LOCALE,
           completedOnboarding: true
         },
         select: {
