@@ -214,7 +214,9 @@ export const EditWebhookModal = NiceModal.create<EditWebhookModalProps>(
                 </DrawerDescription>
               </DrawerHeader>
               {renderForm}
-              <DrawerFooter className="pt-4">{renderButtons}</DrawerFooter>
+              <DrawerFooter className="flex-col-reverse pt-4">
+                {renderButtons}
+              </DrawerFooter>
             </DrawerContent>
           </Drawer>
         )}
