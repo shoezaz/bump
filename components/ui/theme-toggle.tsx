@@ -4,13 +4,17 @@ import { MoonIcon, SunIcon } from '@radix-ui/react-icons';
 import { useTheme } from 'next-themes';
 
 import { Button, type ButtonProps } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 
 export type ThemeToggleProps = Omit<
   ButtonProps,
   'variant' | 'size' | 'onClick'
 >;
 
-export function ThemeToggle(props: ThemeToggleProps): React.JSX.Element {
+export function ThemeToggle({
+  className,
+  ...props
+}: ThemeToggleProps): React.JSX.Element {
   const { setTheme, theme } = useTheme();
   const handleToggleTheme = (): void => {
     setTheme(theme === 'light' ? 'dark' : 'light');
@@ -20,6 +24,7 @@ export function ThemeToggle(props: ThemeToggleProps): React.JSX.Element {
       variant="outline"
       size="icon"
       onClick={handleToggleTheme}
+      className={cn('bg-background', className)}
       {...props}
     >
       <SunIcon
