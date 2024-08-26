@@ -49,7 +49,7 @@ export function InvitationsCard({
       {...other}
     >
       <CardHeader className="pb-0">
-        <div className="flex flex-row items-center gap-2 ">
+        <div className="flex flex-row items-center gap-2">
           <InputSearch
             placeholder="Filter by email"
             value={searchQuery}

@@ -12,7 +12,7 @@ export function MembersSkeletonCard(props: CardProps): React.JSX.Element {
   return (
     <Card {...props}>
       <CardHeader className="pb-0">
-        <div className="flex flex-row items-center gap-2 ">
+        <div className="flex flex-row items-center gap-2">
           <div className="relative inline-block h-9 w-full">
             <span className="absolute left-3 top-1/2 flex -translate-y-1/2">
               <Skeleton className="size-6 shrink-0" />

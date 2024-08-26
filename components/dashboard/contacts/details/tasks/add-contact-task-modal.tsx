@@ -130,7 +130,7 @@ export const AddContactTaskModal = NiceModal.create<AddContactTaskModalProps>(
                     <SelectContent>
                       <SelectItem value={ContactTaskStatus.OPEN}>
                         <div className="flex flex-row items-center gap-1.5">
-                          <div className="size-2 shrink-0  rounded-full bg-red-600" />
+                          <div className="size-2 shrink-0 rounded-full bg-red-600" />
                           <span>Open</span>
                         </div>
                       </SelectItem>

@@ -10,10 +10,12 @@
     "start": "next start",
     "analyze": "BUNDLE_ANALYZE=both next build",
     "lint": "next lint",
-    "lint-fix": "next lint --fix",
-    "prettier-fix": "prettier --write .",
-    "eslint-fix": "npx eslint --fix .",
-    "type-check": "tsc --noEmit",
+    "lint:fix": "next lint --fix",
+    "prettier:fix": "prettier --write .",
+    "eslint:fix": "npx eslint --fix .",
+    "format:write": "prettier --write \"**/*.{ts,tsx,mdx}\" --cache",
+    "format:check": "prettier --check \"**/*.{ts,tsx,mdx}\" --cache",
+    "typecheck": "tsc --noEmit",
     "postinstall": "patch-package && prisma generate"
   },
   "dependencies": {
@@ -132,6 +134,7 @@
     "patch-package": "8.0.0",
     "postcss": "8.4.41",
     "prettier": "3.3.3",
+    "prettier-plugin-tailwindcss": "0.6.6",
     "prisma": "5.18.0",
     "typescript": "5.5.4"
   },

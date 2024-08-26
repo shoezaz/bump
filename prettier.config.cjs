@@ -10,6 +10,7 @@ module.exports = {
   bracketSpacing: true,
   arrowParens: 'always',
   singleAttributePerLine: true,
+  tailwindConfig: './tailwind.config.cjs',
   importOrder: [
     '^(react/(.*)$)|^(react$)',
     '^(next/(.*)$)|^(next$)',
@@ -33,5 +34,8 @@ module.exports = {
     '^[./]'
   ],
   importOrderParserPlugins: ['typescript', 'jsx', 'decorators-legacy'],
-  plugins: ['@ianvs/prettier-plugin-sort-imports']
+  plugins: [
+    'prettier-plugin-tailwindcss',
+    '@ianvs/prettier-plugin-sort-imports'
+  ]
 };

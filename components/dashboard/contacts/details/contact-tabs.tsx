@@ -77,7 +77,7 @@ export function ContactTabs({
           <UnderlinedTabsTrigger
             key={item.value}
             value={item.value}
-            className="mx-0 border-t-4 border-t-transparent "
+            className="mx-0 border-t-4 border-t-transparent"
           >
             <div className="flex flex-row items-center gap-2 rounded-md px-2 py-1 hover:bg-accent">
               <item.icon className="size-4 shrink-0" />

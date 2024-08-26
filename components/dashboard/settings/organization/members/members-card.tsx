@@ -51,7 +51,7 @@ export function MembersCard({
       {...other}
     >
       <CardHeader className="pb-0">
-        <div className="flex flex-row items-center gap-2 ">
+        <div className="flex flex-row items-center gap-2">
           <InputSearch
             placeholder="Filter by name or email"
             value={searchQuery}
