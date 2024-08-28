@@ -26,7 +26,7 @@ export const searchParams = {
     SortDirection.Asc
   ),
   searchQuery: parseAsString.withDefault(''),
-  tags: parseAsArrayOf(parseAsString)
+  tags: parseAsArrayOf(parseAsString).withDefault([])
 };
 
 export const searchParamsCache = createSearchParamsCache(searchParams);

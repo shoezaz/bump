@@ -43,7 +43,7 @@ export default async function ContactsPage({
       sortDirection: searchParamsCache.get('sortDirection'),
       searchQuery: searchParamsCache.get('searchQuery'),
       records: searchParamsCache.get('records'),
-      tags: searchParamsCache.get('tags') || []
+      tags: searchParamsCache.get('tags')
     }),
     getContactTags()
   ]);
