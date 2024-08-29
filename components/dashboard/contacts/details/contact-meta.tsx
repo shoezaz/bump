@@ -20,7 +20,7 @@ export function ContactMeta({ contact }: ContactMetaProps): React.JSX.Element {
       mediaQueryOptions={{ ssr: true }}
       className="h-full"
     >
-      <div className="size-full divide-y border-b sm:w-[360px] sm:min-w-[360px]">
+      <div className="size-full divide-y border-b md:w-[360px] md:min-w-[360px]">
         <ContactDetailsSection contact={contact} />
         <ContactStageSection contact={contact} />
         <ContactTagsSection contact={contact} />
