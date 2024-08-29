@@ -1,3 +1,5 @@
+'use client';
+
 import * as React from 'react';
 import NiceModal from '@ebay/nice-modal-react';
 import { FilePlus2Icon } from 'lucide-react';
@@ -8,7 +10,7 @@ import { Button } from '@/components/ui/button';
 import { EmptyText } from '@/components/ui/empty-text';
 import { ResponsiveScrollArea } from '@/components/ui/scroll-area';
 import { MediaQueries } from '@/constants/media-queries';
-import { ContactDto } from '@/types/dtos/contact-dto';
+import type { ContactDto } from '@/types/dtos/contact-dto';
 import type { ContactNoteDto } from '@/types/dtos/contact-note-dto';
 
 export type ContactNotesProps = {

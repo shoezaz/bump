@@ -1,13 +1,9 @@
-'use client';
-
 import * as React from 'react';
 import { ActivityIcon, CheckSquare2Icon, FileIcon } from 'lucide-react';
-import { parseAsString, useQueryState } from 'nuqs';
 
-import { addContactPageVisit } from '@/actions/contacts/add-contact-page-visit';
-import { ContactNotes } from '@/components/dashboard/contacts/details/notes/contact-notes';
-import { ContactTasks } from '@/components/dashboard/contacts/details/tasks/contact-tasks';
-import { ContactActivity } from '@/components/dashboard/contacts/details/timeline/contact-activity';
+import { ContactNotesTab } from '@/components/dashboard/contacts/details/notes/contact-notes-tab';
+import { ContactTasksTab } from '@/components/dashboard/contacts/details/tasks/contact-tasks-tab';
+import { ContactActivityTab } from '@/components/dashboard/contacts/details/timeline/contact-activity-tab';
 import { Separator } from '@/components/ui/separator';
 import {
   UnderlinedTabs,
@@ -15,12 +11,7 @@ import {
   UnderlinedTabsList,
   UnderlinedTabsTrigger
 } from '@/components/ui/tabs';
-import { useRunOnce } from '@/hooks/use-run-once';
 import type { ContactDto } from '@/types/dtos/contact-dto';
-import type { ContactNoteDto } from '@/types/dtos/contact-note-dto';
-import type { ContactTaskDto } from '@/types/dtos/contact-task-dto';
-import type { ProfileDto } from '@/types/dtos/profile-dto';
-import type { TimelineEventDto } from '@/types/dtos/timeline-event-dto';
 
 enum Tab {
   Activity = 'activity',
@@ -47,29 +38,15 @@ const tabList = [
 ];
 
 export type ContactTabsProps = {
-  profile: ProfileDto;
   contact: ContactDto;
-  tasks: ContactTaskDto[];
-  events: TimelineEventDto[];
-  notes: ContactNoteDto[];
 };
 
-export function ContactTabs({
-  profile,
-  contact,
-  tasks,
-  events,
-  notes
-}: ContactTabsProps): React.JSX.Element {
-  const [tab, setTab] = useQueryState<string>(
-    'tab',
-    parseAsString.withDefault(Tab.Activity)
-  );
-  useRunOnce(() => addContactPageVisit({ contactId: contact.id }));
+export async function ContactTabs({
+  contact
+}: ContactTabsProps): Promise<React.JSX.Element> {
   return (
     <UnderlinedTabs
-      value={tab}
-      onValueChange={setTab}
+      defaultValue={Tab.Activity}
       className="flex size-full flex-col"
     >
       <UnderlinedTabsList className="h-12 max-h-12 min-h-12 gap-x-2 overflow-x-auto border-none px-4">
@@ -91,29 +68,25 @@ export function ContactTabs({
         value={Tab.Activity}
         className="m-0 p-0 md:grow md:overflow-hidden"
       >
-        <ContactActivity
-          profile={profile}
-          contact={contact}
-          events={events}
-        />
+        <React.Suspense>
+          <ContactActivityTab contact={contact} />
+        </React.Suspense>
       </UnderlinedTabsContent>
       <UnderlinedTabsContent
         value={Tab.Notes}
         className="m-0 p-0 md:grow md:overflow-hidden"
       >
-        <ContactNotes
-          contact={contact}
-          notes={notes}
-        />
+        <React.Suspense>
+          <ContactNotesTab contact={contact} />
+        </React.Suspense>
       </UnderlinedTabsContent>
       <UnderlinedTabsContent
         value={Tab.Tasks}
         className="m-0 p-0 md:grow md:overflow-hidden"
       >
-        <ContactTasks
-          contact={contact}
-          tasks={tasks}
-        />
+        <React.Suspense>
+          <ContactTasksTab contact={contact} />
+        </React.Suspense>
       </UnderlinedTabsContent>
     </UnderlinedTabs>
   );

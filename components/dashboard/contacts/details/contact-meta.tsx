@@ -1,3 +1,5 @@
+'use client';
+
 import * as React from 'react';
 
 import { ContactDetailsSection } from '@/components/dashboard/contacts/details/contact-details-section';
