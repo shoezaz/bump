@@ -58,7 +58,7 @@ export default function HomeLayout({
             </div>
             <PageActions>
               <Link
-                href="https://github.com/shadcnpro/shadcnpro"
+                href="https://github.com/achromaticlabs/pro"
                 target="_blank"
                 className={buttonVariants({ variant: 'ghost', size: 'icon' })}
               >
@@ -66,7 +66,7 @@ export default function HomeLayout({
                 <span className="sr-only">GitHub</span>
               </Link>
               <Link
-                href="https://x.com/shadcnpro"
+                href="https://x.com/achromaticlabs"
                 target="_blank"
                 className={buttonVariants({ variant: 'ghost', size: 'icon' })}
               >

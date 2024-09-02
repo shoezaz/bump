@@ -1,6 +1,6 @@
 {
-  "name": "shadcnpro",
-  "short_name": "shadcnpro",
+  "name": "Acme",
+  "short_name": "Acme",
   "icons": [
     {
       "src": "/android-chrome-192x192.png",

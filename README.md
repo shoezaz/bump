@@ -15,7 +15,7 @@ Get started in about 30 minutes by following these steps.
 2. **Switch to the project's root directory**
 
 ```bash
-cd shadcnpro
+cd achromatic-pro
 ```
 
 2. **Install the node dependencies**
@@ -52,7 +52,7 @@ ALTER USER postgres WITH SUPERUSER;
 3.  Update `.env` with your database credentials.
 
 ```bash
-DATABASE_URL=postgresql://postgres:password@localhost:5432/shadcnpro?schema=public
+DATABASE_URL=postgresql://postgres:password@localhost:5432/achromatic_pro?schema=public
 ```
 
 4. Apply the database migrations.
