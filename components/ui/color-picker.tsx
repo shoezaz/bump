@@ -266,7 +266,7 @@ const Pointer = ({
       {...other}
     >
       <div
-        className="h-4 w-4 rounded-full bg-gray-200 shadow-[0px_1px_4px_0px_rgba(0,0,0,0.37)] transform translate-x-[-8px] translate-y-[-1px]"
+        className="size-4 -translate-y-px translate-x-[-8px] rounded-full bg-gray-200 shadow-[0px_1px_4px_0px_rgba(0,0,0,0.37)]"
         {...omit(fillProps, ['className'])}
       />
     </div>
@@ -384,6 +384,7 @@ const Interactive = React.forwardRef<HTMLDivElement, InteractiveProps>(
         : window.removeEventListener;
       toggleEvent(hasTouched.current ? 'touchmove' : 'mousemove', handleMove);
       toggleEvent(hasTouched.current ? 'touchend' : 'mouseup', handleMoveEnd);
+      /* eslint-disable  react-hooks/exhaustive-deps */
     }, []);
 
     React.useEffect(() => {
@@ -463,7 +464,7 @@ const Saturation = React.forwardRef<HTMLDivElement, SaturationProps>(
     return (
       <Interactive
         ref={ref}
-        className="relative inset-0 cursor-crosshair w-full h-[130px]"
+        className="relative inset-0 h-[130px] w-full cursor-crosshair"
         style={{
           backgroundImage: `linear-gradient(0deg, #000, transparent), linear-gradient(90deg, #fff, hsl(${
             hsva?.h ?? hue
@@ -535,7 +536,7 @@ const Alpha = React.forwardRef<HTMLDivElement, AlphaProps>(
     return (
       <div
         ref={ref}
-        className={cn('bg-white relative', className)}
+        className={cn('relative bg-white', className)}
         style={{
           background:
             'url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAMUlEQVQ4T2NkYGAQYcAP3uCTZhw1gGGYhAGBZIA/nYDCgBDAm9BGDWAAJyRCgLaBCAAgXwixzAS0pgAAAABJRU5ErkJggg==) left center',
@@ -545,7 +546,7 @@ const Alpha = React.forwardRef<HTMLDivElement, AlphaProps>(
         {...other}
       >
         <div
-          className={cn('inset-0 absolute', trackProps.className)}
+          className={cn('absolute inset-0', trackProps.className)}
           style={{
             background: background || innerBackground,
             ...trackProps.style
@@ -554,7 +555,7 @@ const Alpha = React.forwardRef<HTMLDivElement, AlphaProps>(
         />
         <Interactive
           className={cn(
-            'inset-0 z-[1] absolute cursor-crosshair',
+            'absolute inset-0 z-[1] cursor-crosshair',
             interactiveProps.className
           )}
           onMove={handleChange}
@@ -615,7 +616,9 @@ type EyeDropperProps = {
 function EyeDropper(props: EyeDropperProps): React.JSX.Element {
   const handleClick = () => {
     if (isEyeDropperSupported) {
+      /* eslint-disable  @typescript-eslint/no-explicit-any */
       const eyeDropper = new (window as any).EyeDropper();
+      /* eslint-disable  @typescript-eslint/no-explicit-any */
       eyeDropper.open().then((result: any) => {
         props.onPickColor?.(result.sRGBHex);
       });
@@ -626,12 +629,12 @@ function EyeDropper(props: EyeDropperProps): React.JSX.Element {
       type="button"
       variant="ghost"
       size="icon"
-      className="h-4 w-4 !bg-transparent text-muted-foreground hover:text-primary"
+      className="size-4 !bg-transparent text-muted-foreground hover:text-primary"
       onClick={handleClick}
     >
       <svg
         viewBox="0 0 512 512"
-        className="h-4 w-4 shrink-0"
+        className="size-4 shrink-0"
       >
         <path
           fill="currentColor"
@@ -668,6 +671,7 @@ const ChromeInput = React.forwardRef<HTMLInputElement, ChromeInputProps>(
           setValue(initValue);
         }
       }
+      /* eslint-disable  react-hooks/exhaustive-deps */
     }, [initValue]);
 
     const handleChange = (
@@ -700,7 +704,7 @@ const ChromeInput = React.forwardRef<HTMLInputElement, ChromeInputProps>(
           onBlur={handleBlur}
           autoComplete="off"
           onFocus={() => (isFocus.current = true)}
-          className="border text-xs w-full p-1 text-center"
+          className="w-full border p-1 text-center text-xs"
           {...other}
         />
         {label && (
@@ -943,7 +947,7 @@ const Chrome = React.forwardRef<HTMLDivElement, ChromeProps>(
     return (
       <div
         ref={ref}
-        className={cn('flex flex-col w-60', className)}
+        className={cn('flex w-60 flex-col', className)}
         {...other}
       >
         <Saturation
@@ -952,7 +956,7 @@ const Chrome = React.forwardRef<HTMLDivElement, ChromeProps>(
             handleChange({ ...hsva, ...newColor, a: hsva.a });
           }}
         />
-        <div className="p-4 flex flex-row items-center gap-2.5">
+        <div className="flex flex-row items-center gap-2.5 p-4">
           {isEyeDropperSupported && showEyeDropper && (
             <EyeDropper onPickColor={handleClickColor} />
           )}
@@ -975,7 +979,7 @@ const Chrome = React.forwardRef<HTMLDivElement, ChromeProps>(
             {showHue && (
               <Hue
                 hue={hsva.h}
-                className="w-full h-3"
+                className="h-3 w-full"
                 pointerProps={{ className: 'cursor-ew-resize' }}
                 trackProps={{ className: 'rounded-xs' }}
                 onChange={(newHue) => {
@@ -986,7 +990,7 @@ const Chrome = React.forwardRef<HTMLDivElement, ChromeProps>(
             {showAlpha && (
               <Alpha
                 hsva={hsva}
-                className="w-full h-3 mt-1.5"
+                className="mt-1.5 h-3 w-full"
                 pointerProps={{ className: 'cursor-ew-resize' }}
                 trackProps={{ className: 'rounded-xs' }}
                 onChange={(newAlpha) => {
@@ -997,7 +1001,7 @@ const Chrome = React.forwardRef<HTMLDivElement, ChromeProps>(
           </div>
         </div>
         {showInputs && (
-          <div className="flex flex-row gap-1 items-start px-4 pb-4 select-none">
+          <div className="flex select-none flex-row items-start gap-1 px-4 pb-4">
             <div className="flex-1">
               {type == ChromeInputType.RGBA && (
                 <ChromeInputRGBA
@@ -1033,10 +1037,10 @@ const Chrome = React.forwardRef<HTMLDivElement, ChromeProps>(
               type="button"
               variant="ghost"
               size="icon"
-              className="cursor-pointer rounded transition-colors duration-300 w-6 h-6"
+              className="size-6 cursor-pointer rounded transition-colors duration-300"
               onClick={handleClick}
             >
-              <CaretSortIcon className="h-4 w-4 shrink-0" />
+              <CaretSortIcon className="size-4 shrink-0" />
             </Button>
           </div>
         )}

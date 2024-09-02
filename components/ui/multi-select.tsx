@@ -76,27 +76,27 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
           )}
           {...props}
         >
-          <div className="flex flex-wrap gap-1 items-center">
+          <div className="flex flex-wrap items-center gap-1">
             {selected.length > 0 ? (
               selected.map((item) => (
                 <Badge
                   variant="secondary"
                   key={item}
-                  className="mr-1 mb-1"
+                  className="mb-1 mr-1"
                   onClick={(e) => {
                     e.stopPropagation();
                     handleUnselect(item);
                   }}
                 >
                   {options.find((o) => o.value === item)?.label}
-                  <X className="ml-1 h-3 w-3 text-muted-foreground hover:text-foreground" />
+                  <X className="ml-1 size-3 text-muted-foreground hover:text-foreground" />
                 </Badge>
               ))
             ) : (
               <span className="text-muted-foreground">{placeholder}</span>
             )}
           </div>
-          <CaretSortIcon className="h-4 w-4 shrink-0 opacity-50 ml-2" />
+          <CaretSortIcon className="ml-2 size-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
       <PopoverContent
@@ -114,7 +114,7 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
               >
                 <CheckIcon
                   className={cn(
-                    'mr-2 h-4 w-4',
+                    'mr-2 size-4',
                     selected.includes(option.value)
                       ? 'opacity-100'
                       : 'opacity-0'

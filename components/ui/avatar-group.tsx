@@ -14,11 +14,11 @@ const avatarGroupVariants = cva(
         loose: '-space-x-2'
       },
       size: {
-        xs: '[&>*]:h-6 [&>*]:w-6 [&>*]:text-xs',
-        sm: '[&>*]:h-8 [&>*]:w-8 [&>*]:text-sm',
-        md: '[&>*]:h-10 [&>*]:w-10 [&>*]:text-base',
-        lg: '[&>*]:h-12 [&>*]:w-12 [&>*]:text-lg',
-        xl: '[&>*]:h-14 [&>*]:w-14 [&>*]:text-xl'
+        xs: '[&>*]:size-6 [&>*]:text-xs',
+        sm: '[&>*]:size-8 [&>*]:text-sm',
+        md: '[&>*]:size-10 [&>*]:text-base',
+        lg: '[&>*]:size-12 [&>*]:text-lg',
+        xl: '[&>*]:size-14 [&>*]:text-xl'
       }
     },
     defaultVariants: {
@@ -64,11 +64,11 @@ const AvatarGroup = React.forwardRef<AvatarGroupElement, AvatarGroupProps>(
       return { shownAvatars: shown, hiddenAvatars: hidden };
     }, [avatars, max]);
 
-    const defaultRenderAvatar = (avatar: AvatarData, index: number) => {
+    const defaultRenderAvatar = (avatar: AvatarData, _index: number) => {
       const content = (
         <Avatar
           title={avatar.name}
-          className="ring-2 ring-background transition-all duration-200 ease-in-out hover:-translate-x-1 hover:z-10"
+          className="ring-2 ring-background transition-all duration-200 ease-in-out hover:z-10 hover:-translate-x-1"
         >
           {avatar.image && (
             <AvatarImage
