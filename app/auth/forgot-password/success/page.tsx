@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { type Metadata } from 'next';
 
+import { AuthContainer } from '@/components/auth/auth-logo';
 import { ForgotPasswordSuccessCard } from '@/components/auth/forgot-password/forgot-password-success-card';
 import { createTitle } from '@/lib/utils';
 import type { NextPageProps } from '@/types/next-page-props';
@@ -14,11 +15,8 @@ export default function ForgotPasswordSuccessPage(
 ): React.JSX.Element {
   const email = (props.searchParams.email as string) ?? '';
   return (
-    <div className="w-full min-w-[360px] px-2">
-      <ForgotPasswordSuccessCard
-        className="mx-auto max-w-sm"
-        email={email}
-      />
-    </div>
+    <AuthContainer maxWidth="sm">
+      <ForgotPasswordSuccessCard email={email} />
+    </AuthContainer>
   );
 }

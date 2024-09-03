@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation';
 import { validate as uuidValidate } from 'uuid';
 
 import { changeEmail } from '@/actions/account/change-email';
+import { AuthContainer } from '@/components/auth/auth-logo';
 import { ChangeEmailSuccessCard } from '@/components/auth/change-email/change-email-success-card';
 import { prisma } from '@/lib/db/prisma';
 import { createTitle } from '@/lib/utils';
@@ -36,11 +37,8 @@ export default async function ChangeEmailPage(
   await changeEmail({ id: requestId });
 
   return (
-    <div className="w-full min-w-[360px] px-2">
-      <ChangeEmailSuccessCard
-        className="mx-auto max-w-sm"
-        email={request.email}
-      />
-    </div>
+    <AuthContainer maxWidth="sm">
+      <ChangeEmailSuccessCard email={request.email} />
+    </AuthContainer>
   );
 }

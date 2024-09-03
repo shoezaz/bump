@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation';
 import { validate as uuidValidate } from 'uuid';
 
 import { acceptInvitation } from '@/actions/invitations/accept-invitation';
+import { AuthContainer } from '@/components/auth/auth-logo';
 import { JoinOrganizationCard } from '@/components/invitations/join-organization-card';
 import { prisma } from '@/lib/db/prisma';
 import { createTitle } from '@/lib/utils';
@@ -46,12 +47,11 @@ export default async function InvitationPage(
   await acceptInvitation({ token });
 
   return (
-    <div className="w-full min-w-[360px] px-2">
+    <AuthContainer maxWidth="md">
       <JoinOrganizationCard
-        className="mx-auto max-w-md"
         invitation={invitation}
         organizationName={invitation.organiation.name}
       />
-    </div>
+    </AuthContainer>
   );
 }

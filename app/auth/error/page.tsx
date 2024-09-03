@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { type Metadata } from 'next';
 
+import { AuthContainer } from '@/components/auth/auth-logo';
 import { AuthErrorCard } from '@/components/auth/error/auth-error-card';
 import { AuthErrorCode, authErrorMessages } from '@/lib/auth/errors';
 import { createTitle } from '@/lib/utils';
@@ -17,11 +18,8 @@ export default function AuthErrorPage(props: NextPageProps): React.JSX.Element {
       ? authErrorMessages[error as AuthErrorCode]
       : authErrorMessages[AuthErrorCode.UnknownError];
   return (
-    <div className="w-full min-w-[360px] px-2">
-      <AuthErrorCard
-        className="mx-auto max-w-sm"
-        errorMessage={errorMessage}
-      />
-    </div>
+    <AuthContainer maxWidth="sm">
+      <AuthErrorCard errorMessage={errorMessage} />
+    </AuthContainer>
   );
 }

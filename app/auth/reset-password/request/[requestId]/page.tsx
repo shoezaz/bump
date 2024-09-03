@@ -3,6 +3,7 @@ import { type Metadata } from 'next';
 import { notFound, redirect } from 'next/navigation';
 import { isAfter } from 'date-fns';
 
+import { AuthContainer } from '@/components/auth/auth-logo';
 import { ResetPasswordCard } from '@/components/auth/reset-password/reset-password-card';
 import { Routes } from '@/constants/routes';
 import { prisma } from '@/lib/db/prisma';
@@ -42,12 +43,11 @@ export default async function ResetPasswordPage(
   }
 
   return (
-    <div className="w-full min-w-[360px] px-2">
+    <AuthContainer maxWidth="sm">
       <ResetPasswordCard
-        className="mx-auto max-w-sm"
         requestId={requestId}
         expires={resetPasswordRequest.expires}
       />
-    </div>
+    </AuthContainer>
   );
 }
