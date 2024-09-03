@@ -14,6 +14,7 @@ import { getLoginRedirect } from '@/lib/auth/redirect';
 import { checkSession } from '@/lib/auth/session';
 import { prisma } from '@/lib/db/prisma';
 import type { TagDto } from '@/types/dtos/tag-dto';
+import { SortDirection } from '@/types/sorty-direction';
 
 export async function getContactTags(): Promise<TagDto[]> {
   const session = await dedupedAuth();
@@ -36,6 +37,9 @@ export async function getContactTags(): Promise<TagDto[]> {
             select: {
               id: true,
               text: true
+            },
+            orderBy: {
+              text: SortDirection.Asc
             }
           })
         ],
