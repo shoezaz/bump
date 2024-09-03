@@ -48,8 +48,9 @@ export const DeleteContactsModal = NiceModal.create<DeleteContactsModalProps>(
         ids: contacts.map((contact) => contact.id)
       }
     });
-    const title = 'Delete contacts?';
     const amount = contacts.length;
+    const subject = amount === 1 ? 'Contact' : 'Contacts';
+    const title = `Delete ${subject.toLowerCase()}?`;
     const canSubmit =
       !methods.formState.isSubmitting && methods.formState.isValid;
     const onSubmit: SubmitHandler<DeleteContactsSchema> = async (values) => {
@@ -58,17 +59,17 @@ export const DeleteContactsModal = NiceModal.create<DeleteContactsModalProps>(
       }
       const result = await deleteContacts(values);
       if (!result?.serverError && !result?.validationErrors) {
-        toast.success('Contacts deleted');
+        toast.success(`${subject} deleted`);
         modal.handleClose();
       } else {
-        toast.error("Contacts couldn't be deleted");
+        toast.error(`${subject} couldn't be deleted`);
       }
     };
     const renderDescription = (
       <>
         You're about to delete{' '}
-        <strong>{`${amount} ${amount === 1 ? 'contact' : 'contacts'}`}</strong>.
-        This action action cannot be undone.
+        <strong>{`${amount} ${subject.toLowerCase()}`}</strong>. This action
+        cannot be undone.
       </>
     );
     const renderForm = (
