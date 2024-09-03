@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { type Metadata } from 'next';
 
-import { AuthContainer } from '@/components/auth/auth-logo';
+import { AuthContainer } from '@/components/auth/auth-container';
 import { SignUpCard } from '@/components/auth/sign-up/sign-up-card';
 import { createTitle } from '@/lib/utils';
 

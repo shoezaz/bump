@@ -3,7 +3,7 @@ import { type Metadata } from 'next';
 import { notFound, redirect } from 'next/navigation';
 import { isAfter } from 'date-fns';
 
-import { AuthContainer } from '@/components/auth/auth-logo';
+import { AuthContainer } from '@/components/auth/auth-container';
 import { ResetPasswordCard } from '@/components/auth/reset-password/reset-password-card';
 import { Routes } from '@/constants/routes';
 import { prisma } from '@/lib/db/prisma';

@@ -4,7 +4,7 @@ import { notFound } from 'next/navigation';
 import { validate as uuidValidate } from 'uuid';
 
 import { acceptInvitation } from '@/actions/invitations/accept-invitation';
-import { AuthContainer } from '@/components/auth/auth-logo';
+import { AuthContainer } from '@/components/auth/auth-container';
 import { JoinOrganizationCard } from '@/components/invitations/join-organization-card';
 import { prisma } from '@/lib/db/prisma';
 import { createTitle } from '@/lib/utils';

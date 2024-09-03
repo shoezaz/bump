@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { type Metadata } from 'next';
 
-import { AuthContainer } from '@/components/auth/auth-logo';
+import { AuthContainer } from '@/components/auth/auth-container';
 import { ForgotPasswordSuccessCard } from '@/components/auth/forgot-password/forgot-password-success-card';
 import { createTitle } from '@/lib/utils';
 import type { NextPageProps } from '@/types/next-page-props';

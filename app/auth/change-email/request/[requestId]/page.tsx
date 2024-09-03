@@ -4,7 +4,7 @@ import { notFound } from 'next/navigation';
 import { validate as uuidValidate } from 'uuid';
 
 import { changeEmail } from '@/actions/account/change-email';
-import { AuthContainer } from '@/components/auth/auth-logo';
+import { AuthContainer } from '@/components/auth/auth-container';
 import { ChangeEmailSuccessCard } from '@/components/auth/change-email/change-email-success-card';
 import { prisma } from '@/lib/db/prisma';
 import { createTitle } from '@/lib/utils';
