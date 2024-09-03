@@ -44,7 +44,7 @@ function joinTags(tags: { text: string }[]): string {
   return [...new Set(tags.map((tag) => tag.text))].join(',');
 }
 
-function detectChanges(
+export function detectChanges(
   currentContact: Partial<ContactWithTags> | null,
   updatedContact: ContactWithTags,
   updateData?: Prisma.ContactUpdateInput

@@ -1,13 +1,26 @@
 import { createHash } from 'crypto';
-import { ContactRecord } from '@prisma/client';
+import { extname } from 'path';
+import {
+  ActionType,
+  ActorType,
+  ContactRecord,
+  ContactStage
+} from '@prisma/client';
 import { addMilliseconds, subDays } from 'date-fns';
 import { v4 } from 'uuid';
 
-import { addFavorite } from '@/actions/favorites/add-favorite';
-import { createContactAndCaptureEvent } from '@/lib/db/contact-event-capture';
+import { detectChanges } from '@/lib/db/contact-event-capture';
 import { prisma } from '@/lib/db/prisma';
 import { getBaseUrl } from '@/lib/urls/get-base-url';
 import { getContactImageUrl } from '@/lib/urls/get-contact-image-url';
+
+const BATCH_SIZE = 5;
+
+type InMemoryImage = {
+  buffer: Buffer;
+  mimeType: string;
+};
+type ImageCache = Map<string, InMemoryImage>;
 
 export async function addExampleData(
   organizationId: string,
@@ -15,70 +28,138 @@ export async function addExampleData(
 ): Promise<void> {
   const now = new Date();
   const thirtyDaysAgo = subDays(now, 30);
+  const imageCache = await preloadImages();
+  let favoritesCount = -1;
 
-  for (const contact of contacts) {
-    const contactId = v4();
-    let imageUrl: string | undefined;
-
-    // Calculate a random date within the last 30 days
+  for (let i = 0; i < contacts.length; i += BATCH_SIZE) {
+    const batch = contacts.slice(i, i + BATCH_SIZE);
     const timeSpan = now.getTime() - thirtyDaysAgo.getTime();
-    const randomOffset = Math.random() * timeSpan;
-    const randomDate = addMilliseconds(thirtyDaysAgo, randomOffset);
+    const batchQueries = [];
 
-    if (contact.image) {
-      const response = await fetch(`${getBaseUrl()}/${contact.image}`);
-      if (response.ok) {
-        const mimeType = response.headers.get('content-type');
-        if (mimeType) {
+    for (const contact of batch) {
+      const contactId = v4();
+
+      // Calculate a random date within the last 30 day
+      const randomOffset = Math.random() * timeSpan;
+      const randomDate = addMilliseconds(thirtyDaysAgo, randomOffset);
+
+      let imageUrl: string | undefined;
+
+      if (contact.image && imageCache.has(contact.image)) {
+        const { buffer, mimeType } = imageCache.get(contact.image)!;
+        const hash = createHash('sha256').update(buffer).digest('hex');
+        batchQueries.push(
+          prisma.contactImage.create({
+            data: {
+              contactId,
+              data: buffer,
+              contentType: mimeType,
+              hash: hash
+            },
+            select: {
+              id: true // SELECT NONE
+            }
+          })
+        );
+        imageUrl = getContactImageUrl(contactId, hash);
+      }
+
+      let addToFavorites = false;
+      if (['Airbnb', 'Google', 'Microsoft'].includes(contact.name)) {
+        addToFavorites = true;
+        favoritesCount++;
+      }
+
+      batchQueries.push(
+        prisma.contact.create({
+          data: {
+            id: contactId,
+            organizationId,
+            name: contact.name,
+            image: imageUrl,
+            record: contact.record,
+            email: contact.email,
+            phone: contact.phone,
+            address: contact.address,
+            tags: {
+              connectOrCreate: contact.tags.map((tag) => ({
+                where: { text: tag },
+                create: { text: tag }
+              }))
+            },
+            activities: {
+              create: {
+                actionType: ActionType.CREATE,
+                actorId: userId,
+                actorType: ActorType.MEMBER,
+                metadata: detectChanges(null, {
+                  id: contactId,
+                  organizationId: organizationId,
+                  name: contact.name,
+                  image: imageUrl ?? null,
+                  record: contact.record,
+                  email: contact.email,
+                  phone: contact.phone,
+                  address: contact.address,
+                  stage: ContactStage.LEAD,
+                  updatedAt: randomDate,
+                  createdAt: randomDate,
+                  tags: contact.tags.map((tag) => ({
+                    text: tag
+                  }))
+                }),
+                occuredAt: randomDate
+              }
+            },
+            favorites: addToFavorites
+              ? { create: { userId: userId, order: favoritesCount } }
+              : undefined,
+            createdAt: randomDate,
+            updatedAt: randomDate
+          },
+          select: {
+            id: true // SELECT NONE
+          }
+        })
+      );
+    }
+
+    await prisma.$transaction(batchQueries);
+  }
+}
+
+async function preloadImages(): Promise<ImageCache> {
+  const imageCache = new Map<string, InMemoryImage>();
+  await Promise.all(
+    contacts.map(async (contact) => {
+      if (contact.image) {
+        const response = await fetch(`${getBaseUrl()}/${contact.image}`);
+        if (response.ok) {
+          const mimeType =
+            response.headers.get('content-type') || getMimeType(contact.image);
           const jsBuffer = await response.arrayBuffer();
           const buffer = Buffer.from(new Uint8Array(jsBuffer));
-          if (buffer) {
-            const hash = createHash('sha256').update(buffer).digest('hex');
-            await prisma.contactImage.create({
-              data: {
-                contactId,
-                data: buffer,
-                contentType: mimeType,
-                hash: hash
-              },
-              select: {
-                id: true // SELECT NONE
-              }
-            });
-            imageUrl = getContactImageUrl(contactId, hash);
-          }
+          imageCache.set(contact.image, { buffer, mimeType });
         }
       }
-    }
+    })
+  );
 
-    await createContactAndCaptureEvent(
-      {
-        id: contactId,
-        name: contact.name,
-        image: imageUrl,
-        record: contact.record,
-        email: contact.email,
-        phone: contact.phone,
-        address: contact.address,
-        createdAt: randomDate,
-        organization: {
-          connect: {
-            id: organizationId
-          }
-        },
-        tags: {
-          connectOrCreate: contact.tags.map((tag) => ({
-            where: { text: tag },
-            create: { text: tag }
-          }))
-        }
-      },
-      userId
-    );
+  return imageCache;
+}
 
-    if (['Airbnb', 'Google', 'Microsoft'].includes(contact.name)) {
-      await addFavorite({ contactId });
-    }
+function getMimeType(filename: string): string {
+  const ext = extname(filename).toLowerCase();
+  switch (ext) {
+    case '.png':
+      return 'image/png';
+    case '.jpg':
+    case '.jpeg':
+      return 'image/jpeg';
+    case '.gif':
+      return 'image/gif';
+    default:
+      return 'application/octet-stream';
   }
 }
 
