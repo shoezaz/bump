@@ -76,10 +76,6 @@ const nextConfig = {
       }
     ];
   },
-  typescript: {
-    // Comment out once recharts fixes their library for React 19
-    ignoreBuildErrors: true
-  },
   webpack(config) {
     config.module.rules.push({
       test: /\.svg$/i,

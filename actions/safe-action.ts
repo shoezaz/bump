@@ -16,7 +16,7 @@ import {
 } from '@/lib/validation/exceptions';
 
 export const actionClient = createSafeActionClient({
-  handleReturnedServerError(e) {
+  handleServerError(e) {
     if (
       e instanceof ValidationError ||
       e instanceof UnauthorizedError ||
