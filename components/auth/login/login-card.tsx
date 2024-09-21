@@ -2,7 +2,12 @@
 
 import * as React from 'react';
 import Link from 'next/link';
-import { AlertCircleIcon, LockIcon, MailIcon } from 'lucide-react';
+import {
+  AlertCircleIcon,
+  ArrowRightIcon,
+  LockIcon,
+  MailIcon
+} from 'lucide-react';
 import GoogleLogo from 'public/google-logo.svg';
 import MicrosoftLogo from 'public/microsoft-logo.svg';
 import { toast } from 'sonner';
@@ -12,7 +17,7 @@ import { continueWithMicrosoft } from '@/actions/auth/continue-with-microsoft';
 import { logIn } from '@/actions/auth/log-in';
 import { OrContinueWith } from '@/components/auth/or-continue-with';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Button } from '@/components/ui/button';
+import { Button, buttonVariants } from '@/components/ui/button';
 import {
   Card,
   CardContent,
@@ -35,6 +40,7 @@ import { InputWithAdornments } from '@/components/ui/input-with-adornments';
 import { Routes } from '@/constants/routes';
 import { useZodForm } from '@/hooks/use-zod-form';
 import { AuthErrorCode, authErrorMessages } from '@/lib/auth/errors';
+import { cn } from '@/lib/utils';
 import {
   passThroughlogInSchema,
   type PassThroughLogInSchema
@@ -43,6 +49,9 @@ import {
 export function LoginCard(props: CardProps): React.JSX.Element {
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [errorMessage, setErrorMessage] = React.useState<string>();
+  const [unverifiedEmail, setUnverifiedEmail] = React.useState<
+    string | undefined
+  >();
   const methods = useZodForm({
     // We pass through the values and do not validate on the client-side
     // Reason: Would be bad UX to validate fields, unexpected behavior at this spot
@@ -65,14 +74,22 @@ export function LoginCard(props: CardProps): React.JSX.Element {
     });
 
     if (result?.validationErrors?._errors) {
-      const error = result.validationErrors._errors[0];
-      setErrorMessage(
-        error in authErrorMessages
-          ? authErrorMessages[error as AuthErrorCode]
-          : authErrorMessages[AuthErrorCode.UnknownError]
+      const errorCode = result.validationErrors._errors[0] as AuthErrorCode;
+
+      setUnverifiedEmail(
+        errorCode === AuthErrorCode.UnverifiedEmail ? values.email : undefined
       );
+      setErrorMessage(
+        authErrorMessages[
+          errorCode in authErrorMessages
+            ? errorCode
+            : AuthErrorCode.UnknownError
+        ]
+      );
+
       setIsLoading(false);
     } else if (result?.serverError) {
+      setUnverifiedEmail(undefined);
       setErrorMessage(result.serverError);
       setIsLoading(false);
     }
@@ -166,7 +183,21 @@ export function LoginCard(props: CardProps): React.JSX.Element {
               <Alert variant="destructive">
                 <div className="flex flex-row items-center gap-2">
                   <AlertCircleIcon className="size-[18px] shrink-0" />
-                  <AlertDescription>{errorMessage}</AlertDescription>
+                  <AlertDescription>
+                    {errorMessage}
+                    {unverifiedEmail && (
+                      <Link
+                        className={cn(
+                          buttonVariants({ variant: 'link' }),
+                          'ml-0.5 h-fit gap-0.5 px-0.5 py-0 text-foreground underline'
+                        )}
+                        href={`${Routes.VerifyEmail}?email=${encodeURIComponent(unverifiedEmail)}`}
+                      >
+                        Verify email
+                        <ArrowRightIcon className="size-3 shrink-0" />
+                      </Link>
+                    )}
+                  </AlertDescription>
                 </div>
               </Alert>
             )}
