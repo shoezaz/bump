@@ -61,6 +61,7 @@ export class InternalServerError extends CredentialsSignin {
     super(AuthErrorCode.InternalServerError);
   }
   code = AuthErrorCode.InternalServerError;
+  stack = undefined;
 }
 
 export class IncorrectEmailOrPasswordError extends CredentialsSignin {
@@ -68,6 +69,7 @@ export class IncorrectEmailOrPasswordError extends CredentialsSignin {
     super(AuthErrorCode.IncorrectEmailOrPassword);
   }
   code = AuthErrorCode.IncorrectEmailOrPassword;
+  stack = undefined;
 }
 
 export class UnverifiedEmailError extends CredentialsSignin {
@@ -75,6 +77,7 @@ export class UnverifiedEmailError extends CredentialsSignin {
     super(AuthErrorCode.UnverifiedEmail);
   }
   code = AuthErrorCode.UnverifiedEmail;
+  stack = undefined;
 }
 
 export class RateLimitExceededError extends CredentialsSignin {
@@ -82,4 +85,5 @@ export class RateLimitExceededError extends CredentialsSignin {
     super(AuthErrorCode.RateLimitExceeded);
   }
   code = AuthErrorCode.RateLimitExceeded;
+  stack = undefined;
 }
