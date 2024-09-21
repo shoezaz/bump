@@ -57,16 +57,16 @@ export const providers = [
         throw new IncorrectEmailOrPasswordError();
       }
 
-      if (!user.emailVerified || isBefore(new Date(), user.emailVerified)) {
-        throw new UnverifiedEmailError();
-      }
-
       const isCorrectPassword = await verifyPassword(
         parsedCredentials.password,
         user.password
       );
       if (!isCorrectPassword) {
         throw new IncorrectEmailOrPasswordError();
+      }
+
+      if (!user.emailVerified || isBefore(new Date(), user.emailVerified)) {
+        throw new UnverifiedEmailError();
       }
 
       try {
