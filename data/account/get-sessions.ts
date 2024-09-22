@@ -19,8 +19,14 @@ export async function getSessions(): Promise<SessionDto[]> {
   const currrentSessionToken =
     cookies().get(AuthCookies.SessionToken)?.value ?? '';
 
+  const now = new Date();
   const sessions = await prisma.session.findMany({
-    where: { userId: session.user.id },
+    where: {
+      userId: session.user.id,
+      expires: {
+        gt: now
+      }
+    },
     select: {
       id: true,
       sessionToken: true,
