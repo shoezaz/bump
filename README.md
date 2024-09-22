@@ -1,6 +1,6 @@
 # Introduction
 
-A advanced Next 15 starter kit designed to accelerate the development of modern web-based applications. It provides a robust foundation for creating efficient, scalable and high-performance solutions.
+An advanced Next 15 starter kit designed to accelerate the development of modern web-based applications. It provides a robust foundation for creating efficient, scalable and high-performance solutions.
 
 ![hero](public/og.jpg)
 
@@ -128,6 +128,8 @@ PRO_PRODUCT_PRICE_ID=
 ```
 
 ### SMTP Provider
+
+Achromatic supports NodeMailer (SMTP) and Resend.
 
 1. Choose an SMTP provider (Gmail for testing is fine).
 2. Update `.env` with SMTP credentials.
