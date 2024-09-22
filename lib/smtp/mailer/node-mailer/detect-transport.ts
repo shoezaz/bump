@@ -1,4 +1,4 @@
-import type { NodeMailerTransport } from '@/lib/smtp/mailer/node-mailer-transport';
+import type { NodeMailerTransport } from '@/lib/smtp/mailer/node-mailer/node-mailer-transport';
 
 export function detectTransport(): NodeMailerTransport {
   if (process.env.EMAIL_SERVER) {

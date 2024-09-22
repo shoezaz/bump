@@ -1,6 +1,6 @@
 # Introduction
 
-A comprehensive Next 15 starter kit designed to accelerate the development of modern web-based applications. It provides a robust foundation for creating efficient, scalable and high-performance solutions.
+A advanced Next 15 starter kit designed to accelerate the development of modern web-based applications. It provides a robust foundation for creating efficient, scalable and high-performance solutions.
 
 ![hero](public/og.jpg)
 
@@ -133,11 +133,18 @@ PRO_PRODUCT_PRICE_ID=
 2. Update `.env` with SMTP credentials.
 
 ```bash
+EMAIL_SENDER=
+EMAIL_MAILER=NodeMailer # NodeMailer (default) | Resend
+
+# NodeMailer
+
 EMAIL_SERVER_HOST=
 EMAIL_SERVER_PORT=
 EMAIL_SERVER_USER=
 EMAIL_SERVER_PASS=
-EMAIL_SENDER=
+
+# Resend
+EMAIL_RESEND_API_KEY=
 ```
 
 For Gmail you need an **app-specific password** and set it up like this
@@ -147,7 +154,6 @@ EMAIL_SERVER_HOST=smtp.gmail.com
 EMAIL_SERVER_PORT=465
 EMAIL_SERVER_USER=example@gmail.com
 EMAIL_SERVER_PASS=suyz yeba qtgv xrnp
-EMAIL_SENDER=example@gmail.com
 ```
 
 <Callout>SMTP provider is mandatory for credentials login.</Callout>

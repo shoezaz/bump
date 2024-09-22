@@ -1,12 +1,10 @@
 import { render } from '@react-email/render';
-import nodemailer from 'nodemailer';
 
 import {
   ConnectedAccountSecurityAlertEmail,
   type ConnectedAccountSecurityAlertEmailData
 } from '@/emails/connected-account-security-alert-email';
-import type { NodeMailerPayload } from '@/lib/smtp/mailer/node-mailer-payload';
-import { serverConfig } from '@/lib/smtp/mailer/server-config';
+import { sendEmail } from '@/lib/smtp/mailer/send-email';
 
 export async function sendConnectedAccountSecurityAlertEmail(
   data: ConnectedAccountSecurityAlertEmailData
@@ -14,13 +12,11 @@ export async function sendConnectedAccountSecurityAlertEmail(
   const component = ConnectedAccountSecurityAlertEmail(data);
   const html = await render(component);
   const text = await render(component, { plainText: true });
-  const payload: NodeMailerPayload = {
-    from: serverConfig.from,
-    to: data.recipient,
+
+  await sendEmail({
+    recipient: data.recipient,
     subject: 'Security Alert!',
     html,
     text
-  };
-
-  await nodemailer.createTransport(serverConfig.transport).sendMail(payload);
+  });
 }

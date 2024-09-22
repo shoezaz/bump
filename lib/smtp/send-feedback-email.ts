@@ -1,9 +1,7 @@
 import { render } from '@react-email/render';
-import nodemailer from 'nodemailer';
 
 import { FeedbackEmail, type FeedbackEmailData } from '@/emails/feedback-email';
-import type { NodeMailerPayload } from '@/lib/smtp/mailer/node-mailer-payload';
-import { serverConfig } from '@/lib/smtp/mailer/server-config';
+import { sendEmail } from '@/lib/smtp/mailer/send-email';
 
 export async function sendFeedbackEmail(
   data: FeedbackEmailData
@@ -11,13 +9,11 @@ export async function sendFeedbackEmail(
   const component = FeedbackEmail(data);
   const html = await render(component);
   const text = await render(component, { plainText: true });
-  const payload: NodeMailerPayload = {
-    from: serverConfig.from,
-    to: data.recipient,
+
+  await sendEmail({
+    recipient: data.recipient,
     subject: 'User Feedback',
     html,
     text
-  };
-
-  await nodemailer.createTransport(serverConfig.transport).sendMail(payload);
+  });
 }
