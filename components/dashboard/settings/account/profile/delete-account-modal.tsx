@@ -63,12 +63,18 @@ export const DeleteAccountModal = NiceModal.create<DeleteAccountModalProps>(
       if (!canSubmit) {
         return;
       }
-      const result = await deleteAccount();
-      if (!result?.serverError && !result?.validationErrors) {
-        toast.error('Account deleted');
-        modal.handleClose();
-      } else {
-        toast.error("Couldn't delete account");
+      let result: Awaited<ReturnType<typeof deleteAccount>>;
+      try {
+        result = await deleteAccount();
+      } finally {
+        if (result) {
+          if (!result.serverError && !result.validationErrors) {
+            toast.error('Account deleted');
+            modal.handleClose();
+          } else {
+            toast.error("Couldn't delete account");
+          }
+        }
       }
     };
     const renderForm = (

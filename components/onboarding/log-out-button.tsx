@@ -2,13 +2,17 @@
 
 import * as React from 'react';
 import { ChevronLeftIcon } from 'lucide-react';
+import { toast } from 'sonner';
 
 import { logOut } from '@/actions/auth/log-out';
 import { Button, type ButtonProps } from '@/components/ui/button';
 
 export function LogOutButton(props: ButtonProps): React.JSX.Element {
   const handleLogOut = async (): Promise<void> => {
-    await logOut();
+    const result = await logOut();
+    if (result?.serverError || result?.validationErrors) {
+      toast.error("Couldn't log out");
+    }
   };
   return (
     <Button
