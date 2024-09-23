@@ -133,7 +133,7 @@ async function preloadImages(): Promise<ImageCache> {
   await Promise.all(
     contacts.map(async (contact) => {
       if (contact.image) {
-        const response = await fetch(`${getBaseUrl()}/${contact.image}`);
+        const response = await fetch(`${getBaseUrl()}${contact.image}`);
         if (response.ok) {
           const mimeType =
             response.headers.get('content-type') || getMimeType(contact.image);
