@@ -108,7 +108,7 @@ export async function addExampleData(
                     text: tag
                   }))
                 }),
-                occuredAt: randomDate
+                occurredAt: randomDate
               }
             },
             favorites: addToFavorites

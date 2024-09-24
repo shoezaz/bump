@@ -56,10 +56,10 @@ export async function getContactTimelineEvents(
             actorType: true,
             actorId: true,
             metadata: true,
-            occuredAt: true
+            occurredAt: true
           },
           orderBy: {
-            occuredAt: SortDirection.Desc
+            occurredAt: SortDirection.Desc
           }
         }),
         prisma.contactComment.findMany({
@@ -117,7 +117,7 @@ export async function getContactTimelineEvents(
             actionType: activity.actionType,
             actorType: activity.actorType,
             metadata: activity.metadata,
-            occuredAt: activity.occuredAt,
+            occurredAt: activity.occurredAt,
             actor: {
               id: actor?.id ?? '',
               name: actor?.name ?? '',
@@ -149,10 +149,10 @@ export async function getContactTimelineEvents(
         ...mappedComments
       ].sort((a, b) => {
         const dateA = (
-          a.type === 'activity' ? a.occuredAt : a.createdAt
+          a.type === 'activity' ? a.occurredAt : a.createdAt
         ).getTime();
         const dateB = (
-          b.type === 'activity' ? b.occuredAt : b.createdAt
+          b.type === 'activity' ? b.occurredAt : b.createdAt
         ).getTime();
         return dateB - dateA;
       });

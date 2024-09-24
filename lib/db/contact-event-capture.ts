@@ -99,7 +99,7 @@ export async function createContactAndCaptureEvent(
         actorId,
         actorType: ActorType.MEMBER,
         metadata: changes,
-        occuredAt: createdAt
+        occurredAt: createdAt
       }
     });
 
@@ -138,7 +138,7 @@ export async function updateContactAndCaptureEvent(
           actorId,
           actorType: ActorType.MEMBER,
           metadata: changes,
-          occuredAt: new Date()
+          occurredAt: new Date()
         }
       });
     }

@@ -90,12 +90,12 @@ export function ContactTimelineActivity({
             <div className="flex w-fit items-center space-x-1 text-xs text-muted-foreground">
               <ClockIcon className="size-3 shrink-0" />
               <time suppressHydrationWarning>
-                {formatDistanceToNow(event.occuredAt, { addSuffix: true })}
+                {formatDistanceToNow(event.occurredAt, { addSuffix: true })}
               </time>
             </div>
           </TooltipTrigger>
           <TooltipContent>
-            {format(event.occuredAt, 'd MMM yyyy HH:mm:ss')}
+            {format(event.occurredAt, 'd MMM yyyy HH:mm:ss')}
           </TooltipContent>
         </Tooltip>
       </div>

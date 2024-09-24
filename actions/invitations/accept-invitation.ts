@@ -21,7 +21,7 @@ export const acceptInvitation = actionClient
         id: true,
         email: true,
         status: true,
-        organiation: {
+        organization: {
           select: {
             id: true
           }
@@ -43,7 +43,7 @@ export const acceptInvitation = actionClient
       prisma.invitation.count({
         where: {
           email: invitation.email,
-          organizationId: invitation.organiation.id,
+          organizationId: invitation.organization.id,
           AND: [
             { NOT: { token: { equals: parsedInput.token } } },
             { NOT: { status: { equals: InvitationStatus.ACCEPTED } } },
@@ -69,7 +69,7 @@ export const acceptInvitation = actionClient
     revalidateTag(
       Caching.createOrganizationTag(
         OrganizationCacheKey.Invitations,
-        invitation.organiation.id
+        invitation.organization.id
       )
     );
   });

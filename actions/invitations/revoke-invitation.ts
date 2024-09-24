@@ -22,7 +22,7 @@ export const revokeInvitation = authActionClient
       select: {
         status: true,
         email: true,
-        organiation: {
+        organization: {
           select: {
             name: true
           }
@@ -54,7 +54,7 @@ export const revokeInvitation = authActionClient
       try {
         await sendRevokedInvitationEmail({
           recipient: invitation.email,
-          organizationName: invitation.organiation.name
+          organizationName: invitation.organization.name
         });
       } catch (e) {
         console.error(e);

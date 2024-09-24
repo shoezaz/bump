@@ -33,7 +33,7 @@ export default async function InvitationPage(
       email: true,
       role: true,
       status: true,
-      organiation: {
+      organization: {
         select: {
           name: true
         }
@@ -50,7 +50,7 @@ export default async function InvitationPage(
     <AuthContainer maxWidth="md">
       <JoinOrganizationCard
         invitation={invitation}
-        organizationName={invitation.organiation.name}
+        organizationName={invitation.organization.name}
       />
     </AuthContainer>
   );

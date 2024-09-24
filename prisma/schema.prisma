@@ -95,6 +95,7 @@ model Account {
   user              User     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
   @@unique([provider, providerAccountId])
+  @@index([userId], map: "IX_Account_userId")
 }
 
 model ApiKey {
@@ -107,6 +108,8 @@ model ApiKey {
   createdAt      DateTime     @default(now())
   updatedAt      DateTime     @updatedAt
   organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  @@index([organizationId], map: "IX_ApiKey_organizationId")
 }
 
 model ChangeEmailRequest {
@@ -153,11 +156,11 @@ model ContactActivity {
   actorId    String     @db.VarChar(255)
   actorType  ActorType
   metadata   Json?
-  occuredAt  DateTime   @default(now())
+  occurredAt DateTime   @default(now())
   contact    Contact    @relation(fields: [contactId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
   @@index([contactId], map: "IX_ContactActivity_contactId")
-  @@index([occuredAt], map: "IX_ContactActivity_occuredAt")
+  @@index([occurredAt], map: "IX_ContactActivity_occurredAt")
 }
 
 model ContactComment {
@@ -181,7 +184,7 @@ model ContactImage {
   contentType String? @db.VarChar(255)
   hash        String? @db.VarChar(64)
 
-  @@index([contactId], map: "IX_ContactImage_userId")
+  @@index([contactId], map: "IX_ContactImage_contactId")
 }
 
 model ContactNote {
@@ -267,7 +270,7 @@ model Invitation {
   lastSentAt     DateTime?
   createdAt      DateTime         @default(now())
   updatedAt      DateTime         @updatedAt
-  organiation    Organization     @relation(fields: [organizationId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  organization   Organization     @relation(fields: [organizationId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
   @@index([organizationId], map: "IX_Invitation_organizationId")
   @@index([token], map: "IX_Invitation_token")
@@ -305,6 +308,8 @@ model Organization {
   invitations         Invitation[]
   users               User[]
   webhooks            Webhook[]
+
+  @@index([stripeCustomerId], map: "IX_Organization_stripeCustomerId")
 }
 
 model ResetPasswordRequest {
@@ -313,6 +318,8 @@ model ResetPasswordRequest {
   expires   DateTime
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@index([email], map: "IX_ResetPasswordRequest_email")
 }
 
 model Session {
@@ -323,6 +330,8 @@ model Session {
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
+
+  @@index([userId], map: "IX_Session_userId")
 }
 
 model User {
@@ -356,7 +365,7 @@ model User {
   pageVisits                   ContactPageVisit[]
   sessions                     Session[]
 
-  @@index([organizationId], map: "IX_User_organzationId")
+  @@index([organizationId], map: "IX_User_organizationId")
 }
 
 model UserImage {

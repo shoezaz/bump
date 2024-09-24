@@ -6,7 +6,7 @@ export type ActivityTimelineEventDto = {
   type: 'activity';
   actionType: ActionType;
   metadata: Prisma.JsonValue;
-  occuredAt: Date;
+  occurredAt: Date;
   actor: {
     id: string;
     name: string;
