@@ -9,6 +9,7 @@ import { getLoginRedirect } from '@/lib/auth/redirect';
 import { checkSession } from '@/lib/auth/session';
 import { prisma } from '@/lib/db/prisma';
 import type { SessionDto } from '@/types/dtos/session-dto';
+import { SortDirection } from '@/types/sorty-direction';
 
 export async function getSessions(): Promise<SessionDto[]> {
   const session = await dedupedAuth();
@@ -31,6 +32,9 @@ export async function getSessions(): Promise<SessionDto[]> {
       id: true,
       sessionToken: true,
       expires: true
+    },
+    orderBy: {
+      expires: SortDirection.Desc
     }
   });
 
