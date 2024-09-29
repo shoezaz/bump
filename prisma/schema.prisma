@@ -112,6 +112,20 @@ model ApiKey {
   @@index([organizationId], map: "IX_ApiKey_organizationId")
 }
 
+model AuthenticatorApp {
+  id            String   @id(map: "PK_AuthenticatorApp") @default(uuid()) @db.Uuid
+  userId        String   @unique @db.Uuid
+  accountName   String   @db.VarChar(255)
+  issuer        String   @db.VarChar(255)
+  secret        String   @db.VarChar(255)
+  recoveryCodes String   @db.VarChar(1024)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  @@index([userId], map: "IX_AuthenticatorApp_userId")
+}
+
 model ChangeEmailRequest {
   id        String   @id(map: "PK_ChangeEmailRequest") @default(uuid()) @db.Uuid
   userId    String   @db.Uuid
@@ -355,6 +369,7 @@ model User {
   createdAt                    DateTime             @default(now())
   updatedAt                    DateTime             @updatedAt
   accounts                     Account[]
+  authenticatorApp             AuthenticatorApp?
   changeEmailRequests          ChangeEmailRequest[]
   comments                     ContactComment[]
   favorites                    Favorite[]

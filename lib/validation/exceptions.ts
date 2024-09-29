@@ -72,11 +72,51 @@ export class IncorrectEmailOrPasswordError extends CredentialsSignin {
   stack = undefined;
 }
 
+export class TotpCodeRequiredError extends CredentialsSignin {
+  constructor() {
+    super(AuthErrorCode.TotpCodeRequired);
+  }
+  code = AuthErrorCode.TotpCodeRequired;
+  stack = undefined;
+}
+
+export class IncorrectTotpCodeError extends CredentialsSignin {
+  constructor() {
+    super(AuthErrorCode.IncorrectTotpCode);
+  }
+  code = AuthErrorCode.IncorrectTotpCode;
+  stack = undefined;
+}
+
+export class MissingRecoveryCodesError extends CredentialsSignin {
+  constructor() {
+    super(AuthErrorCode.MissingRecoveryCodes);
+  }
+  code = AuthErrorCode.MissingRecoveryCodes;
+  stack = undefined;
+}
+
+export class IncorrectRecoveryCodeError extends CredentialsSignin {
+  constructor() {
+    super(AuthErrorCode.IncorrectRecoveryCode);
+  }
+  code = AuthErrorCode.IncorrectRecoveryCode;
+  stack = undefined;
+}
+
 export class UnverifiedEmailError extends CredentialsSignin {
   constructor() {
     super(AuthErrorCode.UnverifiedEmail);
   }
   code = AuthErrorCode.UnverifiedEmail;
+  stack = undefined;
+}
+
+export class RequestExpiredError extends CredentialsSignin {
+  constructor() {
+    super(AuthErrorCode.RequestExpired);
+  }
+  code = AuthErrorCode.RequestExpired;
   stack = undefined;
 }
 

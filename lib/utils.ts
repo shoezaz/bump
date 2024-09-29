@@ -69,3 +69,11 @@ export function createTimeSlot(hours: number, minutes: number): Date {
 
   return date;
 }
+
+export function splitIntoChunks(
+  str: string,
+  sep: string,
+  chunkSize: number
+): string {
+  return str.match(new RegExp(`.{1,${chunkSize}}`, 'g'))?.join(sep) || '';
+}

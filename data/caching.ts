@@ -5,6 +5,7 @@ export enum UserCacheKey {
   Profile,
   PersonalDetails,
   Preferences,
+  MultiFactorAuthentication,
   Sessions,
   TransactionalEmails,
   MarketingEmails

@@ -8,27 +8,25 @@ import { actionClient } from '@/actions/safe-action';
 import { Routes } from '@/constants/routes';
 import { signIn } from '@/lib/auth';
 import { AuthCookies } from '@/lib/auth/cookies';
-import { passThroughlogInSchema } from '@/schemas/auth/log-in-schema';
+import { submitTotpCodeSchema } from '@/schemas/auth/submit-totp-code-schema';
 import { IdentityProvider } from '@/types/identity-provider';
 
-export const logIn = actionClient
-  .metadata({ actionName: 'login' })
-  .schema(passThroughlogInSchema)
+export const submitTotpCode = actionClient
+  .metadata({ actionName: 'submitTotpCode' })
+  .schema(submitTotpCodeSchema)
   .action(async ({ parsedInput }) => {
     const callbackUrl =
       cookies().get(AuthCookies.CallbackUrl)?.value || Routes.Home;
 
-    // Expected UX for logins is to pass the login credentials through
-    // and not validate them on the client-side.
     try {
-      await signIn(IdentityProvider.Credentials, {
+      await signIn(IdentityProvider.TotpCode, {
         ...parsedInput,
         redirectTo: callbackUrl,
         redirect: true
       });
     } catch (e) {
       if (e instanceof CredentialsSignin) {
-        return returnValidationErrors(passThroughlogInSchema, {
+        return returnValidationErrors(submitTotpCodeSchema, {
           _errors: [e.code]
         });
       }

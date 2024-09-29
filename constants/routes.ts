@@ -5,6 +5,8 @@ export enum Routes {
   Login = '/auth/login',
   SignUp = '/auth/signup',
   AuthError = '/auth/error',
+  Totp = '/auth/totp',
+  RecoveryCode = '/auth/recovery-code',
   ChangeEmail = '/auth/change-email',
   ChangeEmailRequest = '/auth/change-email/request',
   ChangeEmailInvalid = '/auth/change-email/invalid',
