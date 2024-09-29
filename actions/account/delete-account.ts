@@ -4,7 +4,6 @@ import { revalidateTag } from 'next/cache';
 
 import { authActionClient } from '@/actions/safe-action';
 import { Caching, OrganizationCacheKey } from '@/data/caching';
-import { signOut } from '@/lib/auth';
 import { prisma } from '@/lib/db/prisma';
 
 export const deleteAccount = authActionClient
@@ -40,6 +39,4 @@ export const deleteAccount = authActionClient
         session.user.organizationId
       )
     );
-
-    await signOut();
   });

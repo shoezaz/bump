@@ -5,6 +5,7 @@ import { FormProvider, type SubmitHandler } from 'react-hook-form';
 import { toast } from 'sonner';
 
 import { deleteAccount } from '@/actions/account/delete-account';
+import { logOut } from '@/actions/auth/log-out';
 import {
   AlertDialog,
   AlertDialogContent,
@@ -63,17 +64,14 @@ export const DeleteAccountModal = NiceModal.create<DeleteAccountModalProps>(
       if (!canSubmit) {
         return;
       }
-      let result: Awaited<ReturnType<typeof deleteAccount>>;
-      try {
-        result = await deleteAccount();
-      } finally {
-        if (result) {
-          if (!result.serverError && !result.validationErrors) {
-            toast.error('Account deleted');
-            modal.handleClose();
-          } else {
-            toast.error("Couldn't delete account");
-          }
+      const result = await deleteAccount();
+      if (result) {
+        if (!result.serverError && !result.validationErrors) {
+          toast.error('Account deleted');
+          modal.handleClose();
+          await logOut();
+        } else {
+          toast.error("Couldn't delete account");
         }
       }
     };
