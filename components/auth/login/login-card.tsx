@@ -68,10 +68,7 @@ export function LoginCard(props: CardProps): React.JSX.Element {
       return;
     }
     setIsLoading(true);
-    const result = await logIn({
-      email: values.email,
-      password: values.password
-    });
+    const result = await logIn(values);
 
     if (result?.validationErrors?._errors) {
       const errorCode = result.validationErrors._errors[0] as AuthErrorCode;
