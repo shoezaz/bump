@@ -84,7 +84,7 @@ function MainMenu({ profile, favorites }: MainMenuProps): React.JSX.Element {
   return (
     <ScrollArea className="h-full [&>div>div]:h-full">
       <div className="flex h-full flex-col gap-4 px-3 pb-4">
-        <div className="flex h-16 shrink-0 flex-row items-center pl-2.5">
+        <div className="flex h-16 shrink-0 flex-row items-center pl-0.5">
           <Logo />
         </div>
         <div className="flex flex-1 flex-col gap-4 pt-3">

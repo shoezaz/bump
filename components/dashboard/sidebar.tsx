@@ -105,7 +105,7 @@ function SidebarHeader({
         'flex h-16 shrink-0 items-center',
         isCollapsed
           ? 'w-9 min-w-9 max-w-9 justify-center'
-          : 'w-full justify-between pl-2.5'
+          : 'w-full justify-between pl-0.5'
       )}
     >
       {showLogo && (
