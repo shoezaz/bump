@@ -1,29 +1,54 @@
-import { Jimp, JimpMime } from 'jimp';
+import sharp from 'sharp';
 
-import type { ObjectValues } from '@/types/object-values';
-
-type JimpMimeType = ObjectValues<typeof JimpMime>;
 const maxSize = 96 * 4;
+const defaultFormat = 'jpeg';
+const supportedFormats = ['jpeg', 'png', 'webp', 'gif', 'avif'];
 
 export async function resizeImage(
   buffer: Buffer,
   mimeType: string
 ): Promise<Buffer> {
-  const image = await Jimp.read(buffer);
-  if (image.height !== image.width) {
+  const image = sharp(buffer);
+  const metadata = await image.metadata();
+
+  if (
+    !metadata.width ||
+    !metadata.height ||
+    metadata.width !== metadata.height
+  ) {
     throw new Error('Image is not a square');
   }
-  const currentSize = Math.max(image.width, image.height);
+
+  const currentSize = Math.max(metadata.width, metadata.height);
+  let resizedImage = image;
+
   if (currentSize > maxSize) {
-    image.resize({ h: maxSize });
+    resizedImage = image.resize(maxSize, maxSize);
   }
 
-  const m = mimeType.toLowerCase();
-  if (Object.values(JimpMime).includes(m as JimpMimeType)) {
-    return image.getBuffer(m as JimpMimeType);
+  const format = getFormatFromMimeType(mimeType);
+
+  if (supportedFormats.includes(format)) {
+    return resizedImage.toFormat(format as keyof sharp.FormatEnum).toBuffer();
   }
 
-  console.warn(`Unsupported mime type, defaulting to ${JimpMime.jpeg}`);
+  console.warn(
+    `Unsupported mime type ${mimeType}, defaulting to ${defaultFormat}`
+  );
+  return resizedImage[defaultFormat]().toBuffer();
+}
 
-  return image.getBuffer(JimpMime.jpeg);
+function getFormatFromMimeType(mimeType: string): string {
+  try {
+    const parts = mimeType.toLowerCase().split('/');
+    if (parts.length !== 2 || parts[0] !== 'image') {
+      throw new Error(`Invalid mime type: ${mimeType}`);
+    }
+    return parts[1];
+  } catch (error) {
+    console.warn(
+      `Error parsing mime type: ${error.message}. Using default format.`
+    );
+    return defaultFormat;
+  }
 }
