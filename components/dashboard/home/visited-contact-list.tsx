@@ -1,5 +1,6 @@
 import * as React from 'react';
 import Link from 'next/link';
+import { ArrowRightIcon } from 'lucide-react';
 
 import { ContactAvatar } from '@/components/dashboard/contacts/details/contact-avatar';
 import { buttonVariants } from '@/components/ui/button';
@@ -48,19 +49,20 @@ function VisitedContactListItem({
       href={`${Routes.Contacts}/${contact.id}`}
       className={cn(
         buttonVariants({ variant: 'ghost', size: 'default' }),
-        'w-full items-center justify-between px-3',
+        'w-full items-center justify-between px-3 group',
         className
       )}
       {...other}
     >
       <div className="flex flex-row items-center gap-2">
         <ContactAvatar
-          record="COMPANY"
+          record={contact.record}
           src={contact.image}
         />
         <span className="text-sm font-normal">{contact.name}</span>
       </div>
-      <div>{contact.pageVisits}</div>
+      <span className="group-hover:hidden">{contact.pageVisits}</span>
+      <ArrowRightIcon className="h-4 w-4 shrink-0 hidden group-hover:inline" />
     </Link>
   );
 }
