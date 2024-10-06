@@ -49,7 +49,7 @@ function VisitedContactListItem({
       href={`${Routes.Contacts}/${contact.id}`}
       className={cn(
         buttonVariants({ variant: 'ghost', size: 'default' }),
-        'w-full items-center justify-between px-3 group',
+        'group w-full items-center justify-between px-3',
         className
       )}
       {...other}
@@ -62,7 +62,7 @@ function VisitedContactListItem({
         <span className="text-sm font-normal">{contact.name}</span>
       </div>
       <span className="group-hover:hidden">{contact.pageVisits}</span>
-      <ArrowRightIcon className="h-4 w-4 shrink-0 hidden group-hover:inline" />
+      <ArrowRightIcon className="hidden size-4 shrink-0 group-hover:inline" />
     </Link>
   );
 }

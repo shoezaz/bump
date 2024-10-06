@@ -313,6 +313,12 @@ model Organization {
   phone               String?      @db.VarChar(32)
   email               String?      @db.VarChar(255)
   website             String?      @db.VarChar(2000)
+  linkedInProfile     String?      @db.VarChar(2000)
+  instagramProfile    String?      @db.VarChar(2000)
+  youTubeChannel      String?      @db.VarChar(2000)
+  xProfile            String?      @db.VarChar(2000)
+  tikTokProfile       String?      @db.VarChar(2000)
+  facebookPage        String?      @db.VarChar(2000)
   completedOnboarding Boolean      @default(false)
   billingPlan         String       @default("free") @db.VarChar(255)
   apiKeys             ApiKey[]

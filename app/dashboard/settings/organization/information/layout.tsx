@@ -19,11 +19,13 @@ export const metadata: Metadata = {
 export type OrganizationInformationLayoutProps = {
   organizationDetails: React.ReactNode;
   businessHours: React.ReactNode;
+  socialMedia: React.ReactNode;
 };
 
 export default function OrganizationInformationLayout({
   organizationDetails,
-  businessHours
+  businessHours,
+  socialMedia
 }: OrganizationInformationLayoutProps): React.JSX.Element {
   return (
     <Page>
@@ -37,6 +39,8 @@ export default function OrganizationInformationLayout({
           {organizationDetails}
           <Separator />
           {businessHours}
+          <Separator />
+          {socialMedia}
         </AnnotatedLayout>
       </PageBody>
     </Page>

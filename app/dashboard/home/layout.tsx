@@ -6,7 +6,7 @@ import { InfoIcon } from 'lucide-react';
 
 import { HomeFilters } from '@/components/dashboard/home/home-filters';
 import { HomeSpinner } from '@/components/dashboard/home/home-spinner';
-import { XLogoIcon } from '@/components/dashboard/home/x-logo-icon';
+import { XIcon } from '@/components/ui/brand-icons';
 import { buttonVariants } from '@/components/ui/button';
 import {
   Page,
@@ -70,7 +70,7 @@ export default function HomeLayout({
                 target="_blank"
                 className={buttonVariants({ variant: 'ghost', size: 'icon' })}
               >
-                <XLogoIcon className="size-4 shrink-0" />
+                <XIcon className="size-4 shrink-0" />
                 <span className="sr-only">X (formerly Twitter)</span>
               </Link>
             </PageActions>
