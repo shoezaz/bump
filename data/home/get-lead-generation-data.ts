@@ -89,6 +89,10 @@ export async function getLeadGenerationData(
         Caching.createOrganizationTag(
           OrganizationCacheKey.LeadGenerationData,
           session.user.organizationId
+        ),
+        Caching.createOrganizationTag(
+          OrganizationCacheKey.Contacts,
+          session.user.organizationId
         )
       ]
     }

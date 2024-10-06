@@ -94,6 +94,10 @@ export async function getMostVisitedContacts(
         Caching.createOrganizationTag(
           OrganizationCacheKey.ContactPageVisits,
           session.user.organizationId
+        ),
+        Caching.createOrganizationTag(
+          OrganizationCacheKey.Contacts,
+          session.user.organizationId
         )
       ]
     }
