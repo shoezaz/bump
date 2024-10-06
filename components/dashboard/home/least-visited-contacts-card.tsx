@@ -8,6 +8,7 @@ import {
   CardTitle,
   type CardProps
 } from '@/components/ui/card';
+import { EmptyText } from '@/components/ui/empty-text';
 import type { VisitedContactDto } from '@/types/dtos/visited-contact-dto';
 
 export type LeastVisitedContactsCardProps = CardProps & {
@@ -18,13 +19,18 @@ export function LeastVisitedContactsCard({
   contacts,
   ...props
 }: LeastVisitedContactsCardProps): React.JSX.Element {
+  const hasContacts = contacts.length > 0;
   return (
     <Card {...props}>
       <CardHeader>
         <CardTitle className="text-base">Least visited contacts</CardTitle>
       </CardHeader>
       <CardContent>
-        <VisitedContactList contacts={contacts} />
+        {hasContacts ? (
+          <VisitedContactList contacts={contacts} />
+        ) : (
+          <EmptyText>There's no data available for your selection.</EmptyText>
+        )}
       </CardContent>
     </Card>
   );
