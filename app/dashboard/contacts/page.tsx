@@ -4,6 +4,7 @@ import { InfoIcon } from 'lucide-react';
 
 import { AddContactButton } from '@/components/dashboard/contacts/add-contact-button';
 import { ContactsDataTable } from '@/components/dashboard/contacts/contacts-data-table';
+import { ContactsEmptyState } from '@/components/dashboard/contacts/contacts-empty-state';
 import { ContactsFilters } from '@/components/dashboard/contacts/contacts-filters';
 import { searchParamsCache } from '@/components/dashboard/contacts/contacts-search-params';
 import {
@@ -48,6 +49,8 @@ export default async function ContactsPage({
     getContactTags()
   ]);
 
+  const hasContacts = totalCount > 0;
+
   return (
     <TransitionProvider>
       <Page>
@@ -65,9 +68,11 @@ export default async function ContactsPage({
                 </TooltipContent>
               </Tooltip>
             </div>
-            <PageActions>
-              <AddContactButton />
-            </PageActions>
+            {hasContacts && (
+              <PageActions>
+                <AddContactButton />
+              </PageActions>
+            )}
           </PagePrimaryBar>
           <PageSecondaryBar>
             <React.Suspense>
@@ -75,13 +80,17 @@ export default async function ContactsPage({
             </React.Suspense>
           </PageSecondaryBar>
         </PageHeader>
-        <PageBody disableScroll>
-          <React.Suspense>
-            <ContactsDataTable
-              data={contacts}
-              totalCount={totalCount}
-            />
-          </React.Suspense>
+        <PageBody disableScroll={hasContacts}>
+          {hasContacts ? (
+            <React.Suspense>
+              <ContactsDataTable
+                data={contacts}
+                totalCount={totalCount}
+              />
+            </React.Suspense>
+          ) : (
+            <ContactsEmptyState />
+          )}
         </PageBody>
       </Page>
     </TransitionProvider>
