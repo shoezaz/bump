@@ -3,6 +3,7 @@
 import { cookies } from 'next/headers';
 
 import { authActionClient } from '@/actions/safe-action';
+import { Routes } from '@/constants/routes';
 import { signOut } from '@/lib/auth';
 import { AuthCookies } from '@/lib/auth/cookies';
 import { prisma } from '@/lib/db/prisma';
@@ -12,10 +13,7 @@ export const signOutSession = authActionClient
   .metadata({ actionName: 'signOutSession' })
   .schema(signOutSessionSchema)
   .action(async ({ parsedInput, ctx: { session } }) => {
-    const currrentSessionToken =
-      cookies().get(AuthCookies.SessionToken)?.value ?? '';
-
-    const deletedSession = await prisma.session.delete({
+    const sessionFromDb = await prisma.session.findFirst({
       where: {
         userId: session.user.id,
         id: parsedInput.id
@@ -23,7 +21,24 @@ export const signOutSession = authActionClient
       select: { sessionToken: true }
     });
 
-    if (deletedSession.sessionToken === currrentSessionToken) {
-      await signOut();
+    if (sessionFromDb) {
+      const currentSessionToken =
+        cookies().get(AuthCookies.SessionToken)?.value ?? '';
+      if (
+        currentSessionToken &&
+        sessionFromDb.sessionToken === currentSessionToken
+      ) {
+        return await signOut({
+          redirect: true,
+          redirectTo: Routes.Logout
+        });
+      } else {
+        await prisma.session.deleteMany({
+          where: {
+            userId: session.user.id,
+            id: parsedInput.id
+          }
+        });
+      }
     }
   });

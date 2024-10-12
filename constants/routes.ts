@@ -3,6 +3,7 @@ export enum Routes {
 
   Auth = '/auth',
   Login = '/auth/login',
+  Logout = '/auth/logout',
   SignUp = '/auth/signup',
   AuthError = '/auth/error',
   Totp = '/auth/totp',
