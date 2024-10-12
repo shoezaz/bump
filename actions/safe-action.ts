@@ -1,3 +1,4 @@
+import { redirect } from 'next/navigation';
 import {
   createSafeActionClient,
   DEFAULT_SERVER_ERROR_MESSAGE
@@ -5,13 +6,13 @@ import {
 import { z } from 'zod';
 
 import { dedupedAuth } from '@/lib/auth';
+import { getLoginRedirect } from '@/lib/auth/redirect';
 import { checkSession } from '@/lib/auth/session';
 import {
   ForbiddenError,
   GatewayError,
   NotFoundError,
   PreConditionError,
-  UnauthorizedError,
   ValidationError
 } from '@/lib/validation/exceptions';
 
@@ -19,7 +20,6 @@ export const actionClient = createSafeActionClient({
   handleServerError(e) {
     if (
       e instanceof ValidationError ||
-      e instanceof UnauthorizedError ||
       e instanceof ForbiddenError ||
       e instanceof NotFoundError ||
       e instanceof PreConditionError ||
@@ -40,7 +40,7 @@ export const actionClient = createSafeActionClient({
 export const authActionClient = actionClient.use(async ({ next }) => {
   const session = await dedupedAuth();
   if (!checkSession(session)) {
-    throw new UnauthorizedError();
+    return redirect(getLoginRedirect());
   }
 
   return next({ ctx: { session } });

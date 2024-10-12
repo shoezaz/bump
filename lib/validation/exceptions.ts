@@ -4,16 +4,6 @@ import { AuthErrorCode } from '@/lib/auth/errors';
 
 // Common errors
 
-export class UnauthorizedError extends Error {
-  constructor(
-    message: string = 'Authorization information missing, expired or invalid'
-  ) {
-    super(message);
-    this.name = 'UnauthorizedError';
-    Object.setPrototypeOf(this, UnauthorizedError.prototype);
-  }
-}
-
 export class ForbiddenError extends Error {
   constructor(message: string = 'Forbidden.') {
     super(message);
