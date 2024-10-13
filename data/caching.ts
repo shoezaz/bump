@@ -1,3 +1,5 @@
+import { AppInfo } from '@/constants/app-info';
+
 export enum UserCacheKey {
   OnboardingData,
   Favorites,
@@ -106,4 +108,4 @@ export class Caching {
   }
 }
 
-export const defaultRevalidateTimeInSeconds = 60;
+export const defaultRevalidateTimeInSeconds = AppInfo.PRODUCTION ? 3600 : 120;
