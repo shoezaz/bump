@@ -1,13 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import {
-  BuildingIcon,
-  GridIcon,
-  SearchIcon,
-  UserIcon,
-  XIcon
-} from 'lucide-react';
+import { BuildingIcon, GridIcon, SearchIcon, UserIcon } from 'lucide-react';
 import { useQueryState } from 'nuqs';
 
 import { searchParams } from '@/components/dashboard/contacts/contacts-search-params';
@@ -79,7 +73,6 @@ export function ContactsFilters({
 
   const handleHideMobileSearch = (): void => {
     setShowMobileSearch(false);
-    setSearchQuery('');
   };
 
   return (
@@ -137,7 +130,7 @@ export function ContactsFilters({
         {smUp ? (
           <InputSearch
             placeholder="Search by name or email..."
-            className="w-full sm:min-w-[240px]"
+            className="w-[240px]"
             value={searchQuery}
             onChange={handleSearchQueryChange}
           />
@@ -152,23 +145,17 @@ export function ContactsFilters({
               <SearchIcon className="size-4 shrink-0" />
             </Button>
             {showMobileSerch && (
-              <div className="absolute inset-0 z-30 bg-background pl-3 pr-10">
+              <div className="absolute inset-0 z-30 bg-background pl-3 pr-5">
                 <InputSearch
                   autoFocus
+                  alwaysShowClearButton
                   placeholder="Search by name or email..."
                   className="h-12 w-full border-none !ring-0"
                   containerClassName="h-12"
                   value={searchQuery}
                   onChange={handleSearchQueryChange}
+                  onClear={handleHideMobileSearch}
                 />
-                <Button
-                  type="button"
-                  variant="ghost"
-                  className="absolute inset-y-0 right-4 h-12"
-                  onClick={handleHideMobileSearch}
-                >
-                  <XIcon className="size-4 shrink-0" />
-                </Button>
               </div>
             )}
           </>

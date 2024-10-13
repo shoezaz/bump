@@ -3,8 +3,6 @@
 import * as React from 'react';
 import { SearchIcon, XIcon } from 'lucide-react';
 
-import { cn } from '@/lib/utils';
-
 import { Button } from './button';
 import {
   InputWithAdornments,
@@ -19,6 +17,7 @@ export type InputSearchProps = Omit<
   debounceTime?: number;
   onClear?: () => void;
   clearButtonProps?: React.ComponentProps<typeof Button>;
+  alwaysShowClearButton?: boolean;
 };
 
 export const InputSearch = React.forwardRef<
@@ -33,6 +32,7 @@ export const InputSearch = React.forwardRef<
       debounceTime = 300,
       onClear,
       clearButtonProps,
+      alwaysShowClearButton,
       ...props
     },
     ref
@@ -87,16 +87,18 @@ export const InputSearch = React.forwardRef<
         onChange={handleChange}
         startAdornment={<SearchIcon className="size-4 shrink-0" />}
         endAdornment={
-          <Button
-            type="button"
-            variant="ghost"
-            size="icon"
-            className={cn('-mr-2.5 flex size-8', !innerValue && 'hidden')}
-            onClick={handleClear}
-            {...clearButtonProps}
-          >
-            <XIcon className="size-4 shrink-0" />
-          </Button>
+          alwaysShowClearButton || innerValue ? (
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon"
+              className="-mr-2.5 flex size-8"
+              onClick={handleClear}
+              {...clearButtonProps}
+            >
+              <XIcon className="size-4 shrink-0" />
+            </Button>
+          ) : undefined
         }
         {...props}
       />
