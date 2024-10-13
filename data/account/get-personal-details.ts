@@ -29,6 +29,7 @@ export async function getPersonalDetails(): Promise<PersonalDetailsDto> {
           id: true,
           image: true,
           name: true,
+          phone: true,
           email: true,
           role: true
         }
@@ -41,6 +42,7 @@ export async function getPersonalDetails(): Promise<PersonalDetailsDto> {
         id: userFromDb.id,
         image: userFromDb.image ?? undefined,
         name: userFromDb.name,
+        phone: userFromDb.phone ?? undefined,
         email: userFromDb.email ?? undefined
       };
 
