@@ -37,9 +37,8 @@ export default async function DashboardLayout({
     }
   });
   if (
-    userFromDb &&
-    (!userFromDb.completedOnboarding ||
-      !userFromDb.organization?.completedOnboarding)
+    !userFromDb!.completedOnboarding ||
+    !userFromDb!.organization!.completedOnboarding
   ) {
     return redirect(Routes.Onboarding);
   }
