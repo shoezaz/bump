@@ -3,14 +3,16 @@
 import { revalidateTag } from 'next/cache';
 import { InvitationStatus } from '@prisma/client';
 
-import { logIn } from '@/actions/auth/log-in';
 import { actionClient } from '@/actions/safe-action';
+import { Routes } from '@/constants/routes';
 import { Caching, OrganizationCacheKey } from '@/data/caching';
+import { signIn } from '@/lib/auth';
 import { joinOrganization } from '@/lib/auth/organization';
 import { hashPassword } from '@/lib/auth/password';
 import { prisma } from '@/lib/db/prisma';
 import { NotFoundError, PreConditionError } from '@/lib/validation/exceptions';
 import { joinSchema } from '@/schemas/auth/join-schema';
+import { IdentityProvider } from '@/types/identity-provider';
 
 export const join = actionClient
   .metadata({ actionName: 'join' })
@@ -73,8 +75,10 @@ export const join = actionClient
       )
     );
 
-    return await logIn({
+    return await signIn(IdentityProvider.Credentials, {
       email: parsedInput.email,
-      password: parsedInput.password
+      password: parsedInput.password,
+      redirect: true,
+      redirectTo: Routes.Onboarding
     });
   });
