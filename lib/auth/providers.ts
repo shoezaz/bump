@@ -26,6 +26,18 @@ import { submitRecoveryCodeSchema } from '@/schemas/auth/submit-recovery-code-sc
 import { submitTotpCodeSchema } from '@/schemas/auth/submit-totp-code-schema';
 import { IdentityProvider } from '@/types/identity-provider';
 
+// Built-in rate limiter to help manage traffic and prevent abuse.
+// Does not support serverless rate limiting, because the storage is in-memory.
+function checkRateLimitAndThrowError(uniqueIdentifier: string): void {
+  const limiter = rateLimit({
+    intervalInMs: 60 * 1000 // 1 minute
+  });
+  const result = limiter.check(10, uniqueIdentifier); // 10 requests per minute
+  if (result.isRateLimited) {
+    throw new RateLimitExceededError();
+  }
+}
+
 export const providers = [
   CredentialsProvider({
     id: IdentityProvider.Credentials,
@@ -67,14 +79,7 @@ export const providers = [
         throw new IncorrectEmailOrPasswordError();
       }
 
-      try {
-        const limiter = rateLimit({
-          intervalInMs: 60 * 1000 // 1 minute
-        });
-        limiter.check(10, user.email); // 10 requests per minute
-      } catch {
-        throw new RateLimitExceededError();
-      }
+      checkRateLimitAndThrowError(user.email);
 
       const isCorrectPassword = await verifyPassword(
         parsedCredentials.password,
@@ -157,14 +162,7 @@ export const providers = [
         throw new InternalServerError();
       }
 
-      try {
-        const limiter = rateLimit({
-          intervalInMs: 60 * 1000 // 1 minute
-        });
-        limiter.check(10, user.email); // 10 requests per minute
-      } catch {
-        throw new RateLimitExceededError();
-      }
+      checkRateLimitAndThrowError(user.email);
 
       if (!user.authenticatorApp) {
         throw new InternalServerError();
@@ -264,14 +262,7 @@ export const providers = [
         throw new InternalServerError();
       }
 
-      try {
-        const limiter = rateLimit({
-          intervalInMs: 60 * 1000 // 1 minute
-        });
-        limiter.check(10, user.email); // 10 requests per minute
-      } catch {
-        throw new RateLimitExceededError();
-      }
+      checkRateLimitAndThrowError(user.email);
 
       if (!user.authenticatorApp) {
         throw new InternalServerError();

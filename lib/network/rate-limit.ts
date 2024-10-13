@@ -1,7 +1,5 @@
 import cache from 'memory-cache';
 
-import { AuthErrorCode } from '@/lib/auth/errors';
-
 export function rateLimit(options: { intervalInMs: number }) {
   return {
     check: (requestLimit: number, uniqueIdentifier: string) => {
@@ -13,10 +11,6 @@ export function rateLimit(options: { intervalInMs: number }) {
 
       const currentUsage = count[0];
       const isRateLimited = currentUsage >= requestLimit;
-
-      if (isRateLimited) {
-        throw new Error(AuthErrorCode.RateLimitExceeded);
-      }
 
       return {
         isRateLimited,
