@@ -9,7 +9,7 @@ import { Button, type ButtonProps } from '@/components/ui/button';
 
 export function LogOutButton(props: ButtonProps): React.JSX.Element {
   const handleLogOut = async (): Promise<void> => {
-    const result = await logOut();
+    const result = await logOut({ redirect: true });
     if (result?.serverError || result?.validationErrors) {
       toast.error("Couldn't log out");
     }

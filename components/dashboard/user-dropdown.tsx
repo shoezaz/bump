@@ -59,7 +59,7 @@ export function UserDropdown({
     NiceModal.show(CommandMenu);
   };
   const handleLogOut = async (): Promise<void> => {
-    const result = await logOut();
+    const result = await logOut({ redirect: true });
     if (result?.serverError || result?.validationErrors) {
       toast.error("Couldn't log out");
     }

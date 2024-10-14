@@ -69,7 +69,10 @@ export const DeleteAccountModal = NiceModal.create<DeleteAccountModalProps>(
         if (!result.serverError && !result.validationErrors) {
           toast.error('Account deleted');
           modal.handleClose();
-          await logOut();
+          const result = await logOut({ redirect: true });
+          if (result?.serverError || result?.validationErrors) {
+            toast.error("Couldn't log out");
+          }
         } else {
           toast.error("Couldn't delete account");
         }
