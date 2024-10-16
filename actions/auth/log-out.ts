@@ -9,12 +9,8 @@ export const logOut = actionClient
   .metadata({ actionName: 'logOut' })
   .schema(logOutSchema)
   .action(async ({ parsedInput }) => {
-    if (parsedInput.redirect) {
-      return await signOut({
-        redirect: true,
-        redirectTo: Routes.Logout
-      });
-    }
-
-    return await signOut({ redirect: false });
+    return await signOut({
+      redirect: parsedInput.redirect,
+      redirectTo: parsedInput.redirect ? Routes.Logout : undefined
+    });
   });

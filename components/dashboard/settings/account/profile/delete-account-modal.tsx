@@ -1,5 +1,6 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import NiceModal, { type NiceModalHocProps } from '@ebay/nice-modal-react';
 import { FormProvider, type SubmitHandler } from 'react-hook-form';
 import { toast } from 'sonner';
@@ -31,6 +32,7 @@ import {
   FormLabel
 } from '@/components/ui/form';
 import { MediaQueries } from '@/constants/media-queries';
+import { Routes } from '@/constants/routes';
 import { useEnhancedModal } from '@/hooks/use-enhanced-modal';
 import { useMediaQuery } from '@/hooks/use-media-query';
 import { useZodForm } from '@/hooks/use-zod-form';
@@ -45,6 +47,7 @@ export type DeleteAccountModalProps = NiceModalHocProps;
 export const DeleteAccountModal = NiceModal.create<DeleteAccountModalProps>(
   () => {
     const modal = useEnhancedModal();
+    const router = useRouter();
     const mdUp = useMediaQuery(MediaQueries.MdUp, { ssr: false });
     const methods = useZodForm({
       schema: deleteAccountSchema,
@@ -69,8 +72,10 @@ export const DeleteAccountModal = NiceModal.create<DeleteAccountModalProps>(
         if (!result.serverError && !result.validationErrors) {
           toast.error('Account deleted');
           modal.handleClose();
-          const result = await logOut({ redirect: true });
-          if (result?.serverError || result?.validationErrors) {
+          const result = await logOut({ redirect: false });
+          if (!result?.serverError && !result?.validationErrors) {
+            router.push(Routes.Login);
+          } else {
             toast.error("Couldn't log out");
           }
         } else {
