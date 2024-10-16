@@ -1,3 +1,5 @@
+'use client';
+
 import * as React from 'react';
 import NiceModal from '@ebay/nice-modal-react';
 import { format, formatDistanceToNow } from 'date-fns';

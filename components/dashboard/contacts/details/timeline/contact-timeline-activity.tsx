@@ -1,3 +1,5 @@
+'use client';
+
 import * as React from 'react';
 import { ActionType } from '@prisma/client';
 import { format, formatDistanceToNow } from 'date-fns';

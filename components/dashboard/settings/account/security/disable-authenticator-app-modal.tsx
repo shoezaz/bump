@@ -1,3 +1,5 @@
+'use client';
+
 import NiceModal, { type NiceModalHocProps } from '@ebay/nice-modal-react';
 import { toast } from 'sonner';
 
