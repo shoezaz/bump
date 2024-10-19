@@ -15,8 +15,9 @@ export const logIn = actionClient
   .metadata({ actionName: 'login' })
   .schema(passThroughlogInSchema)
   .action(async ({ parsedInput }) => {
+    const cookieStore = await cookies();
     const callbackUrl =
-      cookies().get(AuthCookies.CallbackUrl)?.value || Routes.Home;
+      cookieStore.get(AuthCookies.CallbackUrl)?.value || Routes.Home;
 
     // Expected UX for logins is to pass the login credentials through
     // and not validate them on the client-side.

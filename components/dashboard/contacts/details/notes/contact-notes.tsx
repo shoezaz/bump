@@ -47,7 +47,7 @@ export function ContactNotes({
         </Button>
       </div>
       <div className="h-full p-6 pt-0">
-        <div className="grid size-full grid-cols-1 items-center gap-12 sm:grid-cols-2 2xl:grid-cols-3">
+        <div className="grid size-full grid-cols-1 gap-12 sm:grid-cols-2 2xl:grid-cols-3">
           {notes.map((note) => (
             <ContactNoteCard
               key={note.id}

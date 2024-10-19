@@ -31,7 +31,7 @@ const relevantEvents = new Set([
 ]);
 
 export async function POST(req: NextRequest): Promise<Response> {
-  const headersList = headers();
+  const headersList = await headers();
   const sig = headersList.get('stripe-signature');
   if (!sig) {
     return NextResponse.json(

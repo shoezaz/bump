@@ -104,7 +104,7 @@ function MainMenu({ profile, favorites }: MainMenuProps): React.JSX.Element {
 function SettingsMenu(): React.JSX.Element {
   return (
     <ScrollArea className="h-full">
-      <div className="flex h-full flex-col justify-between px-3 pb-4">
+      <div className="flex h-full flex-col px-3 pb-4">
         <div className="flex h-16 shrink-0 flex-row items-center gap-1.5">
           <Link
             href={Routes.Home}

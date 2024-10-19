@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { type Metadata } from 'next';
 import { notFound } from 'next/navigation';
+import { createSearchParamsCache, parseAsString } from 'nuqs/server';
 
 import { ContactActions } from '@/components/dashboard/contacts/details/contact-actions';
 import { ContactMeta } from '@/components/dashboard/contacts/details/contact-meta';
@@ -19,16 +20,14 @@ import { getContact } from '@/data/contacts/get-contact';
 import { createTitle } from '@/lib/utils';
 import type { NextPageProps } from '@/types/next-page-props';
 
-type Params = {
-  contactId?: string;
-};
+const paramsCache = createSearchParamsCache({
+  contactId: parseAsString.withDefault('')
+});
 
 export async function generateMetadata({
   params
-}: {
-  params: Params;
-}): Promise<Metadata> {
-  const contactId = params.contactId;
+}: NextPageProps): Promise<Metadata> {
+  const { contactId } = await paramsCache.parse(params);
 
   if (contactId) {
     const contact = await getContact({ id: contactId });
@@ -44,10 +43,10 @@ export async function generateMetadata({
   };
 }
 
-export default async function ContactPage(
-  props: NextPageProps & { params: Params }
-): Promise<React.JSX.Element> {
-  const contactId = props.params.contactId;
+export default async function ContactPage({
+  params
+}: NextPageProps): Promise<React.JSX.Element> {
+  const { contactId } = await paramsCache.parse(params);
   if (!contactId) {
     return notFound();
   }

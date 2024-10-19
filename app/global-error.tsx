@@ -5,7 +5,7 @@ import Error from 'next/error';
 
 export type GlobalErrorProps = {
   error: Error & { digest?: string };
-  params: { locale: string };
+  reset: () => void;
 };
 
 export default function GlobalError(
@@ -17,7 +17,7 @@ export default function GlobalError(
   }, [props.error]);
 
   return (
-    <html lang={props.params.locale}>
+    <html>
       <body>
         {/* This is the default Next.js error component but it doesn't allow omitting the statusCode property yet. */}
         <Error statusCode={undefined as never} />

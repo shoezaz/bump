@@ -34,18 +34,10 @@ export const metadata: Metadata = {
 export default async function ContactsPage({
   searchParams
 }: NextPageProps): Promise<React.JSX.Element> {
-  searchParamsCache.parse(searchParams);
+  const parsedSearchParams = await searchParamsCache.parse(searchParams);
 
   const [{ contacts, totalCount }, tags] = await Promise.all([
-    getContacts({
-      pageIndex: searchParamsCache.get('pageIndex'),
-      pageSize: searchParamsCache.get('pageSize'),
-      sortBy: searchParamsCache.get('sortBy'),
-      sortDirection: searchParamsCache.get('sortDirection'),
-      searchQuery: searchParamsCache.get('searchQuery'),
-      records: searchParamsCache.get('records'),
-      tags: searchParamsCache.get('tags')
-    }),
+    getContacts(parsedSearchParams),
     getContactTags()
   ]);
 

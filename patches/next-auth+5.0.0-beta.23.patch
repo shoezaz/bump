@@ -1,0 +1,157 @@
+diff --git a/node_modules/next-auth/lib/actions.js b/node_modules/next-auth/lib/actions.js
+index 7439f9c..e5c7012 100644
+--- a/node_modules/next-auth/lib/actions.js
++++ b/node_modules/next-auth/lib/actions.js
+@@ -4,7 +4,7 @@ import { headers as nextHeaders, cookies } from "next/headers";
+ // @ts-expect-error Next.js does not yet correctly use the `package.json#exports` field
+ import { redirect } from "next/navigation";
+ export async function signIn(provider, options = {}, authorizationParams, config) {
+-    const headers = new Headers(nextHeaders());
++    const headers = new Headers(await nextHeaders());
+     const { redirect: shouldRedirect = true, redirectTo, ...rest } = options instanceof FormData ? Object.fromEntries(options) : options;
+     const callbackUrl = redirectTo?.toString() ?? headers.get("Referer") ?? "/";
+     const signInURL = createActionURL("signin", 
+@@ -43,7 +43,7 @@ export async function signIn(provider, options = {}, authorizationParams, config
+     const req = new Request(url, { method: "POST", headers, body });
+     const res = await Auth(req, { ...config, raw, skipCSRFCheck });
+     for (const c of res?.cookies ?? [])
+-        cookies().set(c.name, c.value, c.options);
++        (await cookies()).set(c.name, c.value, c.options);
+     const responseUrl = res instanceof Response ? res.headers.get("Location") : res.redirect;
+     // NOTE: if for some unexpected reason the responseUrl is not set,
+     // we redirect to the original url
+@@ -53,7 +53,7 @@ export async function signIn(provider, options = {}, authorizationParams, config
+     return redirectUrl;
+ }
+ export async function signOut(options, config) {
+-    const headers = new Headers(nextHeaders());
++    const headers = new Headers(await nextHeaders());
+     headers.set("Content-Type", "application/x-www-form-urlencoded");
+     const url = createActionURL("signout", 
+     // @ts-expect-error `x-forwarded-proto` is not nullable, next.js sets it by default
+@@ -63,13 +63,13 @@ export async function signOut(options, config) {
+     const req = new Request(url, { method: "POST", headers, body });
+     const res = await Auth(req, { ...config, raw, skipCSRFCheck });
+     for (const c of res?.cookies ?? [])
+-        cookies().set(c.name, c.value, c.options);
++        (await cookies()).set(c.name, c.value, c.options);
+     if (options?.redirect ?? true)
+         return redirect(res.redirect);
+     return res;
+ }
+ export async function update(data, config) {
+-    const headers = new Headers(nextHeaders());
++    const headers = new Headers(await nextHeaders());
+     headers.set("Content-Type", "application/json");
+     const url = createActionURL("session", 
+     // @ts-expect-error `x-forwarded-proto` is not nullable, next.js sets it by default
+@@ -78,6 +78,6 @@ export async function update(data, config) {
+     const req = new Request(url, { method: "POST", headers, body });
+     const res = await Auth(req, { ...config, raw, skipCSRFCheck });
+     for (const c of res?.cookies ?? [])
+-        cookies().set(c.name, c.value, c.options);
++        (await cookies()).set(c.name, c.value, c.options);
+     return res.body;
+ }
+diff --git a/node_modules/next-auth/lib/index.js b/node_modules/next-auth/lib/index.js
+index befa337..e776652 100644
+--- a/node_modules/next-auth/lib/index.js
++++ b/node_modules/next-auth/lib/index.js
+@@ -42,7 +42,7 @@ export function initAuth(config, onLazyLoad // To set the default env vars
+         return async (...args) => {
+             if (!args.length) {
+                 // React Server Components
+-                const _headers = headers();
++                const _headers = await headers();
+                 const _config = await config(undefined); // Review: Should we pass headers() here instead?
+                 onLazyLoad?.(_config);
+                 return getSession(_headers, _config).then((r) => r.json());
+@@ -88,7 +88,7 @@ export function initAuth(config, onLazyLoad // To set the default env vars
+     return (...args) => {
+         if (!args.length) {
+             // React Server Components
+-            return getSession(headers(), config).then((r) => r.json());
++            return headers().then((h) => getSession(h, config).then((r) => r.json()));
+         }
+         if (args[0] instanceof Request) {
+             // middleware.ts inline
+diff --git a/node_modules/next-auth/src/lib/actions.ts b/node_modules/next-auth/src/lib/actions.ts
+index ff0a732..621c446 100644
+--- a/node_modules/next-auth/src/lib/actions.ts
++++ b/node_modules/next-auth/src/lib/actions.ts
+@@ -15,7 +15,7 @@ export async function signIn(
+   authorizationParams: SignInParams[2],
+   config: NextAuthConfig
+ ) {
+-  const headers = new Headers(nextHeaders())
++  const headers = new Headers(await nextHeaders())
+   const {
+     redirect: shouldRedirect = true,
+     redirectTo,
+@@ -71,7 +71,7 @@ export async function signIn(
+   const req = new Request(url, { method: "POST", headers, body })
+   const res = await Auth(req, { ...config, raw, skipCSRFCheck })
+ 
+-  for (const c of res?.cookies ?? []) cookies().set(c.name, c.value, c.options)
++  for (const c of res?.cookies ?? []) (await cookies()).set(c.name, c.value, c.options)
+ 
+   const responseUrl =
+     res instanceof Response ? res.headers.get("Location") : res.redirect
+@@ -90,7 +90,7 @@ export async function signOut(
+   options: SignOutParams[0],
+   config: NextAuthConfig
+ ) {
+-  const headers = new Headers(nextHeaders())
++  const headers = new Headers(await nextHeaders())
+   headers.set("Content-Type", "application/x-www-form-urlencoded")
+ 
+   const url = createActionURL(
+@@ -107,7 +107,7 @@ export async function signOut(
+ 
+   const res = await Auth(req, { ...config, raw, skipCSRFCheck })
+ 
+-  for (const c of res?.cookies ?? []) cookies().set(c.name, c.value, c.options)
++  for (const c of res?.cookies ?? []) (await cookies()).set(c.name, c.value, c.options)
+ 
+   if (options?.redirect ?? true) return redirect(res.redirect!)
+ 
+@@ -119,7 +119,7 @@ export async function update(
+   data: UpdateParams[0],
+   config: NextAuthConfig
+ ): Promise<Session | null> {
+-  const headers = new Headers(nextHeaders())
++  const headers = new Headers(await nextHeaders())
+   headers.set("Content-Type", "application/json")
+ 
+   const url = createActionURL(
+@@ -135,7 +135,7 @@ export async function update(
+ 
+   const res: any = await Auth(req, { ...config, raw, skipCSRFCheck })
+ 
+-  for (const c of res?.cookies ?? []) cookies().set(c.name, c.value, c.options)
++  for (const c of res?.cookies ?? []) (await cookies()).set(c.name, c.value, c.options)
+ 
+   return res.body
+ }
+diff --git a/node_modules/next-auth/src/lib/index.ts b/node_modules/next-auth/src/lib/index.ts
+index efcd2d4..59c9e8f 100644
+--- a/node_modules/next-auth/src/lib/index.ts
++++ b/node_modules/next-auth/src/lib/index.ts
+@@ -127,7 +127,7 @@ export function initAuth(
+     return async (...args: WithAuthArgs) => {
+       if (!args.length) {
+         // React Server Components
+-        const _headers = headers()
++        const _headers = await headers()
+         const _config = await config(undefined) // Review: Should we pass headers() here instead?
+         onLazyLoad?.(_config)
+ 
+@@ -183,7 +183,7 @@ export function initAuth(
+   return (...args: WithAuthArgs) => {
+     if (!args.length) {
+       // React Server Components
+-      return getSession(headers(), config).then((r) => r.json())
++      return headers().then((h: Headers) => getSession(h, config).then((r) => r.json()))
+     }
+     if (args[0] instanceof Request) {
+       // middleware.ts inline

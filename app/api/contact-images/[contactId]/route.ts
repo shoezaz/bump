@@ -1,15 +1,21 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse, type NextRequest } from 'next/server';
 import { Prisma } from '@prisma/client';
+import { createSearchParamsCache, parseAsString } from 'nuqs/server';
 import { validate as uuidValidate } from 'uuid';
 
 import { prisma } from '@/lib/db/prisma';
+import type { Params } from '@/types/request-params';
+
+const paramsCache = createSearchParamsCache({
+  contactId: parseAsString.withDefault('')
+});
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { contactId: string } }
+  props: { params: Promise<Params> }
 ): Promise<Response> {
-  const contactId = params.contactId;
-  if (!uuidValidate(contactId)) {
+  const { contactId } = await paramsCache.parse(props.params);
+  if (!contactId || !uuidValidate(contactId)) {
     return new NextResponse(undefined, {
       status: 400,
       headers: {

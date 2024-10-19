@@ -8,12 +8,8 @@ import type { NextPageProps } from '@/types/next-page-props';
 export default async function MostVisitedContactsPage({
   searchParams
 }: NextPageProps): Promise<React.JSX.Element> {
-  searchParamsCache.parse(searchParams);
-
-  const contacts = await getMostVisitedContacts({
-    from: searchParamsCache.get('from'),
-    to: searchParamsCache.get('to')
-  });
+  const parsedSearchParams = await searchParamsCache.parse(searchParams);
+  const contacts = await getMostVisitedContacts(parsedSearchParams);
 
   return (
     <MostVisitedContactsCard

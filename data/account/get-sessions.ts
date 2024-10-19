@@ -17,8 +17,9 @@ export async function getSessions(): Promise<SessionDto[]> {
     return redirect(getLoginRedirect());
   }
 
+  const cookieStore = await cookies();
   const currrentSessionToken =
-    cookies().get(AuthCookies.SessionToken)?.value ?? '';
+    cookieStore.get(AuthCookies.SessionToken)?.value ?? '';
 
   const now = new Date();
   const sessions = await prisma.session.findMany({

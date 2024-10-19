@@ -1,10 +1,10 @@
-import { requestAsyncStorage } from 'next/dist/client/components/request-async-storage.external';
 import { hasBasePath } from 'next/dist/client/has-base-path';
 import { removeBasePath } from 'next/dist/client/remove-base-path';
+import { workUnitAsyncStorage } from 'next/dist/server/app-render/work-unit-async-storage.external';
 
 export function getPathname(): string | null {
-  const store = requestAsyncStorage.getStore();
-  if (!store) {
+  const store = workUnitAsyncStorage.getStore();
+  if (!store || !store || store.type !== 'request') {
     return null;
   }
 

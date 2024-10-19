@@ -74,7 +74,8 @@ export const callbacks = {
         return false;
       }
 
-      cookies().set({
+      const cookieStore = await cookies();
+      cookieStore.set({
         name: AuthCookies.SessionToken,
         value: sessionToken,
         expires: sessionExpiry

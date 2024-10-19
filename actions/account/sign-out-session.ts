@@ -22,8 +22,9 @@ export const signOutSession = authActionClient
     });
 
     if (sessionFromDb) {
+      const cookieStore = await cookies();
       const currentSessionToken =
-        cookies().get(AuthCookies.SessionToken)?.value ?? '';
+        cookieStore.get(AuthCookies.SessionToken)?.value ?? '';
       if (
         currentSessionToken &&
         sessionFromDb.sessionToken === currentSessionToken

@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { type Metadata } from 'next';
 import { redirect } from 'next/navigation';
+import { createSearchParamsCache, parseAsString } from 'nuqs/server';
 import { validate as uuidValidate } from 'uuid';
 
 import { AuthContainer } from '@/components/auth/auth-container';
@@ -11,29 +12,31 @@ import { getBaseUrl } from '@/lib/urls/get-base-url';
 import { createTitle } from '@/lib/utils';
 import type { NextPageProps } from '@/types/next-page-props';
 
-type SearchParams = {
-  token?: string;
-};
+const searchParamsCache = createSearchParamsCache({
+  token: parseAsString.withDefault('')
+});
 
 export const metadata: Metadata = {
   title: createTitle('Log out to accept invitation')
 };
 
-export default async function LogOutToAcceptPage(
-  props: NextPageProps & { searchParams: SearchParams }
-): Promise<React.JSX.Element> {
+export default async function LogOutToAcceptPage({
+  searchParams
+}: NextPageProps): Promise<React.JSX.Element> {
+  const { token } = await searchParamsCache.parse(searchParams);
+
   const session = await dedupedAuth();
   if (!session) {
     return redirect(
-      props.searchParams.token && uuidValidate(props.searchParams.token)
-        ? `${getBaseUrl()}${Routes.InvitationRequest}/${props.searchParams.token}`
+      !!token && uuidValidate(token)
+        ? `${getBaseUrl()}${Routes.InvitationRequest}/${token}`
         : Routes.Root
     );
   }
 
   return (
     <AuthContainer maxWidth="sm">
-      <LogOutToAcceptCard token={props.searchParams.token} />
+      <LogOutToAcceptCard token={token} />
     </AuthContainer>
   );
 }

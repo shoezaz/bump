@@ -11,7 +11,8 @@ import { IdentityProvider } from '@/types/identity-provider';
 export const continueWithMicrosoft = actionClient
   .metadata({ actionName: 'continueWithMicrosoft' })
   .action(async () => {
-    const callbackUrl = cookies().get(AuthCookies.CallbackUrl)?.value;
+    const cookieStore = await cookies();
+    const callbackUrl = cookieStore.get(AuthCookies.CallbackUrl)?.value;
     const redirectTo = callbackUrl ?? Routes.Home;
 
     await signIn(

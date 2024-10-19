@@ -15,8 +15,9 @@ export const submitRecoveryCode = actionClient
   .metadata({ actionName: 'submitRecoveryCode' })
   .schema(submitRecoveryCodeSchema)
   .action(async ({ parsedInput }) => {
+    const cookieStore = await cookies();
     const callbackUrl =
-      cookies().get(AuthCookies.CallbackUrl)?.value || Routes.Home;
+      cookieStore.get(AuthCookies.CallbackUrl)?.value || Routes.Home;
 
     try {
       await signIn(IdentityProvider.RecoveryCode, {

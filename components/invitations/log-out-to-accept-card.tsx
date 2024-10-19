@@ -33,7 +33,7 @@ export function LogOutToAcceptCard({
     if (!result?.serverError && !result?.validationErrors) {
       toast.success('Logged out successfully');
       router.push(
-        token && uuidValidate(token)
+        !!token && uuidValidate(token)
           ? `${getBaseUrl()}${Routes.InvitationRequest}/${token}`
           : Routes.Logout
       );

@@ -8,12 +8,8 @@ import type { NextPageProps } from '@/types/next-page-props';
 export default async function LeadGenerationPage({
   searchParams
 }: NextPageProps): Promise<React.JSX.Element> {
-  searchParamsCache.parse(searchParams);
-
-  const data = await getLeadGenerationData({
-    from: searchParamsCache.get('from'),
-    to: searchParamsCache.get('to')
-  });
+  const parsedSearchParams = await searchParamsCache.parse(searchParams);
+  const data = await getLeadGenerationData(parsedSearchParams);
 
   return <LeadGenerationCard data={data} />;
 }

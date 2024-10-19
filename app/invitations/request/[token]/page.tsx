@@ -3,6 +3,7 @@ import { type Metadata } from 'next';
 import { revalidateTag } from 'next/cache';
 import { notFound, redirect } from 'next/navigation';
 import { InvitationStatus } from '@prisma/client';
+import { createSearchParamsCache, parseAsString } from 'nuqs/server';
 import { validate as uuidValidate } from 'uuid';
 
 import { AuthContainer } from '@/components/auth/auth-container';
@@ -14,18 +15,18 @@ import { prisma } from '@/lib/db/prisma';
 import { createTitle } from '@/lib/utils';
 import type { NextPageProps } from '@/types/next-page-props';
 
-type Params = {
-  token?: string;
-};
+const paramsCache = createSearchParamsCache({
+  token: parseAsString.withDefault('')
+});
 
 export const metadata: Metadata = {
   title: createTitle('Join organization')
 };
 
-export default async function InvitationPage(
-  props: NextPageProps & { params: Params }
-): Promise<React.JSX.Element> {
-  const token = props.params.token;
+export default async function InvitationPage({
+  params
+}: NextPageProps): Promise<React.JSX.Element> {
+  const { token } = await paramsCache.parse(params);
   if (!token || !uuidValidate(token)) {
     return notFound();
   }

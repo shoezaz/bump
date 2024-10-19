@@ -330,7 +330,6 @@ export const providers = [
     name: IdentityProvider.MicrosoftEntraId,
     clientId: process.env.AUTH_MICROSOFT_ENTRA_ID_CLIENT_ID as string,
     clientSecret: process.env.AUTH_MICROSOFT_ENTRA_ID_CLIENT_SECRET as string,
-    tenantId: 'common',
     allowDangerousEmailAccountLinking: true,
     token: {
       url: 'https://login.microsoftonline.com/common/oauth2/v2.0/token'

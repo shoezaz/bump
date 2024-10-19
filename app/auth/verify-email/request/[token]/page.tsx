@@ -2,6 +2,7 @@ import * as React from 'react';
 import { type Metadata } from 'next';
 import { notFound, redirect } from 'next/navigation';
 import { isAfter } from 'date-fns';
+import { createSearchParamsCache, parseAsString } from 'nuqs/server';
 
 import { verifyEmailWithToken } from '@/actions/auth/verify-email-with-token';
 import { Routes } from '@/constants/routes';
@@ -9,18 +10,18 @@ import { prisma } from '@/lib/db/prisma';
 import { createTitle } from '@/lib/utils';
 import type { NextPageProps } from '@/types/next-page-props';
 
-type Params = {
-  token?: string;
-};
+const paramsCache = createSearchParamsCache({
+  token: parseAsString.withDefault('')
+});
 
 export const metadata: Metadata = {
   title: createTitle('Email Verification')
 };
 
-export default async function EmailVerificationPage(
-  props: NextPageProps & { params: Params }
-): Promise<React.JSX.Element> {
-  const token = props.params.token;
+export default async function EmailVerificationPage({
+  params
+}: NextPageProps): Promise<React.JSX.Element> {
+  const { token } = await paramsCache.parse(params);
   if (!token) {
     return notFound();
   }

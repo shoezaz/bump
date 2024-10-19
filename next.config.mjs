@@ -8,7 +8,6 @@ const bundleAnalyzerConfig = withBundleAnalyzer({
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   experimental: {
-    ppr: true,
     turbo: {
       rules: {
         '*.svg': {
@@ -23,6 +22,9 @@ const nextConfig = {
   },
   reactStrictMode: true,
   poweredByHeader: false,
+  devIndicators: {
+    appIsrStatus: false
+  },
   async headers() {
     return [
       {
