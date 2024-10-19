@@ -16,8 +16,8 @@ importers:
   .:
     dependencies:
       '@auth/prisma-adapter':
-        specifier: 2.7.1
-        version: 2.7.1(@prisma/client@5.21.1(prisma@5.21.1))(nodemailer@6.9.15)
+        specifier: 2.7.2
+        version: 2.7.2(@prisma/client@5.21.1(prisma@5.21.1))(nodemailer@6.9.15)
       '@dnd-kit/core':
         specifier: 6.1.0
         version: 6.1.0(react-dom@19.0.0-rc-cd22717c-20241013(react@19.0.0-rc-cd22717c-20241013))(react@19.0.0-rc-cd22717c-20241013)
@@ -196,8 +196,8 @@ importers:
         specifier: 15.0.0-rc.1
         version: 15.0.0-rc.1(@babel/core@7.24.5)(react-dom@19.0.0-rc-cd22717c-20241013(react@19.0.0-rc-cd22717c-20241013))(react@19.0.0-rc-cd22717c-20241013)
       next-auth:
-        specifier: 5.0.0-beta.23
-        version: 5.0.0-beta.23(next@15.0.0-rc.1(@babel/core@7.24.5)(react-dom@19.0.0-rc-cd22717c-20241013(react@19.0.0-rc-cd22717c-20241013))(react@19.0.0-rc-cd22717c-20241013))(nodemailer@6.9.15)(react@19.0.0-rc-cd22717c-20241013)
+        specifier: 5.0.0-beta.25
+        version: 5.0.0-beta.25(next@15.0.0-rc.1(@babel/core@7.24.5)(react-dom@19.0.0-rc-cd22717c-20241013(react@19.0.0-rc-cd22717c-20241013))(react@19.0.0-rc-cd22717c-20241013))(nodemailer@6.9.15)(react@19.0.0-rc-cd22717c-20241013)
       next-safe-action:
         specifier: 7.9.4
         version: 7.9.4(next@15.0.0-rc.1(@babel/core@7.24.5)(react-dom@19.0.0-rc-cd22717c-20241013(react@19.0.0-rc-cd22717c-20241013))(react@19.0.0-rc-cd22717c-20241013))(react-dom@19.0.0-rc-cd22717c-20241013(react@19.0.0-rc-cd22717c-20241013))(react@19.0.0-rc-cd22717c-20241013)(zod@3.23.8)
@@ -232,8 +232,8 @@ importers:
         specifier: 19.0.0-rc-cd22717c-20241013
         version: 19.0.0-rc-cd22717c-20241013(react@19.0.0-rc-cd22717c-20241013)
       react-dropzone:
-        specifier: 14.2.9
-        version: 14.2.9(react@19.0.0-rc-cd22717c-20241013)
+        specifier: 14.2.10
+        version: 14.2.10(react@19.0.0-rc-cd22717c-20241013)
       react-email:
         specifier: 3.0.1
         version: 3.0.1(react-dom@19.0.0-rc-cd22717c-20241013(react@19.0.0-rc-cd22717c-20241013))(react@19.0.0-rc-cd22717c-20241013)
@@ -311,8 +311,8 @@ importers:
         specifier: 14.1.2
         version: 14.1.2
       '@types/node':
-        specifier: 22.7.6
-        version: 22.7.6
+        specifier: 22.7.7
+        version: 22.7.7
       '@types/nodemailer':
         specifier: 6.4.16
         version: 6.4.16
@@ -398,10 +398,10 @@ packages:
       }
     engines: { node: '>=6.0.0' }
 
-  '@auth/core@0.37.1':
+  '@auth/core@0.37.2':
     resolution:
       {
-        integrity: sha512-85PosPEZXHKZhEaAH5DVCig2N1Cu5PC8CbWX03Dw9g1JISLHyrRT0RZRcaWlgmz+0Ua4N52sFRX+g9WARQaUlA==
+        integrity: sha512-kUvzyvkcd6h1vpeMAojK2y7+PAV5H+0Cc9+ZlKYDFhDY31AlvsB+GW5vNO4qE3Y07KeQgvNO9U0QUx/fN62kBw==
       }
     peerDependencies:
       '@simplewebauthn/browser': ^9.0.1
@@ -415,10 +415,10 @@ packages:
       nodemailer:
         optional: true
 
-  '@auth/prisma-adapter@2.7.1':
+  '@auth/prisma-adapter@2.7.2':
     resolution:
       {
-        integrity: sha512-Wqs18vM6N6tJUvJ1mOEmuAqtsR+m3s8i9ROCvWmaLIF7ilbQdBJetywbiNQEbwaM4ThsgWmvCDpSRDhpVWDg7g==
+        integrity: sha512-orznIVt6aQMoJ4/rfWFSpRPU8LoZn6jVtDuEkZgLud2xSnCalq6x+hX+rqlk4E5LM13NW1GIJojOPQnM4aM4Gw==
       }
     peerDependencies:
       '@prisma/client': '>=2.26.0 || >=3 || >=4 || >=5'
@@ -3737,10 +3737,10 @@ packages:
         integrity: sha512-fAtCfv4jJg+ExtXhvCkCqUKZ+4ok/JQk01qDKhL5BDDoS3AxKXhV5/MAVUZyQnSEd2GT92fkgZl0pz0Q0AzcIQ==
       }
 
-  '@types/node@22.7.6':
+  '@types/node@22.7.7':
     resolution:
       {
-        integrity: sha512-/d7Rnj0/ExXDMcioS78/kf1lMzYk4BZV8MZGTBKzTGZ6/406ukkbYlIsZmMPhcR5KlkunDHQLrtAVmSq7r+mSw==
+        integrity: sha512-SRxCrrg9CL/y54aiMCG3edPKdprgMVGDXjA3gB8UmmBW5TcXzRUYAh8EWzTnSJFAd1rgImPELza+A3bJ+qxz8Q==
       }
 
   '@types/nodemailer@6.4.16':
@@ -6653,10 +6653,10 @@ packages:
       }
     engines: { node: '>= 0.6' }
 
-  next-auth@5.0.0-beta.23:
+  next-auth@5.0.0-beta.25:
     resolution:
       {
-        integrity: sha512-LhGiXT1l67gnzqIKN181Tr2D0WbkiUREh7pFjWOFkxWuIwd90QCCMfv/858trvixlfYqRarnfbdLXwiw51sGaA==
+        integrity: sha512-2dJJw1sHQl2qxCrRk+KTQbeH+izFbGFPuJj5eGgBZFYyiYYtvlrBeUw1E/OJJxTRjuxbSYGnCTkUIRsIIW0bog==
       }
     peerDependencies:
       '@simplewebauthn/browser': ^9.0.1
@@ -7355,10 +7355,10 @@ packages:
     peerDependencies:
       react: 19.0.0-rc-cd22717c-20241013
 
-  react-dropzone@14.2.9:
+  react-dropzone@14.2.10:
     resolution:
       {
-        integrity: sha512-jRZsMC7h48WONsOLHcmhyn3cRWJoIPQjPApvt/sJVfnYaB3Qltn025AoRTTJaj4WdmmgmLl6tUQg1s0wOhpodQ==
+        integrity: sha512-Y98LOCYxGO2jOFWREeKJlL7gbrHcOlTBp+9DCM1dh9XQ8+P/8ThhZT7kFb05C+bPcTXq/rixpU+5+LzwYrFLUw==
       }
     engines: { node: '>= 10.13' }
     peerDependencies:
@@ -8608,7 +8608,7 @@ snapshots:
       '@jridgewell/gen-mapping': 0.3.5
       '@jridgewell/trace-mapping': 0.3.25
 
-  '@auth/core@0.37.1(nodemailer@6.9.15)':
+  '@auth/core@0.37.2(nodemailer@6.9.15)':
     dependencies:
       '@panva/hkdf': 1.2.1
       '@types/cookie': 0.6.0
@@ -8620,9 +8620,9 @@ snapshots:
     optionalDependencies:
       nodemailer: 6.9.15
 
-  '@auth/prisma-adapter@2.7.1(@prisma/client@5.21.1(prisma@5.21.1))(nodemailer@6.9.15)':
+  '@auth/prisma-adapter@2.7.2(@prisma/client@5.21.1(prisma@5.21.1))(nodemailer@6.9.15)':
     dependencies:
-      '@auth/core': 0.37.1(nodemailer@6.9.15)
+      '@auth/core': 0.37.2(nodemailer@6.9.15)
       '@prisma/client': 5.21.1(prisma@5.21.1)
     transitivePeerDependencies:
       - '@simplewebauthn/browser'
@@ -11027,7 +11027,7 @@ snapshots:
 
   '@types/cors@2.8.17':
     dependencies:
-      '@types/node': 22.7.6
+      '@types/node': 22.7.7
 
   '@types/d3-array@3.2.1': {}
 
@@ -11070,17 +11070,17 @@ snapshots:
 
   '@types/node@14.18.63': {}
 
-  '@types/node@22.7.6':
+  '@types/node@22.7.7':
     dependencies:
       undici-types: 6.19.8
 
   '@types/nodemailer@6.4.16':
     dependencies:
-      '@types/node': 22.7.6
+      '@types/node': 22.7.7
 
   '@types/qrcode@1.5.5':
     dependencies:
-      '@types/node': 22.7.6
+      '@types/node': 22.7.7
 
   '@types/sanitize-html@2.13.0':
     dependencies:
@@ -11862,7 +11862,7 @@ snapshots:
     dependencies:
       '@types/cookie': 0.4.1
       '@types/cors': 2.8.17
-      '@types/node': 22.7.6
+      '@types/node': 22.7.7
       accepts: 1.3.8
       base64id: 2.0.0
       cookie: 0.4.2
@@ -12940,9 +12940,9 @@ snapshots:
 
   negotiator@0.6.3: {}
 
-  next-auth@5.0.0-beta.23(next@15.0.0-rc.1(@babel/core@7.24.5)(react-dom@19.0.0-rc-cd22717c-20241013(react@19.0.0-rc-cd22717c-20241013))(react@19.0.0-rc-cd22717c-20241013))(nodemailer@6.9.15)(react@19.0.0-rc-cd22717c-20241013):
+  next-auth@5.0.0-beta.25(next@15.0.0-rc.1(@babel/core@7.24.5)(react-dom@19.0.0-rc-cd22717c-20241013(react@19.0.0-rc-cd22717c-20241013))(react@19.0.0-rc-cd22717c-20241013))(nodemailer@6.9.15)(react@19.0.0-rc-cd22717c-20241013):
     dependencies:
-      '@auth/core': 0.37.1(nodemailer@6.9.15)
+      '@auth/core': 0.37.2(nodemailer@6.9.15)
       next: 15.0.0-rc.1(@babel/core@7.24.5)(react-dom@19.0.0-rc-cd22717c-20241013(react@19.0.0-rc-cd22717c-20241013))(react@19.0.0-rc-cd22717c-20241013)
       react: 19.0.0-rc-cd22717c-20241013
     optionalDependencies:
@@ -13309,7 +13309,7 @@ snapshots:
       react: 19.0.0-rc-cd22717c-20241013
       scheduler: 0.25.0-rc-cd22717c-20241013
 
-  react-dropzone@14.2.9(react@19.0.0-rc-cd22717c-20241013):
+  react-dropzone@14.2.10(react@19.0.0-rc-cd22717c-20241013):
     dependencies:
       attr-accept: 2.2.4
       file-selector: 0.6.0
@@ -13805,7 +13805,7 @@ snapshots:
 
   stripe@17.2.1:
     dependencies:
-      '@types/node': 22.7.6
+      '@types/node': 22.7.7
       qs: 6.13.0
 
   styled-jsx@5.1.6(@babel/core@7.24.5)(react@19.0.0-rc-cd22717c-20241013):
