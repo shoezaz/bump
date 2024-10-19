@@ -47,20 +47,21 @@ export function ContactNotes({
         </Button>
       </div>
       <div className="h-full p-6 pt-0">
-        <div className="grid size-full grid-cols-1 gap-12 sm:grid-cols-2 2xl:grid-cols-3">
-          {notes.map((note) => (
-            <ContactNoteCard
-              key={note.id}
-              note={note}
-              className="h-[300px]"
-            />
-          ))}
-          {notes.length === 0 && (
-            <EmptyText>
-              There are no associated notes with this contact.
-            </EmptyText>
-          )}
-        </div>
+        {notes.length > 0 ? (
+          <div className="grid size-full grid-cols-1 gap-12 sm:grid-cols-2 2xl:grid-cols-3">
+            {notes.map((note) => (
+              <ContactNoteCard
+                key={note.id}
+                note={note}
+                className="h-[300px]"
+              />
+            ))}
+          </div>
+        ) : (
+          <EmptyText>
+            There are no associated notes with this contact.
+          </EmptyText>
+        )}
       </div>
     </ResponsiveScrollArea>
   );

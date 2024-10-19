@@ -82,7 +82,6 @@ export const EnableAuthenticatorAppModal =
         await copyToClipboard(secret);
         toast.success('Copied!');
       };
-      console.log(methods.formState.isValid);
       const onSubmit: SubmitHandler<EnableAuthenticatorAppSchema> = async (
         values
       ) => {

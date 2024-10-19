@@ -63,6 +63,7 @@ export const CopyCreatedApiKeyModal =
             <div className="flex w-full flex-col space-y-2">
               <Label>API key</Label>
               <InputWithAdornments
+                readOnly
                 type="text"
                 value={apiKey}
                 endAdornment={

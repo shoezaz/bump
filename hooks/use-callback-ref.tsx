@@ -10,9 +10,9 @@ export function useCallbackRef<T extends (...args: unknown[]) => unknown>(
     callbackRef.current = callback;
   });
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   return React.useCallback(
     ((...args) => callbackRef.current?.(...args)) as T,
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     deps
   );
 }

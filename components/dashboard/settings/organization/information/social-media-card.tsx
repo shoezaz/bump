@@ -40,13 +40,21 @@ export type SocialMediaCardProps = CardProps & {
   socialMedia: SocialMediaDto;
 };
 
-export function SocialMediaCard(
-  props: SocialMediaCardProps
-): React.JSX.Element {
+export function SocialMediaCard({
+  socialMedia,
+  ...other
+}: SocialMediaCardProps): React.JSX.Element {
   const methods = useZodForm({
     schema: updateSocialMediaSchema,
     mode: 'all',
-    defaultValues: {}
+    defaultValues: {
+      linkedInProfile: socialMedia.linkedInProfile,
+      instagramProfile: socialMedia.instagramProfile,
+      youTubeChannel: socialMedia.youTubeChannel,
+      xProfile: socialMedia.xProfile,
+      tikTokProfile: socialMedia.tikTokProfile,
+      facebookPage: socialMedia.facebookPage
+    }
   });
   const [showMore, setShowMore] = React.useState<boolean>(false);
   const handleToggleShowMore = (): void => {
@@ -66,7 +74,7 @@ export function SocialMediaCard(
   };
   return (
     <FormProvider {...methods}>
-      <Card {...props}>
+      <Card {...other}>
         <CardContent className="p-6">
           <form
             className="space-y-4"

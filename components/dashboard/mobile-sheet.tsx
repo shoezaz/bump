@@ -15,7 +15,13 @@ import { Button, buttonVariants } from '@/components/ui/button';
 import { FillRemainingSpace } from '@/components/ui/fill-remaining-space';
 import { Logo } from '@/components/ui/logo';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetTitle,
+  SheetTrigger
+} from '@/components/ui/sheet';
 import { MediaQueries } from '@/constants/media-queries';
 import { Routes } from '@/constants/routes';
 import { useMediaQuery } from '@/hooks/use-media-query';
@@ -62,6 +68,10 @@ export function MobileSheet({
         side="left"
         className="h-full w-60 min-w-60 max-w-60 p-0"
       >
+        <SheetTitle className="sr-only">Navigation</SheetTitle>
+        <SheetDescription className="sr-only">
+          Select a menu item to navigate.
+        </SheetDescription>
         {isSettingsRoute ? (
           <SettingsMenu />
         ) : (
