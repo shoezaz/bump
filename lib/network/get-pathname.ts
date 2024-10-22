@@ -4,7 +4,7 @@ import { workUnitAsyncStorage } from 'next/dist/server/app-render/work-unit-asyn
 
 export function getPathname(): string | null {
   const store = workUnitAsyncStorage.getStore();
-  if (!store || !store || store.type !== 'request') {
+  if (!store || store.type !== 'request') {
     return null;
   }
 
