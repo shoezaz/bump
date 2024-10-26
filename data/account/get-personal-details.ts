@@ -48,7 +48,7 @@ export async function getPersonalDetails(): Promise<PersonalDetailsDto> {
 
       return response;
     },
-    Caching.createUserKeyParts(UserCacheKey.MarketingEmails, session.user.id),
+    Caching.createUserKeyParts(UserCacheKey.PersonalDetails, session.user.id),
     {
       revalidate: defaultRevalidateTimeInSeconds,
       tags: [
