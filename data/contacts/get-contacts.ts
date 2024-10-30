@@ -102,13 +102,13 @@ export async function getContacts(
     Caching.createOrganizationKeyParts(
       OrganizationCacheKey.Contacts,
       session.user.organizationId,
-      input.pageIndex.toString(),
-      input.pageSize.toString(),
-      input.sortBy,
-      input.sortDirection,
-      input.tags.join(','),
-      input.records?.toString() ?? '',
-      input.searchQuery?.toString() ?? ''
+      parsedInput.pageIndex.toString(),
+      parsedInput.pageSize.toString(),
+      parsedInput.sortBy,
+      parsedInput.sortDirection,
+      parsedInput.tags.join(','),
+      parsedInput.records?.toString() ?? '',
+      parsedInput.searchQuery?.toString() ?? ''
     ),
     {
       revalidate: defaultRevalidateTimeInSeconds,

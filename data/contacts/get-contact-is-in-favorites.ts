@@ -46,7 +46,7 @@ export async function getContactIsInFavorites(
     Caching.createUserKeyParts(
       UserCacheKey.ContactIsInFavorites,
       session.user.id,
-      input.contactId
+      parsedInput.contactId
     ),
     {
       revalidate: defaultRevalidateTimeInSeconds,
@@ -54,7 +54,7 @@ export async function getContactIsInFavorites(
         Caching.createUserTag(
           UserCacheKey.ContactIsInFavorites,
           session.user.id,
-          input.contactId
+          parsedInput.contactId
         ),
         Caching.createUserTag(UserCacheKey.Favorites, session.user.id)
       ]

@@ -72,7 +72,7 @@ export async function getContactTasks(
     Caching.createOrganizationKeyParts(
       OrganizationCacheKey.ContactTasks,
       session.user.organizationId,
-      input.contactId
+      parsedInput.contactId
     ),
     {
       revalidate: defaultRevalidateTimeInSeconds,
@@ -80,7 +80,7 @@ export async function getContactTasks(
         Caching.createOrganizationTag(
           OrganizationCacheKey.ContactTasks,
           session.user.organizationId,
-          input.contactId
+          parsedInput.contactId
         )
       ]
     }
