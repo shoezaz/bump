@@ -63,6 +63,8 @@ export const providers = [
       const parsedCredentials = result.data;
 
       const normalizedEmail = parsedCredentials.email.toLowerCase();
+      checkRateLimitAndThrowError(normalizedEmail);
+
       const user = await prisma.user.findUnique({
         where: { email: normalizedEmail },
         select: {
@@ -78,8 +80,6 @@ export const providers = [
       if (!user || !user.password || !user.email) {
         throw new IncorrectEmailOrPasswordError();
       }
-
-      checkRateLimitAndThrowError(user.email);
 
       const isCorrectPassword = await verifyPassword(
         parsedCredentials.password,
