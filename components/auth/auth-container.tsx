@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 
+import { Logo } from '@/components/ui/logo';
+
 const containerVariants = cva('mx-auto w-full min-w-[360px] space-y-6', {
   variants: {
     maxWidth: {
@@ -21,5 +23,10 @@ export function AuthContainer({
   maxWidth,
   children
 }: AuthContainerProps): React.JSX.Element {
-  return <div className={containerVariants({ maxWidth })}>{children}</div>;
+  return (
+    <div className={containerVariants({ maxWidth })}>
+      <Logo className="justify-center" />
+      {children}
+    </div>
+  );
 }
