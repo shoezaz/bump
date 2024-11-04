@@ -101,6 +101,7 @@ export function VerifyEmailCard({
                   <FormControl>
                     <InputOTP
                       {...field}
+                      inputMode="text"
                       maxLength={6}
                       pattern={REGEXP_ONLY_DIGITS_AND_CHARS}
                       disabled={methods.formState.isSubmitting}
