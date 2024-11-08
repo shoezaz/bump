@@ -41,7 +41,7 @@ function safeStringify<T>(value: T): string | null {
 }
 
 function joinTags(tags: { text: string }[]): string {
-  return [...new Set(tags.map((tag) => tag.text))].join(',');
+  return [...new Set(tags.map((tag) => tag.text))].sort().join(',');
 }
 
 export function detectChanges(
