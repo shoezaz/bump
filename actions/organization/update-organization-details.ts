@@ -39,12 +39,16 @@ export const updateOrganizationDetails = authActionClient
     });
 
     if (organization.name !== organization.name) {
-      try {
-        await stripeServer.customers.update(organization.stripeCustomerId, {
-          name: parsedInput.name
-        });
-      } catch (e) {
-        console.error(e);
+      if (organization.stripeCustomerId) {
+        try {
+          await stripeServer.customers.update(organization.stripeCustomerId, {
+            name: parsedInput.name
+          });
+        } catch (e) {
+          console.error(e);
+        }
+      } else {
+        console.warn('Stripe customer ID is missing');
       }
     }
 

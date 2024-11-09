@@ -12,7 +12,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
-import { formatStripeDate } from '@/lib/billing/stripe-client';
 import { capitalize, cn } from '@/lib/utils';
 import type { InvoiceDto, InvoiceStatus } from '@/types/dtos/invoice-dto';
 
@@ -41,30 +40,6 @@ export function InvoiceList({
   );
 }
 
-function mapInvoiceStatusToBadgeVariant(
-  status: InvoiceStatus
-): BadgeProps['variant'] {
-  switch (status) {
-    case 'draft':
-    case 'open': {
-      return 'outline';
-    }
-
-    case 'paid':
-    case 'void': {
-      return 'secondary';
-    }
-
-    case 'uncollectible': {
-      return 'destructive';
-    }
-
-    default: {
-      return 'default';
-    }
-  }
-}
-
 type InvoiceListItemProps = React.HtmlHTMLAttributes<HTMLLIElement> & {
   invoice: InvoiceDto;
 };
@@ -80,8 +55,8 @@ function InvoiceListItem({
       className={cn('flex w-full flex-row justify-between p-6', className)}
       {...other}
     >
-      <div className="flex flex-col">
-        <div className="flex flex-row gap-2 text-sm font-medium">
+      <div className="min-w-0 flex-1">
+        <div className="flex flex-row items-center gap-2 text-sm font-medium">
           #{invoice.number}
           {!!invoice.status && (
             <Badge variant={mapInvoiceStatusToBadgeVariant(invoice.status)}>
@@ -89,8 +64,10 @@ function InvoiceListItem({
             </Badge>
           )}
         </div>
-        <div className="text-xs font-normal text-muted-foreground">
-          {formatStripeDate(invoice.date)}
+        <div className="mt-1 text-xs font-normal text-muted-foreground">
+          {formatDate(invoice.date)}
+          <span className="mx-1">•</span>
+          <span>{formatAmount(invoice.amount, invoice.currency)}</span>
         </div>
       </div>
       <DropdownMenu modal={false}>
@@ -116,4 +93,44 @@ function InvoiceListItem({
       </DropdownMenu>
     </li>
   );
+}
+
+function mapInvoiceStatusToBadgeVariant(
+  status: InvoiceStatus
+): BadgeProps['variant'] {
+  switch (status) {
+    case 'draft':
+    case 'open': {
+      return 'outline';
+    }
+
+    case 'paid':
+    case 'void': {
+      return 'secondary';
+    }
+
+    case 'uncollectible': {
+      return 'destructive';
+    }
+
+    default: {
+      return 'default';
+    }
+  }
+}
+
+function formatDate(timestamp: number): string {
+  return new Date(timestamp * 1000).toLocaleDateString('en-US', {
+    month: 'long',
+    day: 'numeric',
+    year: 'numeric'
+  });
+}
+
+function formatAmount(amount: number, currency: string): string {
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: currency,
+    minimumFractionDigits: 2
+  }).format(amount);
 }

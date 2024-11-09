@@ -1,8 +1,9 @@
 import { DayOfWeek, InvitationStatus, Role } from '@prisma/client';
 import { v4 } from 'uuid';
 
-import { BillingPlan } from '@/lib/billing/billing-plan';
 import { stripeServer } from '@/lib/billing/stripe-server';
+import { Tier } from '@/lib/billing/tier';
+import { updateStripeSubscriptionQuantity } from '@/lib/billing/update-stripe-subscription-quantity';
 import { prisma } from '@/lib/db/prisma';
 import { matchLocale } from '@/lib/i18n/match-locale';
 import { createTimeSlot } from '@/lib/utils';
@@ -43,6 +44,9 @@ export async function createUserWithOrganization(input: {
     email: input.email,
     organizationId
   });
+  if (!stripeCustomerId) {
+    console.warn('Stripe customer ID is missing');
+  }
 
   await prisma.organization.create({
     data: {
@@ -50,7 +54,7 @@ export async function createUserWithOrganization(input: {
       name: initialName,
       stripeCustomerId,
       completedOnboarding: false,
-      billingPlan: BillingPlan.Free,
+      tier: Tier.Free,
       businessHours: createDefaultBusinessHours(),
       users: {
         create: {
@@ -82,6 +86,9 @@ export async function createOrganizationAndConnectUser(input: {
     email: input.normalizedEmail,
     organizationId
   });
+  if (!stripeCustomerId) {
+    console.warn('Stripe customer ID is missing');
+  }
 
   await prisma.$transaction([
     prisma.organization.create({
@@ -90,7 +97,7 @@ export async function createOrganizationAndConnectUser(input: {
         name: initialName,
         stripeCustomerId,
         completedOnboarding: false,
-        billingPlan: BillingPlan.Free,
+        tier: Tier.Free,
         businessHours: createDefaultBusinessHours(),
         users: {
           connect: {
@@ -159,6 +166,12 @@ export async function joinOrganization(input: {
       }
     })
   ]);
+
+  try {
+    await updateStripeSubscriptionQuantity(input.organizationId);
+  } catch (e) {
+    console.error(e);
+  }
 }
 
 function createDefaultBusinessHours() {

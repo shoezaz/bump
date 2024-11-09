@@ -3,7 +3,7 @@ import { NextResponse, type NextRequest } from 'next/server';
 import type Stripe from 'stripe';
 
 import { stripeServer } from '@/lib/billing/stripe-server';
-import { syncWithStripe } from '@/lib/billing/sync-with-stripe';
+import { updateOrganizationSubscriptionPlan } from '@/lib/billing/update-organization-subscription-plan';
 
 function extractCustomerId(
   customer: string | Stripe.Customer | Stripe.DeletedCustomer | null
@@ -11,16 +11,53 @@ function extractCustomerId(
   if (!customer) {
     return null;
   }
-
   if (typeof customer === 'string') {
     return customer;
   }
-
   if (customer && typeof customer === 'object' && 'id' in customer) {
     return customer.id;
   }
 
   return null;
+}
+
+function subscriptionIdNotFound(): NextResponse {
+  return NextResponse.json(
+    { error: 'Subscription ID not found' },
+    {
+      status: 400,
+      headers: { 'Cache-Control': 'no-store' }
+    }
+  );
+}
+
+function customerIdNotFound(): NextResponse {
+  return NextResponse.json(
+    { error: 'Customer ID not found' },
+    {
+      status: 400,
+      headers: { 'Cache-Control': 'no-store' }
+    }
+  );
+}
+
+function webhookError(): NextResponse {
+  return NextResponse.json(
+    { error: 'Webhook error: "Webhook handler failed. View logs."' },
+    {
+      status: 500,
+      headers: { 'Cache-Control': 'no-store' }
+    }
+  );
+}
+
+function webhookSuccess(): NextResponse {
+  return NextResponse.json({
+    received: true,
+    message: 'Webhook received.',
+    status: 200,
+    headers: { 'Cache-Control': 'no-store' }
+  });
 }
 
 const relevantEvents = new Set([
@@ -34,28 +71,14 @@ export async function POST(req: NextRequest): Promise<Response> {
   const headersList = await headers();
   const sig = headersList.get('stripe-signature');
   if (!sig) {
-    return NextResponse.json(
-      { error: 'Missing stripe-signature' },
-      {
-        status: 400,
-        headers: {
-          'Cache-Control': 'no-store'
-        }
-      }
-    );
+    console.error('Missing stripe-signature');
+    return webhookError();
   }
 
   const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
   if (!webhookSecret) {
-    return NextResponse.json(
-      { error: 'Missing process.env.STRIPE_WEBHOOK_SECRET' },
-      {
-        status: 500,
-        headers: {
-          'Cache-Control': 'no-store'
-        }
-      }
-    );
+    console.error('Missing stripe webhook secret');
+    return webhookError();
   }
 
   let event: Stripe.Event;
@@ -64,16 +87,13 @@ export async function POST(req: NextRequest): Promise<Response> {
     const rawBody = await req.text();
     event = stripeServer.webhooks.constructEvent(rawBody, sig, webhookSecret);
   } catch (err) {
-    console.error(`Error message: ${err.message}`);
-    return NextResponse.json(
-      { error: `Webhook Error: ${err.message}` },
-      {
-        status: 400,
-        headers: {
-          'Cache-Control': 'no-store'
-        }
-      }
-    );
+    console.error(err);
+    return webhookError();
+  }
+
+  if (!event || !event.type) {
+    console.error('Failed to construct event');
+    return webhookError();
   }
 
   if (relevantEvents.has(event.type)) {
@@ -82,81 +102,42 @@ export async function POST(req: NextRequest): Promise<Response> {
         case 'customer.subscription.created':
         case 'customer.subscription.updated':
         case 'customer.subscription.deleted': {
-          const subscription = event.data.object as Stripe.Subscription;
+          const subscription = event.data.object;
           if (!subscription.id) {
-            return NextResponse.json(
-              { error: 'Subscription ID not found' },
-              {
-                status: 400,
-                headers: {
-                  'Cache-Control': 'no-store'
-                }
-              }
-            );
+            return subscriptionIdNotFound();
           }
 
           const stripeCustomerId = extractCustomerId(subscription.customer);
           if (!stripeCustomerId) {
-            return NextResponse.json(
-              { error: 'Invalid customer information in the subscription' },
-              {
-                status: 400,
-                headers: {
-                  'Cache-Control': 'no-store'
-                }
-              }
-            );
+            return customerIdNotFound();
           }
 
-          await syncWithStripe(stripeCustomerId);
+          await updateOrganizationSubscriptionPlan(stripeCustomerId);
 
           break;
         }
         case 'checkout.session.completed': {
-          const checkoutSession = event.data.object as Stripe.Checkout.Session;
+          const checkoutSession = event.data.object;
           if (checkoutSession.mode === 'subscription') {
             if (!checkoutSession.subscription) {
-              return NextResponse.json(
-                { error: 'Subscription ID not found' },
-                {
-                  status: 400,
-                  headers: {
-                    'Cache-Control': 'no-store'
-                  }
-                }
-              );
+              return subscriptionIdNotFound();
             }
+
             const subscriptionId = Array.isArray(checkoutSession.subscription)
               ? checkoutSession.subscription[0]
               : checkoutSession.subscription;
             if (!subscriptionId) {
-              return NextResponse.json(
-                { error: 'Subscription ID not found' },
-                {
-                  status: 400,
-                  headers: {
-                    'Cache-Control': 'no-store'
-                  }
-                }
-              );
+              return subscriptionIdNotFound();
             }
 
             const stripeCustomerId = extractCustomerId(
               checkoutSession.customer
             );
             if (!stripeCustomerId) {
-              return NextResponse.json(
-                { error: 'Invalid customer information in the subscription' },
-                {
-                  status: 400,
-                  headers: {
-                    'Cache-Control': 'no-store'
-                  }
-                }
-              );
+              return customerIdNotFound();
             }
 
-            await syncWithStripe(stripeCustomerId);
+            await updateOrganizationSubscriptionPlan(stripeCustomerId);
           }
           break;
         }
@@ -164,25 +145,11 @@ export async function POST(req: NextRequest): Promise<Response> {
           console.warn(`Unhandled event type ${event.type}`);
         }
       }
-    } catch (error) {
-      console.error(error);
-      return NextResponse.json(
-        { error: 'Webhook error: "Webhook handler failed. View logs."' },
-        {
-          status: 400,
-          headers: {
-            'Cache-Control': 'no-store'
-          }
-        }
-      );
+    } catch (err) {
+      console.error(err);
+      return webhookError();
     }
   }
 
-  return NextResponse.json({
-    received: true,
-    status: 'Webhook called.',
-    headers: {
-      'Cache-Control': 'no-store'
-    }
-  });
+  return webhookSuccess();
 }

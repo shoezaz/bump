@@ -41,12 +41,16 @@ export const completeOrganizationOnlyOnboarding = authActionClient
       }
     });
 
-    try {
-      await stripeServer.customers.update(organization.stripeCustomerId, {
-        name: parsedInput.organizationName
-      });
-    } catch (e) {
-      console.error(e);
+    if (organization.stripeCustomerId) {
+      try {
+        await stripeServer.customers.update(organization.stripeCustomerId, {
+          name: parsedInput.organizationName
+        });
+      } catch (e) {
+        console.error(e);
+      }
+    } else {
+      console.warn('Stripe customer ID is missing');
     }
 
     try {

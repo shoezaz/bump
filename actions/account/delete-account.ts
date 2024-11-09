@@ -4,6 +4,7 @@ import { revalidateTag } from 'next/cache';
 
 import { authActionClient } from '@/actions/safe-action';
 import { Caching, OrganizationCacheKey } from '@/data/caching';
+import { updateStripeSubscriptionQuantity } from '@/lib/billing/update-stripe-subscription-quantity';
 import { prisma } from '@/lib/db/prisma';
 
 export const deleteAccount = authActionClient
@@ -39,4 +40,10 @@ export const deleteAccount = authActionClient
         session.user.organizationId
       )
     );
+
+    try {
+      await updateStripeSubscriptionQuantity(session.user.organizationId);
+    } catch (e) {
+      console.error(e);
+    }
   });

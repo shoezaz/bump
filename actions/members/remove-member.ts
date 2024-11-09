@@ -6,6 +6,7 @@ import { Role } from '@prisma/client';
 import { authActionClient } from '@/actions/safe-action';
 import { Caching, OrganizationCacheKey } from '@/data/caching';
 import { isAdmin } from '@/lib/auth/permissions';
+import { updateStripeSubscriptionQuantity } from '@/lib/billing/update-stripe-subscription-quantity';
 import { prisma } from '@/lib/db/prisma';
 import {
   ForbiddenError,
@@ -84,4 +85,10 @@ export const removeMember = authActionClient
         session.user.organizationId
       )
     );
+
+    try {
+      await updateStripeSubscriptionQuantity(session.user.organizationId);
+    } catch (e) {
+      console.error(e);
+    }
   });

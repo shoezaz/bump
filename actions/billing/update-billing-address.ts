@@ -1,17 +1,19 @@
 'use server';
 
+import { revalidatePath } from 'next/cache';
 import Stripe from 'stripe';
 
 import { authActionClient } from '@/actions/safe-action';
 import { Routes } from '@/constants/routes';
 import { stripeServer } from '@/lib/billing/stripe-server';
 import { prisma } from '@/lib/db/prisma';
-import { getBaseUrl } from '@/lib/urls/get-base-url';
 import { GatewayError, NotFoundError } from '@/lib/validation/exceptions';
+import { updateBillingAddressSchema } from '@/schemas/billing/update-billing-address-schema';
 
-export const createBillingPortalSessionUrl = authActionClient
-  .metadata({ actionName: 'createBillingPortalSessionUrl' })
-  .action(async ({ ctx: { session } }) => {
+export const updateBillingAddress = authActionClient
+  .metadata({ actionName: 'updateBillingAddress' })
+  .schema(updateBillingAddressSchema)
+  .action(async ({ parsedInput, ctx: { session } }) => {
     const organization = await prisma.organization.findFirst({
       where: { id: session.user.organizationId },
       select: { stripeCustomerId: true }
@@ -24,13 +26,18 @@ export const createBillingPortalSessionUrl = authActionClient
     }
 
     try {
-      const billingPortalSession: Stripe.BillingPortal.Session =
-        await stripeServer.billingPortal.sessions.create({
-          customer: organization.stripeCustomerId,
-          return_url: `${getBaseUrl()}${Routes.Billing}`
-        });
+      await stripeServer.customers.update(organization.stripeCustomerId, {
+        address: {
+          line1: parsedInput.line1,
+          line2: parsedInput.line2,
+          country: parsedInput.country,
+          postal_code: parsedInput.postalCode,
+          city: parsedInput.city,
+          state: parsedInput.state
+        }
+      });
 
-      return { url: billingPortalSession.url };
+      revalidatePath(Routes.Billing);
     } catch (error) {
       if (error instanceof Stripe.errors.StripeError) {
         throw new GatewayError(

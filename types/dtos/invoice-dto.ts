@@ -13,5 +13,6 @@ export type InvoiceDto = {
   invoicePdfUrl: Maybe<string>;
   date: number;
   amount: number;
+  currency: string;
   status: InvoiceStatus | null;
 };

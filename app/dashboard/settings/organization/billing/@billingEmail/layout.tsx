@@ -2,13 +2,13 @@ import * as React from 'react';
 
 import { AnnotatedSection } from '@/components/ui/annotated';
 
-export default function BillingPlanLayout({
+export default function BillingEmailLayout({
   children
 }: React.PropsWithChildren): React.JSX.Element {
   return (
     <AnnotatedSection
-      title="Billing plan"
-      description="View and edit your billing details, as well as upgrade or cancel your subscription."
+      title="Email recipient"
+      description="All billing correspondence will go to this email."
     >
       {children}
     </AnnotatedSection>
