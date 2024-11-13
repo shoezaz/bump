@@ -4,6 +4,7 @@ import { ArrowLeftIcon } from 'lucide-react';
 
 import { buttonVariants } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { SidebarTrigger } from '@/components/ui/sidebar';
 import { cn } from '@/lib/utils';
 
 export type PageElement = HTMLDivElement;
@@ -45,12 +46,18 @@ const PagePrimaryBar = React.forwardRef<
   <div
     ref={ref}
     className={cn(
-      'relative flex h-16 items-center justify-between border-b pl-[60px] pr-6 lg:pl-6',
+      'relative flex h-16 flex-row items-center gap-3 border-b px-6',
       className
     )}
     {...other}
   >
-    {children}
+    <SidebarTrigger
+      icon="menu"
+      className="-ml-2 lg:hidden"
+    />
+    <div className="flex w-full flex-row items-center justify-between">
+      {children}
+    </div>
   </div>
 ));
 PagePrimaryBar.displayName = 'PagePrimaryBar';

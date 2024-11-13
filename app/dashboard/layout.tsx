@@ -2,8 +2,8 @@ import * as React from 'react';
 import type { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 
-import { MobileSheet } from '@/components/dashboard/mobile-sheet';
-import { Sidebar } from '@/components/dashboard/sidebar';
+import { SidebarRenderer } from '@/components/dashboard/sidebar-renderer';
+import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
 import { Routes } from '@/constants/routes';
 import { getProfile } from '@/data/account/get-profile';
 import { getFavorites } from '@/data/favorites/get-favorites';
@@ -50,20 +50,19 @@ export default async function DashboardLayout({
 
   return (
     <div className="flex h-screen overflow-hidden">
-      <Sidebar
-        favorites={favorites}
-        profile={profile}
-      />
-      <main
-        id="skip"
-        className="size-full max-w-[calc(100vw-var(--sidebar-width))]"
-      >
-        <MobileSheet
+      <SidebarProvider>
+        <SidebarRenderer
           favorites={favorites}
           profile={profile}
         />
-        {children}
-      </main>
+        {/* Set max-width so full-width tables can overflow horizontally correctly */}
+        <SidebarInset
+          id="skip"
+          className="size-full lg:peer-data-[state=collapsed]:max-w-[calc(100vw-var(--sidebar-width-icon))] lg:peer-data-[state=expanded]:max-w-[calc(100vw-var(--sidebar-width))]"
+        >
+          {children}
+        </SidebarInset>
+      </SidebarProvider>
     </div>
   );
 }
