@@ -1,6 +1,7 @@
 'use client';
 
 import * as React from 'react';
+import { usePathname } from 'next/navigation';
 import { Slot } from '@radix-ui/react-slot';
 import { cva, VariantProps } from 'class-variance-authority';
 import { ChevronLeftIcon, ChevronRightIcon, MenuIcon } from 'lucide-react';
@@ -185,7 +186,12 @@ const Sidebar = React.forwardRef<SidebarElement, SidebarProps>(
     },
     ref
   ) => {
+    const pathname = usePathname();
     const { isMobile, state, openMobile, setOpenMobile } = useSidebar();
+
+    React.useEffect(() => {
+      setOpenMobile(false);
+    }, [pathname]);
 
     if (collapsible === 'none') {
       return (
