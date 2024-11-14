@@ -40,10 +40,7 @@ export function AppSidebar({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [xlUp]);
   return (
-    <Sidebar
-      collapsible="icon"
-      className="z-40"
-    >
+    <Sidebar collapsible="icon">
       <SidebarHeader>
         <div
           className={cn(
@@ -52,13 +49,7 @@ export function AppSidebar({
           )}
         >
           {showLogo && (
-            <Logo
-              className={cn(
-                'truncate transition-[width,height,padding]',
-                // for the transition
-                !showLogo && 'w-0'
-              )}
-            />
+            <Logo className="truncate transition-[width,height,padding]" />
           )}
           {xlUp && (
             <SidebarTrigger
