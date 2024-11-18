@@ -5,13 +5,31 @@ const bundleAnalyzerConfig = withBundleAnalyzer({
   enabled: process.env.BUNDLE_ANALYZER === 'true'
 });
 
+const svgLoader = {
+  loader: '@svgr/webpack',
+  options: {
+    svgoConfig: {
+      plugins: [
+        {
+          name: 'preset-default',
+          params: {
+            overrides: {
+              removeViewBox: false, // Preserve the viewBox attribute
+            }
+          }
+        }
+      ]
+    }
+  }
+};
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   experimental: {
     turbo: {
       rules: {
         '*.svg': {
-          loaders: ['@svgr/webpack'],
+          loaders: [svgLoader],
           as: '*.js'
         }
       }
@@ -81,7 +99,7 @@ const nextConfig = {
   webpack(config) {
     config.module.rules.push({
       test: /\.svg$/i,
-      use: ['@svgr/webpack']
+      use: [svgLoader]
     });
     return config;
   }

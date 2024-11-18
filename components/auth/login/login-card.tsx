@@ -220,7 +220,6 @@ export function LoginCard(props: CardProps): React.JSX.Element {
             onClick={handleSignInWithGoogle}
           >
             <GoogleLogo
-              viewBox="0 0 24 24"
               width="20"
               height="20"
             />
@@ -234,7 +233,6 @@ export function LoginCard(props: CardProps): React.JSX.Element {
             onClick={handleSignInWithMicrosoft}
           >
             <MicrosoftLogo
-              viewBox="0 0 21 21"
               width="20"
               height="20"
             />

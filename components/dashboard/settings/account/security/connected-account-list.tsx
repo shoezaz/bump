@@ -122,7 +122,6 @@ function Icon({
     case OAuthIdentityProvider.Google:
       return (
         <GoogleLogo
-          viewBox="0 0 24 24"
           width="20"
           height="20"
         />
@@ -130,7 +129,6 @@ function Icon({
     case OAuthIdentityProvider.MicrosoftEntraId:
       return (
         <MicrosoftLogo
-          viewBox="0 0 21 21"
           width="20"
           height="20"
         />
