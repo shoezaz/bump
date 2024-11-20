@@ -60,13 +60,13 @@ function SessionListItem({
       )}
       {...other}
     >
-      <div className="flex flex-row items-center gap-4">
+      <div className="flex min-w-0 flex-row items-center gap-4">
         <MonitorIcon className="size-5 shrink-0 text-muted-foreground" />
-        <div>
-          <h5 className="text-sm font-medium">
+        <div className="flex min-w-0 flex-1 flex-col">
+          <h5 className="overflow-hidden truncate text-sm font-medium">
             {session.isCurrent ? 'Current session' : 'Other session'}
           </h5>
-          <p className="text-sm text-muted-foreground">
+          <p className="overflow-hidden truncate text-sm text-muted-foreground">
             {isBefore(session.expires, new Date())
               ? 'Expired'
               : `Expires on ${format(session.expires, 'dd MMM yyyy')}`}
@@ -76,6 +76,7 @@ function SessionListItem({
       <Button
         type="button"
         variant="outline"
+        className="whitespace-nowrap"
         onClick={handleSignOutSession}
       >
         Sign out

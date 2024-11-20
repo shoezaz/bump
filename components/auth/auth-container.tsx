@@ -3,7 +3,7 @@ import { cva, type VariantProps } from 'class-variance-authority';
 
 import { Logo } from '@/components/ui/logo';
 
-const containerVariants = cva('mx-auto w-full min-w-[360px] space-y-6', {
+const containerVariants = cva('mx-auto w-full min-w-[306px] space-y-6', {
   variants: {
     maxWidth: {
       sm: 'max-w-sm',

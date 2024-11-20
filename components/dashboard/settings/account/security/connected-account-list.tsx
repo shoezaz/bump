@@ -77,17 +77,17 @@ function ConnectedAccountListItem({
       )}
       {...other}
     >
-      <div className="flex flex-row items-center gap-4">
+      <div className="flex min-w-0 flex-row items-center gap-4">
         <Icon connectedAccount={connectedAccount} />
-        <div>
-          <h5 className="text-sm font-medium">
+        <div className="flex min-w-0 flex-1 flex-col">
+          <h5 className="overflow-hidden truncate text-sm font-medium">
             {
               identityProviderFriendlyNames[
                 connectedAccount.id as OAuthIdentityProvider
               ]
             }
           </h5>
-          <p className="text-sm text-muted-foreground">
+          <p className="overflow-hidden truncate text-sm text-muted-foreground">
             {connectedAccount.linked ? 'Connected' : 'Not connected'}
           </p>
         </div>

@@ -70,8 +70,10 @@ function WebhookListItem({
       )}
       {...other}
     >
-      <div className="flex flex-col">
-        <div className="break-all text-sm font-medium">{webhook.url}</div>
+      <div className="flex min-w-0 flex-col">
+        <div className="overflow-hidden truncate break-all text-sm font-medium">
+          {webhook.url}
+        </div>
         {webhook.triggers.length > 0 ? (
           <div className="mt-2 flex flex-wrap gap-1">
             {webhook.triggers.map((trigger) => (
