@@ -34,6 +34,15 @@ cp .env.example .env
 
 ### Database
 
+#### Docker
+
+If you're using Docker for local development, you can start a PostgreSQL container with the following command.
+
+```bash
+docker compose up -d
+```
+
+#### Install PostgreSQL
 1.  Install PostgreSQL via Homebrew, Chocolatey or download it from the [website](https://www.postgresql.org/download/).
 
 ```bash
