@@ -1,9 +1,11 @@
 import * as React from 'react';
+import Link from 'next/link';
 import { cva, type VariantProps } from 'class-variance-authority';
 
 import { Logo } from '@/components/ui/logo';
+import { Routes } from '@/constants/routes';
 
-const containerVariants = cva('mx-auto w-full min-w-[306px] space-y-6', {
+const containerVariants = cva('mx-auto w-full min-w-[360px] space-y-6', {
   variants: {
     maxWidth: {
       sm: 'max-w-sm',
@@ -25,7 +27,9 @@ export function AuthContainer({
 }: AuthContainerProps): React.JSX.Element {
   return (
     <div className={containerVariants({ maxWidth })}>
-      <Logo className="justify-center" />
+      <Link href={Routes.Root}>
+        <Logo className="justify-center" />
+      </Link>
       {children}
     </div>
   );

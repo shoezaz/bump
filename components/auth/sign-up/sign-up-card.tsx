@@ -202,21 +202,21 @@ export function SignUpCard(props: CardProps): React.JSX.Element {
       <CardFooter className="inline-block rounded-b-xl border-t bg-muted pt-6 text-xs text-muted-foreground">
         By signing up, you agree to our{' '}
         <Link
-          href="#"
+          href={Routes.TermsOfUse}
           className="text-foreground underline"
         >
           Terms of Use
         </Link>{' '}
         and{' '}
         <Link
-          href="#"
+          href={Routes.PrivacyPolicy}
           className="text-foreground underline"
         >
           Privacy Policy
         </Link>
         . Need help?{' '}
         <Link
-          href="#"
+          href={Routes.Contact}
           className="text-foreground underline"
         >
           Get in touch

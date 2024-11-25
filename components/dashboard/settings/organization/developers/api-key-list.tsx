@@ -61,13 +61,10 @@ function ApiKeyListItem({
   return (
     <li
       role="listitem"
-      className={cn(
-        'flex w-full min-w-0 flex-row justify-between p-6',
-        className
-      )}
+      className={cn('flex w-full flex-row justify-between p-6', className)}
       {...other}
     >
-      <div className="flex flex-col overflow-hidden truncate">
+      <div className="flex flex-col">
         <div className="text-sm font-medium">{apiKey.description}</div>
         <div
           suppressHydrationWarning

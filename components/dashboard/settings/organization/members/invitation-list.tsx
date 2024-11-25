@@ -90,8 +90,8 @@ function InvitationListItem({
       className={cn('flex w-full flex-row justify-between p-6', className)}
       {...other}
     >
-      <div className="min-w0 flex flex-row items-center gap-4">
-        <div className="flex flex-col overflow-hidden truncate">
+      <div className="flex flex-row items-center gap-4">
+        <div className="flex flex-col">
           <div className="text-sm font-medium">
             {capitalize(invitation.status.toLowerCase())}
           </div>

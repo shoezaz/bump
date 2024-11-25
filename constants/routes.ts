@@ -1,5 +1,15 @@
 export enum Routes {
   Root = '/',
+  Contact = '/contact',
+  Roadmap = 'https://achromatic.canny.io',
+  Docs = '/docs',
+  Pricing = '/pricing',
+  Blog = '/blog',
+  Story = '/story',
+  Careers = '/careers',
+  TermsOfUse = '/terms-of-use',
+  PrivacyPolicy = '/privacy-policy',
+  CookiePolicy = '/cookie-policy',
 
   Auth = '/auth',
   Login = '/auth/login',

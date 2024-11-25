@@ -62,6 +62,10 @@ module.exports = {
           ring: 'hsl(var(--sidebar-ring))'
         }
       },
+      backgroundImage: {
+        'diagonal-lines':
+          'repeating-linear-gradient(-45deg, hsl(var(--background)), hsl(var(--border)) 1px, hsl(var(--background)) 1px, hsl(var(--background)) 8px)'
+      },
       borderRadius: {
         lg: 'var(--radius)',
         md: 'calc(var(--radius) - 2px)',
@@ -135,6 +139,14 @@ module.exports = {
           '50%': {
             transform: 'translateY(-5px)'
           }
+        },
+        marquee: {
+          from: { transform: 'translateX(0)' },
+          to: { transform: 'translateX(calc(-100% - var(--gap)))' }
+        },
+        'marquee-vertical': {
+          from: { transform: 'translateY(0)' },
+          to: { transform: 'translateY(calc(-100% - var(--gap)))' }
         }
       },
       animation: {
@@ -145,7 +157,9 @@ module.exports = {
         'collapsible-up': 'collapsible-up 0.2s ease-out',
         fadeIn: 'fadeIn 0.3s ease-in-out',
         slideIn: 'slideIn 0.3s ease-in-out',
-        bounce: 'bounce 0.6s ease-in-out'
+        bounce: 'bounce 0.6s ease-in-out',
+        marquee: 'marquee var(--duration) linear infinite',
+        'marquee-vertical': 'marquee-vertical var(--duration) linear infinite'
       }
     }
   },

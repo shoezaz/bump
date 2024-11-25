@@ -1,3 +1,4 @@
+import { withContentCollections } from '@content-collections/next';
 import withBundleAnalyzer from '@next/bundle-analyzer';
 import { createSecureHeaders } from 'next-secure-headers';
 
@@ -14,7 +15,7 @@ const svgLoader = {
           name: 'preset-default',
           params: {
             overrides: {
-              removeViewBox: false, // Preserve the viewBox attribute
+              removeViewBox: false // Preserve the viewBox attribute
             }
           }
         }
@@ -36,7 +37,15 @@ const nextConfig = {
     }
   },
   images: {
-    domains: []
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'randomuser.me',
+        port: '',
+        pathname: '**',
+        search: ''
+      }
+    ]
   },
   reactStrictMode: true,
   poweredByHeader: false,
@@ -64,11 +73,6 @@ const nextConfig = {
   },
   async redirects() {
     return [
-      {
-        source: '/',
-        destination: '/dashboard/home',
-        permanent: false
-      },
       {
         source: '/auth',
         destination: '/auth/login',
@@ -105,4 +109,4 @@ const nextConfig = {
   }
 };
 
-export default bundleAnalyzerConfig(nextConfig);
+export default withContentCollections(bundleAnalyzerConfig(nextConfig));

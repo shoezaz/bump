@@ -191,6 +191,7 @@ const Sidebar = React.forwardRef<SidebarElement, SidebarProps>(
 
     React.useEffect(() => {
       setOpenMobile(false);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [pathname]);
 
     if (collapsible === 'none') {

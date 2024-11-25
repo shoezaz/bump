@@ -72,7 +72,7 @@ function MemberListItem({
       className={cn('flex w-full flex-row justify-between p-6', className)}
       {...other}
     >
-      <div className="flex min-w-0 flex-row items-center gap-4">
+      <div className="flex flex-row items-center gap-4">
         <Avatar className="size-8">
           <AvatarImage
             src={member.image}
@@ -82,7 +82,7 @@ function MemberListItem({
             {getInitials(member.name)}
           </AvatarFallback>
         </Avatar>
-        <div className="flex flex-col overflow-hidden truncate">
+        <div className="flex flex-col">
           <div className="text-sm font-medium">{member.name}</div>
           <div className="text-xs font-normal text-muted-foreground">
             {member.email}
