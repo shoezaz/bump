@@ -4,7 +4,6 @@ import * as React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Portal } from '@radix-ui/react-portal';
-import { Slot } from '@radix-ui/react-slot';
 import { motion } from 'framer-motion';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { RemoveScroll } from 'react-remove-scroll';
@@ -100,11 +99,14 @@ export function MobileMenu({
       {open && (
         <Portal asChild>
           <RemoveScroll
-            as={Slot}
             allowPinchZoom
             enabled
           >
-            {isDocs ? <DocsMobileMenu /> : <MainMobileMenu />}
+            {isDocs ? (
+              <DocsMobileMenu onLinkClicked={handleToggleMobileMenu} />
+            ) : (
+              <MainMobileMenu onLinkClicked={handleToggleMobileMenu} />
+            )}
           </RemoveScroll>
         </Portal>
       )}
@@ -112,7 +114,13 @@ export function MobileMenu({
   );
 }
 
-function MainMobileMenu(): React.JSX.Element {
+type MainMobileMenuProps = {
+  onLinkClicked: () => void;
+};
+
+function MainMobileMenu({
+  onLinkClicked
+}: MainMobileMenuProps): React.JSX.Element {
   const [expanded, setExpanded] = React.useState<Record<string, boolean>>({});
   return (
     <div className="fixed inset-0 z-50 mt-[69px] overflow-y-auto bg-background animate-in fade-in-0">
@@ -127,11 +135,13 @@ function MainMobileMenu(): React.JSX.Element {
               }),
               'w-full rounded-xl'
             )}
+            onClick={onLinkClicked}
           >
             Start for free
           </Link>
           <Link
             href={Routes.Login}
+            onClick={onLinkClicked}
             className={cn(
               buttonVariants({
                 variant: 'outline',
@@ -161,6 +171,7 @@ function MainMobileMenu(): React.JSX.Element {
                 >
                   <CollapsibleTrigger asChild>
                     <Button
+                      type="button"
                       variant="ghost"
                       className="flex h-9 w-full items-center justify-between px-4 text-left"
                     >
@@ -190,6 +201,7 @@ function MainMobileMenu(): React.JSX.Element {
                               buttonVariants({ variant: 'ghost' }),
                               'm-0 h-auto w-full justify-start gap-4 p-1.5'
                             )}
+                            onClick={onLinkClicked}
                           >
                             <div className="flex size-10 shrink-0 items-center justify-center rounded-xl border bg-background text-muted-foreground transition-colors group-hover:text-foreground">
                               {subItem.icon}
@@ -222,6 +234,7 @@ function MainMobileMenu(): React.JSX.Element {
                     buttonVariants({ variant: 'ghost' }),
                     'w-full justify-start'
                   )}
+                  onClick={onLinkClicked}
                 >
                   <span className="text-base">{item.title}</span>
                 </Link>
@@ -238,7 +251,13 @@ function MainMobileMenu(): React.JSX.Element {
   );
 }
 
-function DocsMobileMenu(): React.JSX.Element {
+type DocsMobileMenuProps = {
+  onLinkClicked: () => void;
+};
+
+function DocsMobileMenu({
+  onLinkClicked
+}: DocsMobileMenuProps): React.JSX.Element {
   const [expanded, setExpanded] = React.useState<Record<string, boolean>>({});
   return (
     <div className="fixed inset-0 z-50 mt-[69px] overflow-y-auto bg-background animate-in fade-in-0">
@@ -260,6 +279,7 @@ function DocsMobileMenu(): React.JSX.Element {
               >
                 <CollapsibleTrigger asChild>
                   <Button
+                    type="button"
                     variant="ghost"
                     className="flex h-9 w-full items-center justify-between px-4 text-left"
                   >
@@ -284,6 +304,7 @@ function DocsMobileMenu(): React.JSX.Element {
                             buttonVariants({ variant: 'ghost' }),
                             'm-0 h-auto w-full justify-start gap-4 p-1.5 text-sm font-medium'
                           )}
+                          onClick={onLinkClicked}
                         >
                           {subItem.title}
                         </Link>
