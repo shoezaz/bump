@@ -39,7 +39,7 @@ export function Stats(): React.JSX.Element {
               (index === 2 || index === 3) && 'border-t lg:border-t-0'
             )}
           >
-            <p className="whitespace-nowrap text-xl font-semibold sm:text-2xl md:text-3xl">
+            <p className="whitespace-nowrap text-2xl font-semibold md:text-3xl">
               <NumberTicker value={stat.value} />
               {stat.suffix}
             </p>
