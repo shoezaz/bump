@@ -8,21 +8,21 @@ import { TextGenerateWithSelectBoxEffect } from '@/components/marketing/fragment
 const DATA = [
   {
     icon: <UserPlusIcon className="size-5 shrink-0" />,
-    title: 'Tailored interactions',
+    title: 'Problem 1',
     description:
-      'Use tools to deliver personalized communication, foster meaningful connections and build lasting customer relationships.'
+      'Describe a significant problem your ideal customer profile has. Explain how this problem impacts their goals or daily operations.'
   },
   {
     icon: <BarChartIcon className="size-5 shrink-0" />,
-    title: 'Data-driven insights',
+    title: 'Problem 2',
     description:
-      'Gain real-time analytics and reporting to understand customer behaviors, spot trends and make informed decisions.'
+      'Describe a significant problem your ideal customer profile has. Explain how this problem impacts their goals or daily operations.'
   },
   {
     icon: <WorkflowIcon className="size-5 shrink-0" />,
-    title: 'Powerful workflows',
+    title: 'Problem 3',
     description:
-      'Automate tasks and integrate processes to empower your team to nurture relationships and close deals effectively.'
+      'Describe a significant problem your ideal customer profile has. Explain how this problem impacts their goals or daily operations.'
   }
 ];
 
@@ -31,7 +31,7 @@ export function Problem(): React.JSX.Element {
     <GridSection>
       <div className="px-4 py-20 text-center">
         <h2 className="text-3xl font-semibold md:text-5xl">
-          <TextGenerateWithSelectBoxEffect words="Customer Relationship Magic" />
+          <TextGenerateWithSelectBoxEffect words="Attention Grabbing Title" />
         </h2>
       </div>
       <div className="grid divide-y border-t border-dashed md:grid-cols-3 md:divide-x md:divide-y-0">

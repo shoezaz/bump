@@ -8,7 +8,7 @@ const DATA = [
   {
     value: 55,
     suffix: '%',
-    description: 'Increased lead conversion'
+    description: 'Increased conversion'
   },
   {
     value: 4,

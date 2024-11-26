@@ -1,13 +1,13 @@
 import * as React from 'react';
-import { PaperPlaneIcon } from '@radix-ui/react-icons';
+import { CubeIcon, PaperPlaneIcon } from '@radix-ui/react-icons';
 import {
   BookIcon,
   BookOpenIcon,
-  BoxesIcon,
+  CircuitBoardIcon,
   CuboidIcon,
+  FileBarChartIcon,
   LayoutIcon,
-  SparklesIcon,
-  WorkflowIcon
+  PlayIcon
 } from 'lucide-react';
 
 import {
@@ -25,22 +25,36 @@ export const MENU_LINKS = [
     items: [
       {
         title: 'Feature 1',
-        description: 'Model, sync and enrich your data',
-        icon: <BoxesIcon className="size-5 shrink-0" />,
+        description: 'Short description here',
+        icon: <CubeIcon className="size-5 shrink-0" />,
         href: '#',
         external: false
       },
       {
         title: 'Feature 2',
-        description: 'Automate anything with workflows',
-        icon: <WorkflowIcon className="size-5 shrink-0" />,
+        description: 'Short description here',
+        icon: <PlayIcon className="size-5 shrink-0" />,
         href: '#',
         external: false
       },
       {
         title: 'Feature 3',
-        description: 'Harness powerful AI agents',
-        icon: <SparklesIcon className="size-5 shrink-0" />,
+        description: 'Short description here',
+        icon: <CircuitBoardIcon className="size-5 shrink-0" />,
+        href: '#',
+        external: false
+      },
+      {
+        title: 'Feature 4',
+        description: 'Short description here',
+        icon: <LayoutIcon className="size-5 shrink-0" />,
+        href: '#',
+        external: false
+      },
+      {
+        title: 'Feature 5',
+        description: 'Short description here',
+        icon: <FileBarChartIcon className="size-5 shrink-0" />,
         href: '#',
         external: false
       }
@@ -95,7 +109,9 @@ export const FOOTER_LINKS = [
     links: [
       { name: 'Feature 1', href: '#', external: false },
       { name: 'Feature 2', href: '#', external: false },
-      { name: 'Feature 3', href: '#', external: false }
+      { name: 'Feature 3', href: '#', external: false },
+      { name: 'Feature 4', href: '#', external: false },
+      { name: 'Feature 5', href: '#', external: false }
     ]
   },
   {

@@ -17,7 +17,7 @@ const DATA = [
     img: 'https://randomuser.me/api/portraits/men/91.jpg',
     description: (
       <p>
-        {AppInfo.APP_NAME} CRM has revolutionized how we manage customer
+        {AppInfo.APP_NAME} has revolutionized how we manage customer
         relationships.{' '}
         <strong>
           Our team efficiency has improved by 75% since implementation.
@@ -45,7 +45,7 @@ const DATA = [
     img: 'https://randomuser.me/api/portraits/men/45.jpg',
     description: (
       <p>
-        As a startup, we needed a CRM that could scale with us.{' '}
+        As a startup, we needed a system that could scale with us.{' '}
         {AppInfo.APP_NAME} delivers perfectly.{' '}
         <strong>Our sales pipeline visibility has improved tenfold.</strong>{' '}
         Essential tool for any growing business.

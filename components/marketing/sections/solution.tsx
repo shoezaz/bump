@@ -18,7 +18,7 @@ export function Solution(): React.JSX.Element {
           <div className="container relative space-y-10">
             <div>
               <h2 className="mb-2.5 text-3xl font-semibold md:text-5xl">
-                The next-gen CRM
+                The next-gen SaaS
               </h2>
               <p className="mt-1 max-w-2xl text-muted-foreground md:mt-6">
                 {AppInfo.APP_NAME} is the engine that builds, scales and grows
@@ -67,8 +67,8 @@ export function Solution(): React.JSX.Element {
                   Your personal operating system
                 </h2>
                 <p className="mt-1 text-muted-foreground md:mt-6">
-                  Harness the power of AI to transform your customer
-                  relationships and automate almost everything with workflows.
+                  Harness the power of AI to transform your business and
+                  automate almost everything with workflows.
                 </p>
                 <ul className="mt-6 list-none flex-wrap items-center gap-6 space-y-3 md:flex md:space-y-0">
                   {[

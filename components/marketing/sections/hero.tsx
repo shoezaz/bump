@@ -24,9 +24,7 @@ import {
   UnderlinedTabsList,
   UnderlinedTabsTrigger
 } from '@/components/ui/tabs';
-import { AppInfo } from '@/constants/app-info';
 import { Routes } from '@/constants/routes';
-import { getBaseUrl } from '@/lib/urls/get-base-url';
 import { cn } from '@/lib/utils';
 
 function HeroPill(): React.JSX.Element {
@@ -37,9 +35,7 @@ function HeroPill(): React.JSX.Element {
       transition={{ duration: 0.8 }}
       className="flex items-center justify-center"
     >
-      <Link
-        href={`${getBaseUrl(Routes.Blog)}/introducing-ai-powered-autonomous-lead-agent`}
-      >
+      <Link href="#">
         <Badge
           variant="outline"
           className="group h-8 rounded-full px-3 text-xs font-medium shadow-sm duration-200 hover:bg-accent/50 sm:text-sm"
@@ -51,7 +47,7 @@ function HeroPill(): React.JSX.Element {
             orientation="vertical"
             className="mx-2"
           />
-          {AppInfo.APP_NAME}'s AI-powered agent 🎉
+          Put an announcement here 🎉
           <ChevronRightIcon className="ml-1.5 size-3 shrink-0 text-foreground transition-transform group-hover:translate-x-0.5" />
         </Badge>
       </Link>
@@ -82,8 +78,8 @@ function HeroDescription(): React.JSX.Element {
       transition={{ delay: 0.4, duration: 0.4 }}
       className="mx-auto mt-3 max-w-[560px] text-balance text-center text-lg leading-[26px] text-muted-foreground sm:text-xl lg:mt-6"
     >
-      This is a demo "CRM" application built with Achromatic. It will save you
-      time and effort building your next SaaS.
+      This is a demo application built with Achromatic. It will save you time
+      and effort building your next SaaS.
     </motion.p>
   );
 }
@@ -205,45 +201,45 @@ function HeroIllustration(): React.JSX.Element {
     >
       <SupportiveDashedGridLines />
       <UnderlinedTabs
-        defaultValue="data"
+        defaultValue="feature1"
         className="mt-3"
       >
         <ScrollArea className="max-w-[100vw] lg:max-w-none">
           <UnderlinedTabsList className="relative z-20 mb-6 flex h-fit flex-row flex-wrap justify-center md:flex-nowrap">
             <UnderlinedTabsTrigger
-              value="data"
+              value="feature1"
               className="mx-1 px-2.5 sm:mx-2 sm:px-3"
             >
               <CubeIcon className="mr-2 size-4 shrink-0" />
-              Data
+              Feature 1
             </UnderlinedTabsTrigger>
             <UnderlinedTabsTrigger
-              value="automations"
+              value="feature2"
               className="mx-1 px-2.5 sm:mx-2 sm:px-3"
             >
               <PlayIcon className="mr-2 size-4 shrink-0" />
-              Automations
+              Feature 2
             </UnderlinedTabsTrigger>
             <UnderlinedTabsTrigger
-              value="pipeline"
+              value="feature3"
               className="mx-1 px-2.5 sm:mx-2 sm:px-3"
             >
               <CircuitBoardIcon className="mr-2 size-4 shrink-0" />
-              Pipeline
+              Feature 3
             </UnderlinedTabsTrigger>
             <UnderlinedTabsTrigger
-              value="productivity"
+              value="feature4"
               className="mx-1 px-2.5 sm:mx-2 sm:px-3"
             >
               <LayoutIcon className="mr-2 size-4 shrink-0" />
-              Productivity
+              Feature 4
             </UnderlinedTabsTrigger>
             <UnderlinedTabsTrigger
-              value="reporting"
+              value="feature5"
               className="mx-1 px-2.5 sm:mx-2 sm:px-3"
             >
               <FileBarChartIcon className="mr-2 size-4 shrink-0" />
-              Reporting
+              Feature 5
             </UnderlinedTabsTrigger>
           </UnderlinedTabsList>
           <ScrollBar
@@ -254,93 +250,93 @@ function HeroIllustration(): React.JSX.Element {
         <div className="relative mb-1 w-full rounded-xl dark:border-none dark:bg-background">
           <SupportiveDashedGridLines />
           <div className="relative z-20 bg-background">
-            <UnderlinedTabsContent value="data">
+            <UnderlinedTabsContent value="feature1">
               <Image
                 quality={100}
-                src="/marketing/hero/light-data.webp"
+                src="/marketing/hero/light-feature1.webp"
                 width="1328"
                 height="727"
-                alt="Data screenshot"
+                alt="Feature 1 screenshot"
                 className="block rounded-xl border shadow dark:hidden"
               />
               <Image
                 quality={100}
-                src="/marketing/hero/dark-data.webp"
+                src="/marketing/hero/dark-feature1.webp"
                 width="1328"
                 height="727"
-                alt="Data screenshot"
+                alt="Feature 1 screenshot"
                 className="hidden rounded-xl border shadow dark:block"
               />
             </UnderlinedTabsContent>
-            <UnderlinedTabsContent value="automations">
+            <UnderlinedTabsContent value="feature2">
               <Image
                 quality={100}
-                src="/marketing/hero/light-automations.webp"
+                src="/marketing/hero/light-feature2.webp"
                 width="1328"
                 height="727"
-                alt="Automations screenshot"
+                alt="Feature 2 screenshot"
                 className="block rounded-xl border shadow dark:hidden"
               />
               <Image
                 quality={100}
-                src="/marketing/hero/dark-automations.webp"
+                src="/marketing/hero/dark-feature2.webp"
                 width="1328"
                 height="727"
-                alt="Automations screenshot"
+                alt="Feature 2 screenshot"
                 className="hidden rounded-xl border shadow dark:block"
               />
             </UnderlinedTabsContent>
-            <UnderlinedTabsContent value="pipeline">
+            <UnderlinedTabsContent value="feature3">
               <Image
                 quality={100}
-                src="/marketing/hero/light-pipeline.webp"
+                src="/marketing/hero/light-feature3.webp"
                 width="1328"
                 height="727"
-                alt="Pipeline screenshot"
+                alt="Feature 3 screenshot"
                 className="block rounded-xl border shadow dark:hidden"
               />
               <Image
                 quality={100}
-                src="/marketing/hero/dark-pipeline.webp"
+                src="/marketing/hero/dark-feature3.webp"
                 width="1328"
                 height="727"
-                alt="Pipeline screenshot"
+                alt="Feature 3 screenshot"
                 className="hidden rounded-xl border shadow dark:block"
               />
             </UnderlinedTabsContent>
-            <UnderlinedTabsContent value="productivity">
+            <UnderlinedTabsContent value="feature4">
               <Image
                 quality={100}
-                src="/marketing/hero/light-productivity.webp"
+                src="/marketing/hero/light-feature4.webp"
                 width="1328"
                 height="727"
-                alt="Productivity screenshot"
+                alt="Feature 4 screenshot"
                 className="block rounded-xl border shadow dark:hidden"
               />
               <Image
                 quality={100}
-                src="/marketing/hero/dark-productivity.webp"
+                src="/marketing/hero/dark-feature4.webp"
                 width="1328"
                 height="727"
-                alt="Productivity screenshot"
+                alt="Feature 4 screenshot"
                 className="hidden rounded-xl border shadow dark:block"
               />
             </UnderlinedTabsContent>
-            <UnderlinedTabsContent value="reporting">
+            <UnderlinedTabsContent value="feature5">
               <Image
                 quality={100}
-                src="/marketing/hero/light-reporting.webp"
+                src="/marketing/hero/light-feature5.webp"
                 width="1328"
                 height="727"
-                alt="Reporting screenshot"
+                alt="Feature 5 screenshot"
                 className="block rounded-xl border shadow dark:hidden"
               />
               <Image
                 quality={100}
-                src="/marketing/hero/dark-reporting.webp"
+                src="/marketing/hero/dark-feature5.webp"
                 width="1328"
                 height="727"
-                alt="Reporting screenshot"
+                alt="Feature 5 screenshot"
                 className="hidden rounded-xl border shadow dark:block"
               />
             </UnderlinedTabsContent>

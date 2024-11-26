@@ -5,18 +5,18 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 const DATA = [
   {
-    name: 'Alex Rivera',
-    role: 'Senior Software Engineer',
-    image: 'https://randomuser.me/api/portraits/men/22.jpg',
-    previousRole: 'Formerly backend engineer at Google',
-    education: 'BSc in Computer Science from UC Berkeley'
-  },
-  {
-    name: 'John Carter',
+    name: 'Rick Sanchez',
     role: 'Machine Learning Engineer',
-    image: 'https://randomuser.me/api/portraits/men/55.jpg',
+    image: '/marketing/story/rick-sanchez.webp',
     previousRole: 'Formerly AI research engineer at Meta',
     education: 'PhD in AI from Stanford'
+  },
+  {
+    name: 'Morty Smith',
+    role: 'Senior Software Engineer',
+    image: '/marketing/story/morty-smith.webp',
+    previousRole: 'Formerly backend engineer at Google',
+    education: 'BSc in Computer Science from UC Berkeley'
   }
 ];
 

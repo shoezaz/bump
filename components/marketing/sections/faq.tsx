@@ -14,7 +14,7 @@ import { Routes } from '@/constants/routes';
 const DATA = [
   {
     question: `What does ${AppInfo.APP_NAME} do?`,
-    answer: `${AppInfo.APP_NAME} helps you manage customer relationships, organize sales activities and improve service delivery to make your business more efficient and successful.`
+    answer: `This is a demo application built with Achromatic. It will save you time and effort building your next SaaS. Here you would write something like "${AppInfo.APP_NAME} helps you manage customer relationships, organize sales activities and improve service delivery to make your business more efficient and successful."`
   },
   {
     question: 'How will this benefit my business?',
