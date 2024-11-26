@@ -40,10 +40,18 @@ export function DocsPager({ doc }: DocsPagerProps): React.JSX.Element {
   );
 }
 
+function normalizeLink(link: string): string {
+  if (!link) {
+    return link;
+  }
+
+  return link.replace('\\index', '').replace('\\', '/');
+}
+
 function getPagerForDoc(doc: Doc) {
   const flattenedLinks = [null, ...flattenItems(DOCS_LINKS), null];
   const activeIndex = flattenedLinks.findIndex(
-    (link) => doc.slug === link?.href
+    (link) => normalizeLink(doc.slug) === normalizeLink(link?.href)
   );
   const prev = activeIndex !== 0 ? flattenedLinks[activeIndex - 1] : null;
   const next =
@@ -62,7 +70,7 @@ function flattenItems<T>(items: T) {
   }
 
   return items.reduce((acc, { title, href, items }) => {
-    acc.push({ title, href });
+    if (href) acc.push({ title, href });
     if (Array.isArray(items) && items.length > 0) {
       acc.push(...flattenItems(items));
     }
