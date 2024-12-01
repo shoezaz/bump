@@ -21,11 +21,11 @@ export function StepIndicator({
       className={cn('flex flex-row gap-2', className)}
       {...other}
     >
-      {steps.map((step) => (
+      {steps.map((step, idx) => (
         <Step
           key={step}
-          step={step}
-          currentStep={currentStep}
+          step={idx}
+          currentStep={steps.indexOf(currentStep)}
           setCurrentStep={setCurrentStep}
         />
       ))}

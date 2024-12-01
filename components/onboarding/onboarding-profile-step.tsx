@@ -7,6 +7,7 @@ import { useFormContext } from 'react-hook-form';
 import { toast } from 'sonner';
 
 import { CropPhotoModal } from '@/components/dashboard/settings/account/profile/crop-photo-modal';
+import { NextButton } from '@/components/onboarding/next-button';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import {
@@ -31,16 +32,14 @@ import { FileUploadAction } from '@/types/file-upload-action';
 export type OnboardingProfileStepProps =
   React.HtmlHTMLAttributes<HTMLDivElement> & {
     email: string;
-    next: () => void;
-    canNext: boolean;
+    canSubmit: boolean;
     loading: boolean;
     isLastStep: boolean;
   };
 
 export function OnboardingProfileStep({
   email,
-  next,
-  canNext,
+  canSubmit,
   loading,
   isLastStep,
   className,
@@ -168,18 +167,11 @@ export function OnboardingProfileStep({
           />
         </div>
       </div>
-      <div>
-        <Button
-          type="button"
-          variant="default"
-          className="mt-4"
-          disabled={!canNext}
-          loading={loading}
-          onClick={next}
-        >
-          {isLastStep ? 'Finish' : 'Next step →'}
-        </Button>
-      </div>
+      <NextButton
+        loading={loading}
+        disabled={!canSubmit}
+        isLastStep={isLastStep}
+      />
     </div>
   );
 }

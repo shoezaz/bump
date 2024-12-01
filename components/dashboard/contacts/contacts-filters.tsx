@@ -88,14 +88,14 @@ export function ContactsFilters({
         setPageIndex(0);
       }
     }
-  }
+  };
 
   const handleTagsChange = (tags: string[]): void => {
-      setSelectedTags(tags);
-      if (pageIndex !== 0) {
-        setPageIndex(0);
-      }
-  }
+    setSelectedTags(tags);
+    if (pageIndex !== 0) {
+      setPageIndex(0);
+    }
+  };
 
   const handleShowMobileSearch = (): void => {
     setShowMobileSearch(true);

@@ -5,7 +5,7 @@ import { useTheme } from 'next-themes';
 import { useFormContext } from 'react-hook-form';
 
 import { ThemeOption } from '@/components/dashboard/settings/account/profile/theme-option';
-import { Button } from '@/components/ui/button';
+import { NextButton } from '@/components/onboarding/next-button';
 import {
   FormControl,
   FormField,
@@ -19,15 +19,13 @@ import { type CompleteUserOnboardingSchema } from '@/schemas/onboarding/complete
 
 export type OnboardingThemeStepProps =
   React.HtmlHTMLAttributes<HTMLDivElement> & {
-    next: () => void;
-    canNext: boolean;
+    canSubmit: boolean;
     loading: boolean;
     isLastStep: boolean;
   };
 
 export function OnboardingThemeStep({
-  next,
-  canNext,
+  canSubmit,
   loading,
   isLastStep,
   className,
@@ -75,18 +73,11 @@ export function OnboardingThemeStep({
           </FormItem>
         )}
       />
-      <div>
-        <Button
-          type="button"
-          variant="default"
-          className="mt-4"
-          disabled={!canNext}
-          loading={loading}
-          onClick={next}
-        >
-          {isLastStep ? 'Finish' : 'Next step →'}
-        </Button>
-      </div>
+      <NextButton
+        loading={loading}
+        disabled={!canSubmit}
+        isLastStep={isLastStep}
+      />
     </div>
   );
 }

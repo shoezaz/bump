@@ -21,9 +21,11 @@ import {
 } from '@/schemas/contacts/get-contacts-schema';
 import type { ContactDto } from '@/types/dtos/contact-dto';
 
-export async function getContacts(
-  input: GetContactsSchema
-): Promise<{ contacts: ContactDto[]; filteredCount: number;  totalCount: number }> {
+export async function getContacts(input: GetContactsSchema): Promise<{
+  contacts: ContactDto[];
+  filteredCount: number;
+  totalCount: number;
+}> {
   const session = await dedupedAuth();
   if (!checkSession(session)) {
     return redirect(getLoginRedirect());
@@ -92,7 +94,7 @@ export async function getContacts(
         }),
         prisma.contact.count({
           where: {
-            organizationId: session.user.organizationId,
+            organizationId: session.user.organizationId
           }
         })
       ]);

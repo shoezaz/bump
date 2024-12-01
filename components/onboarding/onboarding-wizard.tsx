@@ -4,6 +4,7 @@ import * as React from 'react';
 import { useTheme } from 'next-themes';
 import { type SubmitHandler } from 'react-hook-form';
 import { toast } from 'sonner';
+import { type ZodSchema } from 'zod';
 
 import { completeOnboarding } from '@/actions/onboarding/complete-onboarding';
 import { completeOrganizationOnlyOnboarding } from '@/actions/onboarding/complete-organization-only-onboarding';
@@ -17,10 +18,7 @@ import { Logo } from '@/components/ui/logo';
 import type { getOnboardingData } from '@/data/onboarding/get-onboarding-data';
 import { useZodForm } from '@/hooks/use-zod-form';
 import { cn } from '@/lib/utils';
-import {
-  completeOnboardingSchema,
-  type CompleteOnboardingSchema
-} from '@/schemas/onboarding/complete-onboarding-schema';
+import { type CompleteOnboardingSchema } from '@/schemas/onboarding/complete-onboarding-schema';
 import {
   completeOrganizationOnboardingSchema,
   type CompleteOrganizationOnboardingSchema
@@ -31,19 +29,19 @@ import {
 } from '@/schemas/onboarding/complete-user-onboarding-schema';
 import { FileUploadAction } from '@/types/file-upload-action';
 
-enum Step {
+export enum Step {
   Organization,
   Theme,
   Profile
 }
 
-const headers: Record<string, string> = {
+const headers: Record<Step, string> = {
   [Step.Organization]: 'Organization details',
   [Step.Theme]: 'Choose your theme',
   [Step.Profile]: 'Set up your profile'
 };
 
-const descriptions: Record<string, string> = {
+const descriptions: Record<Step, string> = {
   [Step.Organization]:
     'We just need some basic info to get your organization set up. You’ll be able to edit this later.',
   [Step.Theme]:
@@ -52,8 +50,54 @@ const descriptions: Record<string, string> = {
     "Check if the profile information is correct. You'll be able to change this later in the account settings page."
 };
 
+const components: Record<
+  Step,
+  | typeof OnboardingOrganizationStep
+  | typeof OnboardingThemeStep
+  | typeof OnboardingProfileStep
+> = {
+  [Step.Organization]: OnboardingOrganizationStep,
+  [Step.Theme]: OnboardingThemeStep,
+  [Step.Profile]: OnboardingProfileStep
+};
+
 export type OnboardingWizardProps = React.HtmlHTMLAttributes<HTMLDivElement> &
   Awaited<ReturnType<typeof getOnboardingData>>;
+
+const stepSchemas: Record<Step, ZodSchema> = {
+  [Step.Organization]: completeOrganizationOnboardingSchema,
+  [Step.Theme]: completeUserOnboardingSchema,
+  [Step.Profile]: completeUserOnboardingSchema
+};
+
+const generateSteps = (
+  organizationCompletedOnboarding: boolean,
+  userCompletedOnboarding: boolean
+): Step[] => {
+  const steps: Step[] = [];
+
+  if (!organizationCompletedOnboarding) {
+    steps.push(Step.Organization);
+  }
+
+  if (!userCompletedOnboarding) {
+    steps.push(Step.Theme);
+    steps.push(Step.Profile);
+  }
+
+  return steps;
+};
+
+const validate = (currentStep: Step, values: Record<string, unknown>) => {
+  switch (currentStep) {
+    case Step.Organization:
+      return completeOrganizationOnboardingSchema.safeParse(values).success;
+    case Step.Profile:
+      return completeUserOnboardingSchema.safeParse(values).success;
+    default:
+      return true;
+  }
+};
 
 export function OnboardingWizard({
   organization,
@@ -66,12 +110,7 @@ export function OnboardingWizard({
     !organization.completedOnboarding ? Step.Organization : Step.Theme
   );
   const methods = useZodForm({
-    schema:
-      !user.completedOnboarding && !organization.completedOnboarding
-        ? completeOnboardingSchema
-        : user.completedOnboarding
-          ? completeOrganizationOnboardingSchema
-          : completeUserOnboardingSchema,
+    schema: stepSchemas[currentStep],
     mode: 'all',
     defaultValues: {
       organizationName: organization?.name ?? '',
@@ -81,92 +120,87 @@ export function OnboardingWizard({
       theme: (theme as 'light' | 'dark' | 'system') ?? 'system'
     }
   });
-  const steps: Step[] = [];
-  if (!organization.completedOnboarding) {
-    steps.push(Step.Organization);
-  }
-  if (!user.completedOnboarding) {
-    steps.push(Step.Theme);
-    steps.push(Step.Profile);
-  }
+  const Component = components[currentStep];
+  const steps: Step[] = generateSteps(
+    organization.completedOnboarding,
+    user.completedOnboarding
+  );
   const currentStepIndex = steps.indexOf(currentStep);
   const isLastStep = currentStepIndex === steps.length - 1;
   const formValues = methods.getValues();
-  const isOrganizationBasicDetailsValid =
-    steps.includes(Step.Organization) &&
-    completeOrganizationOnboardingSchema.safeParse(formValues).success;
-  const isAccountProfileValid =
-    steps.includes(Step.Profile) &&
-    completeUserOnboardingSchema.safeParse(formValues).success;
+  const isCurrentStepValid = validate(currentStep, formValues);
   const canSubmit =
     !methods.formState.isSubmitting && methods.formState.isValid;
+
   const handleScrollToTop = (): void => {
     if (typeof window !== 'undefined') {
       window.scrollTo(0, 0);
     }
   };
+
   const onSubmit: SubmitHandler<
     | CompleteOnboardingSchema
     | CompleteOrganizationOnboardingSchema
     | CompleteUserOnboardingSchema
   > = async (values) => {
-    if (!canSubmit) {
+    if (!canSubmit || !isCurrentStepValid) {
       return;
     }
 
+    if (!isLastStep) {
+      handleNext();
+      return;
+    }
+
+    let result;
+
     if (!user.completedOnboarding && !organization.completedOnboarding) {
-      const result = await completeOnboarding(
-        values as CompleteOnboardingSchema
-      );
-      if (result?.serverError || result?.validationErrors) {
-        toast.error("Couldn't complete onboarding");
-        return;
-      }
+      result = await completeOnboarding(values as CompleteOnboardingSchema);
     } else if (!user.completedOnboarding) {
       const variables = values as CompleteUserOnboardingSchema;
-      const result = await completeUserOnlyOnboarding({
+      result = await completeUserOnlyOnboarding({
         action: variables.action,
         image: variables.image,
         name: variables.name,
         phone: variables.phone,
         theme: variables.theme
       });
-      if (result?.serverError || result?.validationErrors) {
-        toast.error("Couldn't complete onboarding");
-        return;
-      }
     } else if (!organization.completedOnboarding) {
       const variables = values as CompleteOrganizationOnboardingSchema;
-      const result = await completeOrganizationOnlyOnboarding({
+      result = await completeOrganizationOnlyOnboarding({
         organizationName: variables.organizationName
       });
-      if (result?.serverError || result?.validationErrors) {
-        toast.error("Couldn't complete onboarding");
-        return;
-      }
     }
+
+    if (result?.serverError || result?.validationErrors) {
+      toast.error("Couldn't complete onboarding");
+      return;
+    }
+
     toast.success('Onboarding completed');
   };
   const handleNext = (): void => {
-    if (currentStep === Step.Organization && isOrganizationBasicDetailsValid) {
-      if (isLastStep) {
-        methods.handleSubmit(onSubmit)();
-        return;
-      } else {
-        setCurrentStep(Step.Theme);
-        handleScrollToTop();
-      }
+    if (!isCurrentStepValid) {
+      return;
     }
 
-    if (currentStep === Step.Theme) {
-      setCurrentStep(Step.Profile);
-      handleScrollToTop();
-    }
-    if (currentStep === Step.Profile && isAccountProfileValid) {
+    if (isLastStep) {
       methods.handleSubmit(onSubmit)();
       return;
     }
+
+    switch (currentStep) {
+      case Step.Organization:
+        setCurrentStep(Step.Theme);
+        handleScrollToTop();
+        break;
+      case Step.Theme:
+        setCurrentStep(Step.Profile);
+        handleScrollToTop();
+        break;
+    }
   };
+
   return (
     <div
       className={cn('flex flex-col pb-1.5', className)}
@@ -197,36 +231,12 @@ export function OnboardingWizard({
             <p className="text-base text-muted-foreground">
               {descriptions[currentStep]}
             </p>
-            {currentStep === Step.Organization && (
-              <OnboardingOrganizationStep
-                next={handleNext}
-                canNext={
-                  isOrganizationBasicDetailsValid &&
-                  !methods.formState.isSubmitting
-                }
-                loading={methods.formState.isSubmitting}
-                isLastStep={isLastStep}
-              />
-            )}
-            {currentStep === Step.Theme && (
-              <OnboardingThemeStep
-                next={handleNext}
-                canNext={!methods.formState.isSubmitting}
-                loading={methods.formState.isSubmitting}
-                isLastStep={isLastStep}
-              />
-            )}
-            {currentStep === Step.Profile && (
-              <OnboardingProfileStep
-                email={user?.email ?? ''}
-                next={handleNext}
-                canNext={
-                  isAccountProfileValid && !methods.formState.isSubmitting
-                }
-                loading={methods.formState.isSubmitting}
-                isLastStep={isLastStep}
-              />
-            )}
+            <Component
+              canSubmit={isCurrentStepValid && !methods.formState.isSubmitting}
+              loading={methods.formState.isSubmitting}
+              isLastStep={isLastStep}
+              email={user?.email ?? ''}
+            />
           </form>
         </FormProvider>
       </div>

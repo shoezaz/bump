@@ -43,6 +43,7 @@ docker compose up -d
 ```
 
 #### Install PostgreSQL
+
 1.  Install PostgreSQL via Homebrew, Chocolatey or download it from the [website](https://www.postgresql.org/download/).
 
 ```bash
