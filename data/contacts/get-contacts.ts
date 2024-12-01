@@ -23,7 +23,7 @@ import type { ContactDto } from '@/types/dtos/contact-dto';
 
 export async function getContacts(
   input: GetContactsSchema
-): Promise<{ contacts: ContactDto[]; totalCount: number }> {
+): Promise<{ contacts: ContactDto[]; filteredCount: number;  totalCount: number }> {
   const session = await dedupedAuth();
   if (!checkSession(session)) {
     return redirect(getLoginRedirect());
@@ -45,7 +45,7 @@ export async function getContacts(
 
   return cache(
     async () => {
-      const [contacts, totalCount] = await prisma.$transaction([
+      const [contacts, filteredCount, totalCount] = await prisma.$transaction([
         prisma.contact.findMany({
           skip: parsedInput.pageIndex * parsedInput.pageSize,
           take: parsedInput.pageSize,
@@ -80,7 +80,20 @@ export async function getContacts(
           }
         }),
         prisma.contact.count({
-          where: { organizationId: session.user.organizationId }
+          where: {
+            organizationId: session.user.organizationId,
+            record: mapRecords(parsedInput.records),
+            tags:
+              parsedInput.tags && parsedInput.tags.length > 0
+                ? { some: { text: { in: parsedInput.tags } } }
+                : undefined,
+            OR: searchVector
+          }
+        }),
+        prisma.contact.count({
+          where: {
+            organizationId: session.user.organizationId,
+          }
         })
       ]);
 
@@ -97,7 +110,7 @@ export async function getContacts(
         tags: contact.tags
       }));
 
-      return { contacts: mapped, totalCount };
+      return { contacts: mapped, filteredCount, totalCount };
     },
     Caching.createOrganizationKeyParts(
       OrganizationCacheKey.Contacts,

@@ -36,12 +36,12 @@ export default async function ContactsPage({
 }: NextPageProps): Promise<React.JSX.Element> {
   const parsedSearchParams = await searchParamsCache.parse(searchParams);
 
-  const [{ contacts, totalCount }, tags] = await Promise.all([
+  const [{ contacts, filteredCount, totalCount }, tags] = await Promise.all([
     getContacts(parsedSearchParams),
     getContactTags()
   ]);
 
-  const hasContacts = totalCount > 0;
+  const hasContacts = filteredCount > 0;
 
   return (
     <TransitionProvider>
@@ -77,7 +77,7 @@ export default async function ContactsPage({
             <React.Suspense>
               <ContactsDataTable
                 data={contacts}
-                totalCount={totalCount}
+                totalCount={filteredCount}
               />
             </React.Suspense>
           ) : (
