@@ -61,11 +61,41 @@ export function ContactsFilters({
     })
   );
 
+  const [pageIndex, setPageIndex] = useQueryState(
+    'pageIndex',
+    searchParams.pageIndex.withOptions({
+      startTransition,
+      shallow: false
+    })
+  );
+
   const handleSearchQueryChange = (
     e: React.ChangeEvent<HTMLInputElement>
   ): void => {
-    setSearchQuery(e.target?.value || '');
+    const value = e.target?.value || '';
+    if (value !== searchQuery) {
+      setSearchQuery(value);
+      if (pageIndex !== 0) {
+        setPageIndex(0);
+      }
+    }
   };
+
+  const handleRecordsChange = (value: string): void => {
+    if (value !== records) {
+      setRecords(value as RecordsOption);
+      if (pageIndex !== 0) {
+        setPageIndex(0);
+      }
+    }
+  }
+
+  const handleTagsChange = (tags: string[]): void => {
+      setSelectedTags(tags);
+      if (pageIndex !== 0) {
+        setPageIndex(0);
+      }
+  }
 
   const handleShowMobileSearch = (): void => {
     setShowMobileSearch(true);
@@ -80,7 +110,7 @@ export function ContactsFilters({
       <div className="flex items-center gap-2">
         <UnderlinedTabs
           value={records}
-          onValueChange={(value) => setRecords(value as RecordsOption)}
+          onValueChange={handleRecordsChange}
           className="hidden sm:flex"
         >
           <UnderlinedTabsList className="mr-2 h-12 max-h-12 min-h-12 gap-x-2 border-none">
@@ -123,7 +153,7 @@ export function ContactsFilters({
           title="Tags"
           options={tags.map((tag) => ({ value: tag.text, label: tag.text }))}
           selected={selectedTags || []}
-          onChange={setSelectedTags}
+          onChange={handleTagsChange}
         />
       </div>
       <div>

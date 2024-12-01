@@ -41,7 +41,7 @@ export default async function ContactsPage({
     getContactTags()
   ]);
 
-  const hasContacts = filteredCount > 0;
+  const hasAnyContacts = totalCount > 0;
 
   return (
     <TransitionProvider>
@@ -60,7 +60,7 @@ export default async function ContactsPage({
                 </TooltipContent>
               </Tooltip>
             </div>
-            {hasContacts && (
+            {hasAnyContacts && (
               <PageActions>
                 <AddContactButton />
               </PageActions>
@@ -72,8 +72,8 @@ export default async function ContactsPage({
             </React.Suspense>
           </PageSecondaryBar>
         </PageHeader>
-        <PageBody disableScroll={hasContacts}>
-          {hasContacts ? (
+        <PageBody disableScroll={hasAnyContacts}>
+          {hasAnyContacts ? (
             <React.Suspense>
               <ContactsDataTable
                 data={contacts}
