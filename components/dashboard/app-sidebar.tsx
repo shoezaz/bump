@@ -62,7 +62,8 @@ export function AppSidebar({
       <SidebarContent className="overflow-hidden">
         <ScrollArea
           verticalScrollBar
-          className="h-full [&>[data-radix-scroll-area-viewport]>div]:flex [&>[data-radix-scroll-area-viewport]>div]:flex-col"
+          /* Overriding the hardcoded { disply:table } to get full flex height */
+          className="h-full [&>[data-radix-scroll-area-viewport]>div]:!flex [&>[data-radix-scroll-area-viewport]>div]:h-full [&>[data-radix-scroll-area-viewport]>div]:flex-col"
         >
           <NavMain />
           <NavFavorites favorites={favorites} />
