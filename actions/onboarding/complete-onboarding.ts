@@ -33,7 +33,7 @@ export const completeOnboarding = authActionClient
       throw new NotFoundError('Organization not found');
     }
     if (organization.completedOnboarding) {
-      throw new PreConditionError('Onboarding already completed');
+      return redirect(Routes.Dashboard);
     }
     const userFromDb = await prisma.user.findFirst({
       where: { id: session.user.id },
@@ -43,7 +43,7 @@ export const completeOnboarding = authActionClient
       throw new NotFoundError('User not found');
     }
     if (userFromDb.completedOnboarding) {
-      throw new PreConditionError('Onboarding already completed');
+      return redirect(Routes.Dashboard);
     }
 
     const transactions = [];

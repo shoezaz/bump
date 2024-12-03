@@ -27,7 +27,7 @@ export const completeOrganizationOnlyOnboarding = authActionClient
       throw new NotFoundError('Organiztion not found');
     }
     if (organization.completedOnboarding) {
-      throw new PreConditionError('Onboarding already completed');
+      return redirect(Routes.Dashboard);
     }
 
     await prisma.organization.update({

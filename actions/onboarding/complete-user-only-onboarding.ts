@@ -28,7 +28,7 @@ export const completeUserOnlyOnboarding = authActionClient
       throw new NotFoundError('User not found');
     }
     if (userFromDb.completedOnboarding) {
-      throw new PreConditionError('Onboarding already completed');
+      return redirect(Routes.Dashboard);
     }
 
     const transactions = [];
