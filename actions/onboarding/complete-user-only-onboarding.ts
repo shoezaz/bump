@@ -11,7 +11,7 @@ import { prisma } from '@/lib/db/prisma';
 import { decodeBase64Image } from '@/lib/imaging/decode-base64-image';
 import { resizeImage } from '@/lib/imaging/resize-image';
 import { getUserImageUrl } from '@/lib/urls/get-user-image-url';
-import { NotFoundError, PreConditionError } from '@/lib/validation/exceptions';
+import { NotFoundError } from '@/lib/validation/exceptions';
 import { completeUserOnboardingSchema } from '@/schemas/onboarding/complete-user-onboarding-schema';
 import { FileUploadAction } from '@/types/file-upload-action';
 import type { Maybe } from '@/types/maybe';

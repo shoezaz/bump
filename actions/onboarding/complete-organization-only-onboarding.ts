@@ -9,7 +9,7 @@ import { Caching, OrganizationCacheKey, UserCacheKey } from '@/data/caching';
 import { stripeServer } from '@/lib/billing/stripe-server';
 import { addExampleData } from '@/lib/db/example-data';
 import { prisma } from '@/lib/db/prisma';
-import { NotFoundError, PreConditionError } from '@/lib/validation/exceptions';
+import { NotFoundError } from '@/lib/validation/exceptions';
 import { completeOrganizationOnboardingSchema } from '@/schemas/onboarding/complete-organization-onboarding-schema';
 
 export const completeOrganizationOnlyOnboarding = authActionClient

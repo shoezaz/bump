@@ -19,24 +19,42 @@ export function checkSession(
     };
   }
 > {
-  return (
-    // Session
-    isDefined(session) &&
-    // Session.User
-    isDefined(session.user) &&
-    // Session.User.Id
-    isDefined(session.user.id) &&
-    uuidValidate(session.user.id) &&
-    // Session.User.Email
-    isDefined(session.user.email) &&
-    isString(session.user.email) &&
-    // Session.User.Name
-    isDefined(session.user.name) &&
-    isString(session.user.name) &&
-    // Session.User.OrganizationId
-    isDefined(session.user.organizationId) &&
-    uuidValidate(session.user.organizationId)
-  );
+  if (!session) {
+    return false;
+  }
+
+  if (!session.user) {
+    console.warn('No user found in the session. Unable to validate session.');
+    return false;
+  }
+
+  const { user } = session;
+
+  const hasValidId = isDefined(user.id) && uuidValidate(user.id);
+  const hasValidEmail = isDefined(user.email) && isString(user.email);
+  const hasValidName = isDefined(user.name) && isString(user.name);
+  const hasValidOrganizationId =
+    isDefined(user.organizationId) && uuidValidate(user.organizationId);
+
+  // Logs a warning if the user in the session is missing an organizationId.
+  // Provides a detailed, contextual warning based on available user information.
+  if (!hasValidOrganizationId) {
+    const userIdentifier = hasValidId
+      ? `User ID: ${session.user.id}`
+      : hasValidEmail
+        ? `User Email: ${session.user.email}`
+        : 'Unknown User';
+
+    const errorType = !isDefined(user.organizationId)
+      ? 'missing'
+      : 'invalid format';
+
+    console.warn(`${userIdentifier} has a ${errorType} organizationId. 
+      This may indicate an issue with user organization assignment.
+      Please check the methods createOrganizationAndConnectUser and joinOrganization.`);
+  }
+
+  return hasValidId && hasValidEmail && hasValidName && hasValidOrganizationId;
 }
 
 export function generateSessionToken(): string {
