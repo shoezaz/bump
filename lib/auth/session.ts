@@ -19,42 +19,67 @@ export function checkSession(
     };
   }
 > {
+  // session
   if (!session) {
+    // Normal behavior, no need to log a warning
     return false;
   }
 
+  // session.user
   if (!session.user) {
     console.warn('No user found in the session. Unable to validate session.');
     return false;
   }
 
-  const { user } = session;
-
-  const hasValidId = isDefined(user.id) && uuidValidate(user.id);
-  const hasValidEmail = isDefined(user.email) && isString(user.email);
-  const hasValidName = isDefined(user.name) && isString(user.name);
-  const hasValidOrganizationId =
-    isDefined(user.organizationId) && uuidValidate(user.organizationId);
-
-  // Logs a warning if the user in the session is missing an organizationId.
-  // Provides a detailed, contextual warning based on available user information.
-  if (!hasValidOrganizationId) {
-    const userIdentifier = hasValidId
-      ? `User ID: ${session.user.id}`
-      : hasValidEmail
-        ? `User Email: ${session.user.email}`
-        : 'Unknown User';
-
-    const errorType = !isDefined(user.organizationId)
-      ? 'missing'
-      : 'invalid format';
-
-    console.warn(`${userIdentifier} has a ${errorType} organizationId. 
-      This may indicate an issue with user organization assignment.
-      Please check the methods createOrganizationAndConnectUser and joinOrganization.`);
+  // session.user.id
+  if (!isDefined(session.user.id)) {
+    console.warn('User ID is undefined. Validation failed.');
+    return false;
+  }
+  if (!uuidValidate(session.user.id)) {
+    console.warn('Invalid user ID format. Expected a UUID.');
+    return false;
   }
 
-  return hasValidId && hasValidEmail && hasValidName && hasValidOrganizationId;
+  // session.user.email
+  if (!isDefined(session.user.email)) {
+    console.warn(`User ${session.user.id} has an undefined email.`);
+    return false;
+  }
+  if (!isString(session.user.email)) {
+    console.warn(
+      `Invalid email type for user ${session.user.id}. Expected a string.`
+    );
+    return false;
+  }
+
+  // session.user.name
+  if (!isDefined(session.user.name)) {
+    console.warn(`User ${session.user.id} has an undefined name.`);
+    return false;
+  }
+  if (!isString(session.user.name)) {
+    console.warn(
+      `Invalid name type for user ${session.user.id}. Expected a string.`
+    );
+    return false;
+  }
+
+  // session.user.organizationId
+  if (!isDefined(session.user.organizationId)) {
+    console.warn(
+      `User ${session.user.id} has an undefined organizationId. This may indicate an issue with user organization assignment. Please check the methods createOrganizationAndConnectUser and joinOrganization.`
+    );
+    return false;
+  }
+  if (!uuidValidate(session.user.organizationId)) {
+    console.warn(
+      `User ${session.user.id} has an invalid organizationId. Expected a UUID.`
+    );
+    return false;
+  }
+
+  return true;
 }
 
 export function generateSessionToken(): string {
