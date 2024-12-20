@@ -8,9 +8,15 @@ import prettier from 'eslint-plugin-prettier/recommended';
 import tailwindcss from 'eslint-plugin-tailwindcss';
 import tseslint from 'typescript-eslint';
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
 const flatCompat = new FlatCompat({
-  baseDirectory: dirname(fileURLToPath(import.meta.url))
+  baseDirectory: __dirname,
+  recommendedConfig: eslint.configs.recommended,
+  allConfig: eslint.configs.all
 });
+
 // If you use compats that are not flat/eslint 9 compatible, you have to use fixupConfigRules from @eslint/compat.
 const compatConfigs = flatCompat.extends(
   'next/core-web-vitals',
