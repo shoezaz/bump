@@ -52,7 +52,7 @@ export default async function ContactsPage({
               <PageTitle>Contacts</PageTitle>
               <Tooltip delayDuration={0}>
                 <TooltipTrigger asChild>
-                  <InfoIcon className="size-3 shrink-0 text-muted-foreground" />
+                  <InfoIcon className="size-3 shrink-0 text-muted-foreground hidden sm:inline" />
                 </TooltipTrigger>
                 <TooltipContent>
                   Total {totalCount} {totalCount === 1 ? 'contact' : 'contacts'}{' '}
