@@ -17,9 +17,9 @@ export function TransactionalEmailsSkeletonCard(
           {Array.from({ length: 4 }).map((_, i) => (
             <div
               key={i}
-              className="mb-2 flex flex-row items-center justify-between"
+              className="flex flex-row items-center justify-between"
             >
-              <div className="flex flex-col space-y-0.5">
+              <div className="space-y-[9px]">
                 <Skeleton className="h-[17px] w-[110px]" />
                 <Skeleton className="h-[19px] w-[220px]" />
               </div>

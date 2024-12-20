@@ -49,7 +49,7 @@ export default function HomeLayout({
               <PageTitle>Overview</PageTitle>
               <Tooltip delayDuration={0}>
                 <TooltipTrigger asChild>
-                  <InfoIcon className="size-3 shrink-0 text-muted-foreground hidden sm:inline" />
+                  <InfoIcon className="hidden size-3 shrink-0 text-muted-foreground sm:inline" />
                 </TooltipTrigger>
                 <TooltipContent>
                   Lead and contact engagement metrics
