@@ -29,7 +29,7 @@ export const InputSearch = React.forwardRef<
       onChange,
       value,
       disabled,
-      debounceTime = 300,
+      debounceTime = 175,
       onClear,
       clearButtonProps,
       alwaysShowClearButton,
