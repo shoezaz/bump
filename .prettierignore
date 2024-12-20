@@ -15,3 +15,4 @@ build
 .prettierignore
 .DS_Store
 .eslintignore
+pnpm-lock.yaml
