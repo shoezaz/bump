@@ -15,9 +15,9 @@ export function ThemeToggle({
   className,
   ...props
 }: ThemeToggleProps): React.JSX.Element {
-  const { setTheme, theme } = useTheme();
+  const { setTheme, resolvedTheme } = useTheme();
   const handleToggleTheme = (): void => {
-    setTheme(theme === 'light' ? 'dark' : 'light');
+    setTheme(resolvedTheme === 'light' ? 'dark' : 'light');
   };
   return (
     <Button
