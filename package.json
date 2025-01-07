@@ -17,7 +17,8 @@
     "format:write": "prettier --write \"**/*.{ts,tsx,mdx}\" --cache",
     "format:check": "prettier --check \"**/*.{ts,tsx,mdx}\" --cache",
     "typecheck": "content-collections build && tsc --noEmit",
-    "postinstall": "prisma generate && content-collections build"
+    "postinstall": "prisma generate && content-collections build",
+    "stripe:listen": "stripe listen --forward-to http://localhost:3000/api/stripe/webhook"
   },
   "dependencies": {
     "@auth/prisma-adapter": "2.7.2",
