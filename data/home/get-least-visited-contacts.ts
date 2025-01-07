@@ -20,7 +20,7 @@ import {
   type GetLeastVisitedContactsSchema
 } from '@/schemas/home/get-least-vistied-contacts-schema';
 import type { VisitedContactDto } from '@/types/dtos/visited-contact-dto';
-import { SortDirection } from '@/types/sorty-direction';
+import { SortDirection } from '@/types/sort-direction';
 
 export async function getLeastVisitedContacts(
   input: GetLeastVisitedContactsSchema

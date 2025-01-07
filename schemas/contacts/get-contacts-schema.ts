@@ -1,7 +1,7 @@
 import { literal, z } from 'zod';
 
 import { MAX_INT32 } from '@/constants/limits';
-import { SortDirection } from '@/types/sorty-direction';
+import { SortDirection } from '@/types/sort-direction';
 
 export enum GetContactsSortBy {
   Name = 'name',

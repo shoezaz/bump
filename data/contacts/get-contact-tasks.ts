@@ -18,7 +18,7 @@ import {
   type GetContactTasksSchema
 } from '@/schemas/contacts/get-contact-tasks-schema';
 import type { ContactTaskDto } from '@/types/dtos/contact-task-dto';
-import { SortDirection } from '@/types/sorty-direction';
+import { SortDirection } from '@/types/sort-direction';
 
 export async function getContactTasks(
   input: GetContactTasksSchema

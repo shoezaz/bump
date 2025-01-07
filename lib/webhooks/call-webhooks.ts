@@ -2,7 +2,7 @@ import { WebhookTrigger } from '@prisma/client';
 
 import { prisma } from '@/lib/db/prisma';
 import { sendPayload } from '@/lib/webhooks/send-payload';
-import { SortDirection } from '@/types/sorty-direction';
+import { SortDirection } from '@/types/sort-direction';
 
 // In the beginning, just call this method whenever an event occurs, but
 // ideally you want to call webhooks in a separate worker process, for example:

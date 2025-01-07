@@ -18,7 +18,7 @@ import {
   type GetContactNotesSchema
 } from '@/schemas/contacts/get-contact-notes-schema';
 import type { ContactNoteDto } from '@/types/dtos/contact-note-dto';
-import { SortDirection } from '@/types/sorty-direction';
+import { SortDirection } from '@/types/sort-direction';
 
 export async function getContactNotes(
   input: GetContactNotesSchema

@@ -13,7 +13,7 @@ import { getLoginRedirect } from '@/lib/auth/redirect';
 import { checkSession } from '@/lib/auth/session';
 import { prisma } from '@/lib/db/prisma';
 import type { WebhookDto } from '@/types/dtos/webhook-dto';
-import { SortDirection } from '@/types/sorty-direction';
+import { SortDirection } from '@/types/sort-direction';
 
 export async function getWebhooks(): Promise<WebhookDto[]> {
   const session = await dedupedAuth();

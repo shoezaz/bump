@@ -20,7 +20,7 @@ import {
   type GetMostVisitedContactsSchema
 } from '@/schemas/home/get-most-vistied-contacts-schema';
 import type { VisitedContactDto } from '@/types/dtos/visited-contact-dto';
-import { SortDirection } from '@/types/sorty-direction';
+import { SortDirection } from '@/types/sort-direction';
 
 export async function getMostVisitedContacts(
   input: GetMostVisitedContactsSchema

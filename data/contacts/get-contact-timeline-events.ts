@@ -23,7 +23,7 @@ import type {
   CommentTimelineEventDto,
   TimelineEventDto
 } from '@/types/dtos/timeline-event-dto';
-import { SortDirection } from '@/types/sorty-direction';
+import { SortDirection } from '@/types/sort-direction';
 
 export async function getContactTimelineEvents(
   input: GetContactTimelineEventsSchema

@@ -11,7 +11,7 @@ import {
   GetContactsSortBy,
   RecordsOption
 } from '@/schemas/contacts/get-contacts-schema';
-import { SortDirection } from '@/types/sorty-direction';
+import { SortDirection } from '@/types/sort-direction';
 
 export const searchParams = {
   pageIndex: parseAsInteger.withDefault(0),
