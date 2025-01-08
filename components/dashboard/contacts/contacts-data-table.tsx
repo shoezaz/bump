@@ -173,7 +173,7 @@ export function ContactsDataTable({
         <DataTable
           fixedHeader
           table={table}
-          wrapperClassName="h-[calc(100vh-177px)] overflow-visible"
+          wrapperClassName="h-[calc(100svh-177px)] overflow-visible"
           onRowClicked={handleRowClicked}
         />
       </ScrollArea>

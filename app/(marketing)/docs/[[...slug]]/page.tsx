@@ -90,7 +90,7 @@ export default async function DocsPage(
       <div className="hidden text-sm xl:block">
         <div className="sticky top-16 -mt-2 pb-10 pl-6 ">
           <ScrollArea className="pb-10">
-            <div className="sticky top-16 -mt-2 h-[calc(100vh-3.5rem)] py-12">
+            <div className="sticky top-16 -mt-2 h-[calc(100svh-3.5rem)] py-12">
               <DocsToc toc={toc} />
             </div>
           </ScrollArea>
