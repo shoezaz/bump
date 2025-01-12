@@ -10,20 +10,19 @@ export async function resizeImage(
 ): Promise<Buffer> {
   const image = sharp(buffer);
   const metadata = await image.metadata();
-
-  if (
-    !metadata.width ||
-    !metadata.height ||
-    metadata.width !== metadata.height
-  ) {
-    throw new Error('Image is not a square');
+  if (!metadata.width || !metadata.height) {
+    throw new Error('Image dimensions are not available');
   }
 
-  const currentSize = Math.max(metadata.width, metadata.height);
   let resizedImage = image;
 
-  if (currentSize > maxSize) {
-    resizedImage = image.resize(maxSize, maxSize);
+  if (Math.max(metadata.width, metadata.height) > maxSize) {
+    resizedImage = image.resize({
+      width: maxSize,
+      height: maxSize,
+      fit: sharp.fit.inside,
+      withoutEnlargement: true
+    });
   }
 
   const format = getFormatFromMimeType(mimeType);
@@ -45,10 +44,8 @@ function getFormatFromMimeType(mimeType: string): string {
       throw new Error(`Invalid mime type: ${mimeType}`);
     }
     return parts[1];
-  } catch (error) {
-    console.warn(
-      `Error parsing mime type: ${error.message}. Using default format.`
-    );
+  } catch {
+    console.warn(`Error parsing mime type. Using default format.`);
     return defaultFormat;
   }
 }
