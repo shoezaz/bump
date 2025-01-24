@@ -13,16 +13,16 @@ Get started in about 30 minutes by following these steps.
 2. Switch to the project's root directory
 
 ```bash
-cd pro
+cd monorepo-next-prisma-authjs
 ```
 
-2. Install PNPM
+2. Install PNPM if not already installed
 
 ```bash
 npm i -g pnpm
 ```
 
-3. Install the package dependencies
+3. Install the package dependencies of the whole monorepo
 
 ```bash
 pnpm i
