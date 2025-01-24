@@ -1,8 +1,6 @@
 # Introduction
 
-An advanced Next 15 starter kit designed to accelerate the development of modern web-based applications. It provides a robust foundation for creating efficient, scalable and high-performance solutions.
-
-![hero](public/og.jpg)
+Next 15 starter kit based on Next.js, Auth.js and Prisma designed to accelerate the development of web-based (SaaS) applications.
 
 # Quickstart
 
@@ -10,37 +8,37 @@ Get started in about 30 minutes by following these steps.
 
 ## Preparation
 
-1. **Unpack the Archive**
+1. Unpack the Archive
 
-2. **Switch to the project's root directory**
+2. Switch to the project's root directory
 
 ```bash
-cd achromatic-pro
+cd pro
 ```
 
-2. **Install the node dependencies**
+2. Install PNPM
 
 ```bash
-npm install
+npm i -g pnpm
 ```
 
-3. **Copy the sample configuration**
+3. Install the package dependencies
 
 ```bash
-cp .env.example .env
+pnpm i
+```
+
+4. Copy the sample configurations
+
+```bash
+cp apps/dashboard/.env.example apps/dashboard/.env
+cp apps/marketing/.env.example apps/marketing/.env
+cp packages/database/.env.example packages/database/.env
 ```
 
 ## Services
 
 ### Database
-
-#### Docker
-
-If you're using Docker for local development, you can start a PostgreSQL container with the following command.
-
-```bash
-docker compose up -d
-```
 
 #### Install PostgreSQL
 
@@ -50,7 +48,7 @@ docker compose up -d
 brew install postgresql
 ```
 
-2.  Add an initial user.
+2. Add an initial user.
 
 ```bash
 sudo -u postgres psql
@@ -59,16 +57,22 @@ ALTER USER postgres WITH SUPERUSER;
 \q
 ```
 
-3.  Update `.env` with your database credentials.
+3.  Update database `packages/database/.env` with your credentials.
 
 ```bash
-DATABASE_URL=postgresql://postgres:password@localhost:5432/achromatic_pro?schema=public
+DATABASE_URL=postgresql://postgres:password@localhost:5432/database?schema=public
 ```
 
 4. Apply the database migrations.
 
 ```bash
-npx prisma migrate dev
+pnpm --filter database migrate dev
+```
+
+5. Update also the dashboard `apps/dashboard/.env` with your credentials.
+
+```bash
+DATABASE_URL=postgresql://postgres:password@localhost:5432/database?schema=public
 ```
 
 ### Google Login (Optional)
@@ -90,7 +94,7 @@ http://localhost:3000
 http://localhost:3000/api/auth/callback/google
 ```
 
-8. Update `.env` with the created credentials.
+8. Update dashboard `apps/dashboard/.env` with the created credentials.
 
 ```bash
 AUTH_GOOGLE_CLIENT_ID=
@@ -111,7 +115,7 @@ http://localhost:3000/api/auth/callback/microsoft-entra-id
 ```
 
 6. Under `Certificates & Secrets`, create a new client secret.
-7. Update `.env` with the created secret.
+7. Update dashboard `apps/dashboard/.env` with the created secret.
 
 ```bash
 AUTH_MICROSOFT_ENTRA_ID_CLIENT_ID=
@@ -127,33 +131,30 @@ AUTH_MICROSOFT_ENTRA_ID_CLIENT_SECRET=
 5. Create a product.
 6. Create a price for the product.
 7. Navigate to developer section and copy the API credentials.
-8. Update `.env` with the IDs and credentials.
+8. Update dashboard `apps/dashboard/.env` with the IDs and credentials.
 
 ```bash
-NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=
-STRIPE_SECRET_KEY=
-STRIPE_WEBHOOK_SECRET=
-PRO_PRODUCT_ID=
-PRO_PRODUCT_PRICE_ID=
+NEXT_PUBLIC_BILLING_STRIPE_PUBLISHABLE_KEY=
+BILLING_STRIPE_SECRET_KEY=
+BILLING_STRIPE_WEBHOOK_SECRET=
+BILLING_PRO_PRODUCT_ID=
+BILLING_PRO_PRODUCT_PRICE_ID=
 ```
 
 ### SMTP Provider
 
-Achromatic supports NodeMailer (SMTP) and Resend.
+The starter kit supports NodeMailer (SMTP) and Resend.
 
 1. Choose an SMTP provider (Gmail for testing is fine).
-2. Update `.env` with SMTP credentials.
+2. Update dashboard `apps/dashboard/.env` with SMTP credentials.
 
 ```bash
-EMAIL_SENDER=
+EMAIL_FROM=
 EMAIL_MAILER=NodeMailer # NodeMailer (default) | Resend
 
 # NodeMailer
 
-EMAIL_SERVER_HOST=
-EMAIL_SERVER_PORT=
-EMAIL_SERVER_USER=
-EMAIL_SERVER_PASS=
+EMAIL_NODEMAILER_URL=
 
 # Resend
 EMAIL_RESEND_API_KEY=
@@ -162,22 +163,45 @@ EMAIL_RESEND_API_KEY=
 For Gmail you need an **app-specific password** and set it up like this
 
 ```bash
-EMAIL_SERVER_HOST=smtp.gmail.com
-EMAIL_SERVER_PORT=465
-EMAIL_SERVER_USER=example@gmail.com
-EMAIL_SERVER_PASS=suyz yeba qtgv xrnp
+EMAIL_NODEMAILER_URL=smtp://myemail@gmail.com:suyz yeba qtgv xrnp@smtp.gmail.com:465
 ```
 
 <Callout>SMTP provider is mandatory for credentials login.</Callout>
 
-## Application
+## Dashboard Application
 
-1. **Start the Application**
+1. Start the dashboard application
 
 ```bash
-npm run dev
+pnpm --filter dashboard dev
 ```
 
-2. **Navigate to** http://localhost:3000
+2. Navigate to http://localhost:3000
 
 You’re all set to start!
+
+## Marketing Application
+
+1. Start the marketing application
+
+```bash
+pnpm --filter marketing dev
+```
+
+2. Navigate to http://localhost:3001
+
+You’re all set to start!
+
+## Troubleshoot
+
+### The generated Prisma types are not loaded.
+
+Restart VS code (or the TS server).
+
+### It seems that I can't login
+
+The database is probably not set up.
+
+### NPM throws an error
+
+In v2 npm is no longer supported. It's all pnpm now. The problem is that npm, yarn and pnpm have different workspace syntax and package hoisting patterns, supporting all package managers is not possible in a monorepo setup.
