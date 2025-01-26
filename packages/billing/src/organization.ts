@@ -77,7 +77,7 @@ export async function updateOrganizationSubscriptionQuantity(
     console.warn(`Organization with id ${organizationId} not found`);
     return;
   }
-  if (organization.stripeCustomerId) {
+  if (!organization.stripeCustomerId) {
     console.warn('Missing stripeCustomerId');
     return;
   }
