@@ -2,7 +2,7 @@ import { cache } from 'react';
 import NextAuth, { type NextAuthConfig } from 'next-auth';
 import { encode } from 'next-auth/jwt';
 
-import { routes } from '@workspace/routes';
+import { baseUrl, getPathname, routes } from '@workspace/routes';
 
 import { keys } from '../keys';
 import { adapter } from './adapter';
@@ -17,10 +17,10 @@ export const authConfig = {
   secret: keys().AUTH_SECRET,
   session,
   pages: {
-    signIn: routes.dashboard.auth.SignIn,
-    signOut: routes.dashboard.auth.SignIn, // Don't need a sign out page
-    error: routes.dashboard.auth.Error, // Error code passed in query string as ?error=ERROR_CODE
-    newUser: routes.dashboard.onboarding.Index
+    signIn: getPathname(routes.dashboard.auth.SignIn, baseUrl.Dashboard),
+    signOut: getPathname(routes.dashboard.auth.SignIn, baseUrl.Dashboard), // Don't need a sign out page
+    error: getPathname(routes.dashboard.auth.Error, baseUrl.Dashboard), // Error code passed in query string as ?error=ERROR_CODE
+    newUser: getPathname(routes.dashboard.onboarding.Index, baseUrl.Dashboard)
   },
   callbacks,
   events,
