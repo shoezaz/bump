@@ -33,7 +33,7 @@ import {
 
 import { addExampleData } from '~/actions/onboarding/_add-example';
 import { authActionClient } from '~/actions/safe-action';
-import { Caching, UserCacheKey } from '~/data/caching';
+import { Caching, OrganizationCacheKey, UserCacheKey } from '~/data/caching';
 import { FileUploadAction } from '~/lib/file-upload';
 import { getTimeSlot } from '~/lib/formatters';
 import {
@@ -129,6 +129,19 @@ export const completeOnboarding = authActionClient
       } catch (e) {
         console.error(e);
       }
+
+      revalidateTag(
+        Caching.createOrganizationTag(
+          OrganizationCacheKey.Members,
+          membership.organization.id
+        )
+      );
+      revalidateTag(
+        Caching.createOrganizationTag(
+          OrganizationCacheKey.Invitations,
+          membership.organization.id
+        )
+      );
     }
 
     let redirect: string = routes.dashboard.organizations.Index;
