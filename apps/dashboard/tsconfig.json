@@ -13,7 +13,6 @@
     "next-params.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    "**/*.tsx",
     "*.mjs",
     ".next/types/**/*.ts"
   ],
