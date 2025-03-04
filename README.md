@@ -204,4 +204,4 @@ The database is probably not set up.
 
 ### NPM throws an error
 
-In v2 npm is no longer supported. It's all pnpm now. The problem is that npm, yarn and pnpm have different workspace syntax and package hoisting patterns, supporting all package managers is not possible in a monorepo setup.
+In the monorepo version npm is no longer supported. It's all pnpm now. The problem is that npm, yarn and pnpm have different workspace syntax and package hoisting patterns. Supporting all package managers is not possible in a monorepo setup and pnpm is the most popular one.
