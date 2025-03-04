@@ -61,9 +61,6 @@ const nextConfig: NextConfig = {
   },
   reactStrictMode: true,
   poweredByHeader: false,
-  devIndicators: {
-    appIsrStatus: false
-  },
   async headers() {
     return [
       {

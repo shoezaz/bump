@@ -6,6 +6,6 @@
     "clean": "git clean -xdf .cache .turbo build dist node_modules"
   },
   "devDependencies": {
-    "prisma": "6.1.0"
+    "prisma": "6.4.1"
   }
 }

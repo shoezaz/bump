@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "@auth/prisma-adapter": "2.7.2",
-    "@t3-oss/env-nextjs": "0.11.1",
+    "@t3-oss/env-nextjs": "0.12.0",
     "@workspace/common": "workspace:*",
     "@workspace/database": "workspace:*",
     "@workspace/email": "workspace:*",
@@ -22,16 +22,16 @@
     "@workspace/routes": "workspace:*",
     "bcryptjs": "2.4.3",
     "date-fns": "3.6.0",
-    "next": "15.1.2",
+    "next": "15.2.1",
     "next-auth": "5.0.0-beta.25",
     "react": "19.0.0",
-    "uuid": "11.0.3",
-    "zod": "3.24.1"
+    "uuid": "11.1.0",
+    "zod": "3.24.2"
   },
   "devDependencies": {
     "@types/bcryptjs": "2.4.6",
-    "@types/node": "22.10.2",
-    "@types/react": "19.0.2",
+    "@types/node": "22.13.9",
+    "@types/react": "19.0.10",
     "@types/uuid": "10.0.0",
     "@workspace/eslint-config": "workspace:*",
     "@workspace/prettier-config": "workspace:*",

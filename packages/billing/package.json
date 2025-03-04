@@ -13,15 +13,15 @@
   },
   "dependencies": {
     "@stripe/stripe-js": "4.8.0",
-    "@t3-oss/env-nextjs": "0.11.1",
+    "@t3-oss/env-nextjs": "0.12.0",
     "@workspace/database": "workspace:*",
     "client-only": "0.0.1",
     "server-only": "0.0.1",
     "stripe": "16.12.0",
-    "zod": "3.24.1"
+    "zod": "3.24.2"
   },
   "devDependencies": {
-    "@types/node": "22.10.2",
+    "@types/node": "22.13.9",
     "@workspace/eslint-config": "workspace:*",
     "@workspace/prettier-config": "workspace:*",
     "@workspace/typescript-config": "workspace:*"

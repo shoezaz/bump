@@ -17,7 +17,7 @@
     "date-fns": "3.6.0"
   },
   "devDependencies": {
-    "@types/node": "22.10.2",
+    "@types/node": "22.13.9",
     "@workspace/eslint-config": "workspace:*",
     "@workspace/prettier-config": "workspace:*",
     "@workspace/typescript-config": "workspace:*"
