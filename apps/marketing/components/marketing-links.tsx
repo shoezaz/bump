@@ -4,6 +4,7 @@ import {
   BookOpenIcon,
   BoxIcon,
   CircuitBoardIcon,
+  CodeIcon,
   CuboidIcon,
   FileBarChartIcon,
   LayoutIcon,
@@ -11,7 +12,7 @@ import {
   SendHorizonalIcon
 } from 'lucide-react';
 
-import { routes } from '@workspace/routes';
+import { baseUrl, routes } from '@workspace/routes';
 import {
   FacebookIcon,
   InstagramIcon,
@@ -84,6 +85,13 @@ export const MENU_LINKS = [
         icon: <BookOpenIcon className="size-5 shrink-0" />,
         href: routes.marketing.Docs,
         external: false
+      },
+      {
+        title: 'API Reference',
+        description: 'Build integrations with our API',
+        icon: <CodeIcon className="size-5 shrink-0" />,
+        href: baseUrl.PublicApi,
+        external: true
       }
     ]
   },
@@ -120,7 +128,8 @@ export const FOOTER_LINKS = [
     links: [
       { name: 'Contact', href: routes.marketing.Contact, external: false },
       { name: 'Roadmap', href: routes.marketing.Roadmap, external: true },
-      { name: 'Docs', href: routes.marketing.Docs, external: false }
+      { name: 'Docs', href: routes.marketing.Docs, external: false },
+      { name: 'API Reference', href: baseUrl.PublicApi, external: true }
     ]
   },
   {

@@ -9,7 +9,6 @@ export default function WebooksLayout({
     <AnnotatedSection
       title="Webhooks"
       description="Register POST endpoints to be notified on asynchronous events."
-      docLink="#"
     >
       {children}
     </AnnotatedSection>

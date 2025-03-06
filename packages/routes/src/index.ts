@@ -6,7 +6,8 @@ import { keys } from '../keys';
 
 export const baseUrl = {
   Dashboard: keys().NEXT_PUBLIC_DASHBOARD_URL,
-  Marketing: keys().NEXT_PUBLIC_MARKETING_URL
+  Marketing: keys().NEXT_PUBLIC_MARKETING_URL,
+  PublicApi: keys().NEXT_PUBLIC_PUBLIC_API_URL
 } as const;
 
 export const routes = {

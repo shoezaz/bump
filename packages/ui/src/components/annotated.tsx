@@ -130,6 +130,7 @@ const AnnotatedSection = React.forwardRef<
             <Link
               href={docLink}
               className="inline-flex items-center gap-1 text-sm text-primary hover:underline"
+              target="_blank"
             >
               Read documentation
               <ExternalLinkIcon className="size-3" />

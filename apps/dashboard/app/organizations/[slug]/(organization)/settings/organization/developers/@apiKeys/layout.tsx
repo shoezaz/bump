@@ -1,5 +1,6 @@
 import * as React from 'react';
 
+import { baseUrl } from '@workspace/routes';
 import { AnnotatedSection } from '@workspace/ui/components/annotated';
 
 export default function ApiKeysLayout({
@@ -9,7 +10,7 @@ export default function ApiKeysLayout({
     <AnnotatedSection
       title="API keys"
       description="These keys allow other apps to control resources of your organization. Be careful!"
-      docLink="#"
+      docLink={baseUrl.PublicApi}
     >
       {children}
     </AnnotatedSection>

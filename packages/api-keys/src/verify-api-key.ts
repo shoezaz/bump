@@ -1,5 +1,6 @@
 import { isBefore } from 'date-fns';
 
+import type { Maybe } from '@workspace/common/maybe';
 import { isString } from '@workspace/common/type-guards';
 import { prisma } from '@workspace/database/client';
 
@@ -17,7 +18,9 @@ type SuccessResult = {
   organizationId: string;
 };
 
-export async function verifyApiKey(token: string) {
+export async function verifyApiKey(
+  token: Maybe<string>
+): Promise<ErrorResult | SuccessResult> {
   if (!token) {
     return {
       success: false,
