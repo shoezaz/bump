@@ -33,6 +33,7 @@ pnpm i
 ```bash
 cp apps/dashboard/.env.example apps/dashboard/.env
 cp apps/marketing/.env.example apps/marketing/.env
+cp apps/public-api/.env.example apps/public-api/.env
 cp packages/database/.env.example packages/database/.env
 ```
 
