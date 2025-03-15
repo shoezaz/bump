@@ -1,5 +1,5 @@
 'use client';
 
-import { DefaultError } from '@workspace/ui/components/default-error';
+import { DefaultError } from '~/components/default-error';
 
 export default DefaultError;

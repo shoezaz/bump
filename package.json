@@ -33,6 +33,7 @@
       "react": "19.0.0",
       "react-dom": "19.0.0",
       "react-is": "19.0.0",
+      "require-in-the-middle": "7.5.2",
       "archiver": "7.0.1",
       "unzipper": "0.12.3",
       "tree-sitter": "0.21.1"

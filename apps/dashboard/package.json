@@ -32,6 +32,7 @@
     "@workspace/email": "workspace:*",
     "@workspace/image-processing": "workspace:*",
     "@workspace/markdown": "workspace:*",
+    "@workspace/monitoring": "workspace:*",
     "@workspace/routes": "workspace:*",
     "@workspace/ui": "workspace:*",
     "date-fns": "3.6.0",

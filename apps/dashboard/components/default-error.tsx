@@ -3,8 +3,9 @@
 import * as React from 'react';
 import { TriangleAlertIcon } from 'lucide-react';
 
-import { Button } from './button';
-import { Card, CardContent } from './card';
+import { useCaptureError } from '@workspace/monitoring/hooks/use-capture-error';
+import { Button } from '@workspace/ui/components/button';
+import { Card, CardContent } from '@workspace/ui/components/card';
 
 export type DefaultErrorProps = {
   error: Error & { digest?: string };
@@ -12,9 +13,10 @@ export type DefaultErrorProps = {
 };
 
 export function DefaultError({
-  error: _error,
+  error: { digest, ...error },
   reset
 }: DefaultErrorProps): React.JSX.Element {
+  useCaptureError(error, { digest });
   const handleReset = (): void => {
     reset?.();
   };

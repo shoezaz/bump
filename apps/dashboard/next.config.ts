@@ -2,6 +2,8 @@ import { type NextConfig } from 'next/types';
 import withBundleAnalyzer from '@next/bundle-analyzer';
 import { createSecureHeaders } from 'next-secure-headers';
 
+import { MonitoringProvider } from '@workspace/monitoring/provider';
+
 const INTERNAL_PACKAGES = [
   '@workspace/api-keys',
   '@workspace/auth',
@@ -12,6 +14,7 @@ const INTERNAL_PACKAGES = [
   '@workspace/email-templates',
   '@workspace/image-processing',
   '@workspace/markdown',
+  '@workspace/monitoring',
   '@workspace/rate-limit',
   '@workspace/routes',
   '@workspace/ui',
@@ -122,4 +125,4 @@ const bundleAnalyzerConfig = withBundleAnalyzer({
   enabled: process.env.BUNDLE_ANALYZER === 'true'
 });
 
-export default bundleAnalyzerConfig(nextConfig);
+export default MonitoringProvider.withConfig(bundleAnalyzerConfig(nextConfig));
