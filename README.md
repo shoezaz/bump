@@ -146,12 +146,11 @@ BILLING_PRO_PRODUCT_PRICE_ID=
 
 The starter kit supports NodeMailer (SMTP) and Resend.
 
-1. Choose an SMTP provider (Gmail for testing is fine).
+1. Choose an SMTP provider in `packages/email/provider/index.ts`.
 2. Update dashboard `apps/dashboard/.env` with SMTP credentials.
 
 ```bash
 EMAIL_FROM=
-EMAIL_MAILER=NodeMailer # NodeMailer (default) | Resend
 
 # NodeMailer
 

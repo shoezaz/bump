@@ -1,12 +1,12 @@
 import { render } from '@react-email/render';
 
 import { APP_NAME } from '@workspace/common/app';
+
+import { EmailProvider } from './provider';
 import {
   WelcomeEmail,
   type WelcomeEmailProps
-} from '@workspace/email-templates/welcome-email';
-
-import { sendEmail } from './mailer/send-email';
+} from './templates/welcome-email';
 
 export async function sendWelcomeEmail(
   input: WelcomeEmailProps & { recipient: string }
@@ -15,7 +15,7 @@ export async function sendWelcomeEmail(
   const html = await render(component);
   const text = await render(component, { plainText: true });
 
-  await sendEmail({
+  await EmailProvider.sendEmail({
     recipient: input.recipient,
     subject: `Welcome to ${APP_NAME}`,
     html,

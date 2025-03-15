@@ -1,11 +1,10 @@
 import { render } from '@react-email/render';
 
+import { EmailProvider } from './provider';
 import {
   PasswordResetEmail,
   type PasswordResetEmailProps
-} from '@workspace/email-templates/password-reset-email';
-
-import { sendEmail } from './mailer/send-email';
+} from './templates/password-reset-email';
 
 export async function sendPasswordResetEmail(
   input: PasswordResetEmailProps & { recipient: string }
@@ -14,7 +13,7 @@ export async function sendPasswordResetEmail(
   const html = await render(component);
   const text = await render(component, { plainText: true });
 
-  await sendEmail({
+  await EmailProvider.sendEmail({
     recipient: input.recipient,
     subject: 'Reset password instructions',
     html,

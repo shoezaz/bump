@@ -1,13 +1,13 @@
 import { Resend, type CreateEmailResponse } from 'resend';
 
 import { keys } from '../../../keys';
-import { type Mailer, type MailerPayload } from '../types';
+import { type EmailPayload, type EmailProvider } from '../types';
 import { resendOptions } from './resend-options';
 
 const resend = new Resend(keys().EMAIL_RESEND_API_KEY!);
 
-export class ResendMailer implements Mailer {
-  public async sendEmail(payload: MailerPayload): Promise<CreateEmailResponse> {
+export default {
+  async sendEmail(payload: EmailPayload): Promise<CreateEmailResponse> {
     const response = await resend.emails.send({
       from: resendOptions.from,
       to: payload.recipient,
@@ -21,4 +21,4 @@ export class ResendMailer implements Mailer {
 
     return response;
   }
-}
+} satisfies EmailProvider;

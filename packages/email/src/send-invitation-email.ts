@@ -1,11 +1,10 @@
 import { render } from '@react-email/render';
 
+import { EmailProvider } from './provider';
 import {
   InvitationEmail,
   type InvitationEmailProps
-} from '@workspace/email-templates/invitation-email';
-
-import { sendEmail } from './mailer/send-email';
+} from './templates/invitation-email';
 
 export async function sendInvitationEmail(
   input: InvitationEmailProps & { recipient: string }
@@ -14,7 +13,7 @@ export async function sendInvitationEmail(
   const html = await render(component);
   const text = await render(component, { plainText: true });
 
-  await sendEmail({
+  await EmailProvider.sendEmail({
     recipient: input.recipient,
     subject: 'Organization invitation',
     html,

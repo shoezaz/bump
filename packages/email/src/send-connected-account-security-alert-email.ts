@@ -1,11 +1,10 @@
 import { render } from '@react-email/render';
 
+import { EmailProvider } from './provider';
 import {
   ConnectedAccountSecurityAlertEmail,
   type ConnectedAccountSecurityAlertEmailProps
-} from '@workspace/email-templates/connected-account-security-alert-email';
-
-import { sendEmail } from './mailer/send-email';
+} from './templates/connected-account-security-alert-email';
 
 export async function sendConnectedAccountSecurityAlertEmail(
   input: ConnectedAccountSecurityAlertEmailProps & { recipient: string }
@@ -14,7 +13,7 @@ export async function sendConnectedAccountSecurityAlertEmail(
   const html = await render(component);
   const text = await render(component, { plainText: true });
 
-  await sendEmail({
+  await EmailProvider.sendEmail({
     recipient: input.recipient,
     subject: 'Security Alert!',
     html,

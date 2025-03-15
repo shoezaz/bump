@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { InvitationEmail } from '@workspace/email-templates/invitation-email';
+import { InvitationEmail } from '@workspace/email/templates/invitation-email';
 
 export default function RenderedEmail(): React.JSX.Element {
   return (

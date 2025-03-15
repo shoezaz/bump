@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { VerifyEmailAddressEmail } from '@workspace/email-templates/verify-email-address-email';
+import { VerifyEmailAddressEmail } from '@workspace/email/templates/verify-email-address-email';
 
 export default function RenderedEmail(): React.JSX.Element {
   return (

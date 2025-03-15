@@ -1,11 +1,10 @@
 import { render } from '@react-email/render';
 
+import { EmailProvider } from './provider';
 import {
   ConfirmEmailAddressChangeEmail,
   type ConfirmEmailAddressChangeEmailProps
-} from '@workspace/email-templates/confirm-email-address-change-email';
-
-import { sendEmail } from './mailer/send-email';
+} from './templates/confirm-email-address-change-email';
 
 export async function sendConfirmEmailAddressChangeEmail(
   input: ConfirmEmailAddressChangeEmailProps & { recipient: string }
@@ -14,7 +13,7 @@ export async function sendConfirmEmailAddressChangeEmail(
   const html = await render(component);
   const text = await render(component, { plainText: true });
 
-  await sendEmail({
+  await EmailProvider.sendEmail({
     recipient: input.recipient,
     subject: 'Change email instructions',
     html,

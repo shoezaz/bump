@@ -1,11 +1,10 @@
 import { render } from '@react-email/render';
 
+import { EmailProvider } from './provider';
 import {
   FeedbackEmail,
   type FeedbackEmailProps
-} from '@workspace/email-templates/feedback-email';
-
-import { sendEmail } from './mailer/send-email';
+} from './templates/feedback-email';
 
 export async function sendFeedbackEmail(
   input: FeedbackEmailProps & { recipient: string }
@@ -14,7 +13,7 @@ export async function sendFeedbackEmail(
   const html = await render(component);
   const text = await render(component, { plainText: true });
 
-  await sendEmail({
+  await EmailProvider.sendEmail({
     recipient: input.recipient,
     subject: 'User Feedback',
     html,

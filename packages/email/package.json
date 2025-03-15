@@ -17,7 +17,6 @@
     "@react-email/tailwind": "1.0.4",
     "@t3-oss/env-nextjs": "0.12.0",
     "@workspace/common": "workspace:*",
-    "@workspace/email-templates": "workspace:*",
     "nodemailer": "6.10.0",
     "react": "19.0.0",
     "react-dom": "19.0.0",
@@ -37,6 +36,7 @@
   "prettier": "@workspace/prettier-config",
   "exports": {
     "./keys": "./keys.ts",
+    "./provider": "./src/provider",
     "./send-confirm-email-address-change-email": "./src/send-confirm-email-address-change-email.ts",
     "./send-connected-account-security-alert-email": "./src/send-connected-account-security-alert-email.ts",
     "./send-feedback-email": "./src/send-feedback-email.ts",
@@ -44,6 +44,14 @@
     "./send-password-reset-email": "./src/send-password-reset-email.ts",
     "./send-revoked-invitation-email": "./src/send-revoked-invitation-email.ts",
     "./send-verify-email-address-email": "./src/send-verify-email-address-email.ts",
-    "./send-welcome-email": "./src/send-welcome-email.ts"
+    "./send-welcome-email": "./src/send-welcome-email.ts",
+    "./templates/confirm-email-address-change-email": "./src/templates/confirm-email-address-change-email.tsx",
+    "./templates/connected-account-security-alert-email": "./src/templates/connected-account-security-alert-email.tsx",
+    "./templates/feedback-email": "./src/templates/feedback-email.tsx",
+    "./templates/invitation-email": "./src/templates/invitation-email.tsx",
+    "./templates/password-reset-email": "./src/templates/password-reset-email.tsx",
+    "./templates/revoked-invitation-email": "./src/templates/revoked-invitation-email.tsx",
+    "./templates/verify-email-address-email": "./src/templates/verify-email-address-email.tsx",
+    "./templates/welcome-email": "./src/templates/welcome-email.tsx"
   }
 }
