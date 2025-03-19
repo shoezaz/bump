@@ -1,4 +1,4 @@
-import { isBefore } from 'date-fns';
+import { isAfter } from 'date-fns';
 
 import type { Maybe } from '@workspace/common/maybe';
 import { isString } from '@workspace/common/type-guards';
@@ -52,7 +52,7 @@ export async function verifyApiKey(
     } as ErrorResult;
   }
   const now = new Date();
-  if (!!apiKey.expiresAt && isBefore(now, apiKey.expiresAt)) {
+  if (!!apiKey.expiresAt && isAfter(now, apiKey.expiresAt)) {
     return {
       success: false,
       errorMessage: 'API key not found or expired'
