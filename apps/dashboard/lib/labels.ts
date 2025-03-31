@@ -68,5 +68,9 @@ export const authErrorLabels: Record<AuthErrorCode, string> = {
   [AuthErrorCode.IllegalOAuthProvider]: 'Illegal OAuth provider.',
   [AuthErrorCode.InternalServerError]:
     'Something went wrong. Please try again later.',
+  [AuthErrorCode.MissingOAuthEmail]: 'Missing OAuth email.',
+  [AuthErrorCode.AlreadyLinked]: 'OAuth account has been already linked.',
+  [AuthErrorCode.RequiresExplicitLinking]:
+    'Please sign in first to link this account',
   [AuthErrorCode.UnknownError]: 'Unknown error.'
 };

@@ -12,6 +12,9 @@ export enum AuthErrorCode {
   RateLimitExceeded = 'rate_limit_exceeded',
   IllegalOAuthProvider = 'illegal_oauth_provider',
   InternalServerError = 'internal_server_error',
+  MissingOAuthEmail = 'missing_oauth_email',
+  AlreadyLinked = 'already_linked',
+  RequiresExplicitLinking = 'requires_explicit_linking',
   UnknownError = 'unknown_error'
 }
 

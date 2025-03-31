@@ -1,4 +1,5 @@
 import { cookies } from 'next/headers';
+import { isAfter } from 'date-fns';
 import type { NextAuthConfig } from 'next-auth';
 
 import { prisma } from '@workspace/database/client';
@@ -10,6 +11,24 @@ import { AuthErrorCode } from './errors';
 import { OAuthProvider, Provider } from './providers.types';
 import { getRedirectToTotp } from './redirect';
 import { generateSessionToken, getSessionExpiryFromNow } from './session';
+
+async function isSignedIn(): Promise<boolean> {
+  const cookieStore = await cookies();
+  const currentSessionToken = cookieStore.get(AuthCookies.SessionToken)?.value;
+
+  if (currentSessionToken) {
+    const sessionFromDb = await prisma.session.findFirst({
+      where: { sessionToken: currentSessionToken },
+      select: { expires: true }
+    });
+
+    if (sessionFromDb) {
+      return isAfter(sessionFromDb.expires, new Date());
+    }
+  }
+
+  return false;
+}
 
 async function isAuthenticatorAppEnabled(userId: string): Promise<boolean> {
   const count = await prisma.authenticatorApp.count({
@@ -89,8 +108,50 @@ export const callbacks = {
       // }
     }
 
-    if (user?.id && (await isAuthenticatorAppEnabled(user.id))) {
-      return getRedirectToTotp(user.id);
+    // Check if this OAuth account already exists
+    const existingOAuthAccount = await prisma.account.findFirst({
+      where: {
+        provider: account.provider,
+        providerAccountId: account.providerAccountId
+      },
+      select: { userId: true }
+    });
+
+    const signedIn = await isSignedIn();
+    if (signedIn) {
+      // Explicit linking from security settings
+      if (existingOAuthAccount) {
+        // Todo redirect to the connected accounts page instead of orgs page
+        return `${routes.dashboard.organizations.Index}?error=${AuthErrorCode.AlreadyLinked}`;
+      }
+    } else {
+      // Continue with Google/Microsoft from auth pages
+      if (existingOAuthAccount) {
+        // MFA is required?
+        if (
+          existingOAuthAccount.userId &&
+          (await isAuthenticatorAppEnabled(existingOAuthAccount.userId))
+        ) {
+          return getRedirectToTotp(existingOAuthAccount.userId);
+        }
+      } else {
+        if (!profile.email) {
+          return `${routes.dashboard.auth.Error}?error=${AuthErrorCode.MissingOAuthEmail}`;
+        }
+
+        const existingUserByEmail = await prisma.user.findFirst({
+          where: { email: profile.email.toLowerCase() },
+          select: { id: true }
+        });
+
+        // If user exists and has MFA enabled, prevent auto-linking and require explicit linking
+        if (
+          existingUserByEmail &&
+          (await isAuthenticatorAppEnabled(existingUserByEmail.id))
+        ) {
+          return `${routes.dashboard.auth.Error}?error=${AuthErrorCode.RequiresExplicitLinking}`;
+        }
+      }
     }
 
     if (user?.name) {
