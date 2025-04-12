@@ -691,6 +691,9 @@ importers:
       '@react-email/tailwind':
         specifier: 1.0.4
         version: 1.0.4(react@19.0.0)
+      '@sendgrid/mail':
+        specifier: 8.1.5
+        version: 8.1.5
       '@t3-oss/env-nextjs':
         specifier: 0.12.0
         version: 0.12.0(typescript@5.7.2)(zod@3.24.2)
@@ -700,6 +703,9 @@ importers:
       nodemailer:
         specifier: 6.10.0
         version: 6.10.0
+      postmark:
+        specifier: 4.0.5
+        version: 4.0.5
       react:
         specifier: 19.0.0
         version: 19.0.0
@@ -4115,6 +4121,18 @@ packages:
 
   '@selderee/plugin-htmlparser2@0.11.0':
     resolution: {integrity: sha512-P33hHGdldxGabLFjPPpaTxVolMrzrcegejx+0GxjrIb9Zv48D8yAIA/QTDR2dFl7Uz7urX8aX6+5bCZslr+gWQ==}
+
+  '@sendgrid/client@8.1.5':
+    resolution: {integrity: sha512-Jqt8aAuGIpWGa15ZorTWI46q9gbaIdQFA21HIPQQl60rCjzAko75l3D1z7EyjFrNr4MfQ0StusivWh8Rjh10Cg==}
+    engines: {node: '>=12.*'}
+
+  '@sendgrid/helpers@8.0.0':
+    resolution: {integrity: sha512-Ze7WuW2Xzy5GT5WRx+yEv89fsg/pgy3T1E3FS0QEx0/VvRmigMZ5qyVGhJz4SxomegDkzXv/i0aFPpHKN8qdAA==}
+    engines: {node: '>= 12.0.0'}
+
+  '@sendgrid/mail@8.1.5':
+    resolution: {integrity: sha512-W+YuMnkVs4+HA/bgfto4VHKcPKLc7NiZ50/NH2pzO6UHCCFuq8/GNB98YJlLEr/ESDyzAaDr7lVE7hoBwFTT3Q==}
+    engines: {node: '>=12.*'}
 
   '@sentry-internal/browser-utils@9.5.0':
     resolution: {integrity: sha512-AE9jgeI5+KyGvLR0vf1I6sesi0NZXZe6pDlZNXyg+pWZB2vkE9dksE8ZsoU+YiD9zjUqazgPcVyb3O0VvmaCGw==}
@@ -7836,6 +7854,9 @@ packages:
   posthog-node@4.3.0:
     resolution: {integrity: sha512-FWyVB3nuoXcyQGyFlw92mXrPKAlImJL7iDTKj31W7OBtt1T3/Fo3tcKMD8P7WgooOd3F19exgDWeqX4wfXYVyw==}
     engines: {node: '>=15.0.0'}
+
+  postmark@4.0.5:
+    resolution: {integrity: sha512-nerZdd3TwOH4CgGboZnlUM/q7oZk0EqpZgJL+Y3Nup8kHeaukxouQ6JcFF3EJEijc4QbuNv1TefGhboAKtf/SQ==}
 
   preact-render-to-string@5.2.3:
     resolution: {integrity: sha512-aPDxUn5o3GhWdtJtW0svRC2SS/l8D9MAgo2+AWml+BhDImb27ALf04Q2d+AHqUUOc6RdSXFIBVa2gxzgMKgtZA==}
@@ -12790,6 +12811,24 @@ snapshots:
       domhandler: 5.0.3
       selderee: 0.11.0
 
+  '@sendgrid/client@8.1.5':
+    dependencies:
+      '@sendgrid/helpers': 8.0.0
+      axios: 1.8.3
+    transitivePeerDependencies:
+      - debug
+
+  '@sendgrid/helpers@8.0.0':
+    dependencies:
+      deepmerge: 4.3.1
+
+  '@sendgrid/mail@8.1.5':
+    dependencies:
+      '@sendgrid/client': 8.1.5
+      '@sendgrid/helpers': 8.0.0
+    transitivePeerDependencies:
+      - debug
+
   '@sentry-internal/browser-utils@9.5.0':
     dependencies:
       '@sentry/core': 9.5.0
@@ -17634,6 +17673,12 @@ snapshots:
     dependencies:
       axios: 1.8.3
       rusha: 0.8.14
+    transitivePeerDependencies:
+      - debug
+
+  postmark@4.0.5:
+    dependencies:
+      axios: 1.8.3
     transitivePeerDependencies:
       - debug
 

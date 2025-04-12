@@ -1,7 +1,14 @@
-import { keys } from '../../../keys';
-import type { NodeMailerTransport } from './node-mailer-transport';
+import type SendmailTransport from 'nodemailer/lib/sendmail-transport';
+import type SMTPConnection from 'nodemailer/lib/smtp-connection';
 
-export function detectTransport(): NodeMailerTransport {
+import { keys } from '../../../keys';
+
+export type NodemailerTransport =
+  | SendmailTransport.Options
+  | SMTPConnection.Options
+  | string;
+
+export function detectTransport(): NodemailerTransport {
   const env = keys();
 
   if (env.EMAIL_NODEMAILER_URL) {
@@ -29,6 +36,8 @@ export function detectTransport(): NodeMailerTransport {
       console.error('Failed to parse EMAIL_NODEMAILER_URL:', error);
     }
   }
+
+  console.log('Using fallback transport.');
 
   // Fallback to sendmail if no URL is provided or if parsing fails
   return {

@@ -4,5 +4,8 @@ This package contains the email sending logic for your project. It provides flex
 
 ## Providers
 
-- NodeMailer: Library for sending emails via SMTP.
-- Resend: Convient email service using AWS SES as their SMTP provider.
+- Console: Useful for local development. Emails are logged to the console instead of being sent.
+- Nodemailer: A popular Node.js library for sending emails via SMTP. Great for self-hosted or custom SMTP setups.
+- Postmark: A reliable transactional email service. Offers fast delivery and excellent deliverability for production use.
+- Resend: A developer-friendly email API that uses AWS SES under the hood, simplifying email setup while maintaining reliability.
+- SendGrid: Scalable cloud-based email service with advanced features for both transactional and marketing emails.

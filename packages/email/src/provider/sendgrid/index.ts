@@ -1,11 +1,10 @@
-import { Resend, type CreateEmailResponse } from 'resend';
+import sgMail from '@sendgrid/mail';
 
 import { keys } from '../../../keys';
 import { type EmailPayload, type EmailProvider } from '../types';
 
-class ResendEmailProvider implements EmailProvider {
+class SendGridEmailProvider implements EmailProvider {
   private readonly from: string;
-  private readonly client: Resend;
 
   constructor() {
     const from = keys().EMAIL_FROM;
@@ -13,19 +12,21 @@ class ResendEmailProvider implements EmailProvider {
       throw new Error('Missing EMAIL_FROM in environment configuration');
     }
 
-    const apiKey = keys().EMAIL_RESEND_API_KEY;
+    const apiKey = keys().EMAIL_SENDGRID_API_KEY;
     if (!apiKey) {
       throw new Error(
-        'Missing EMAIL_RESEND_API_KEY in environment configuration'
+        'Missing EMAIL_SENDGRID_API_KEY in environment configuration'
       );
     }
+    sgMail.setApiKey(apiKey);
 
     this.from = from;
-    this.client = new Resend(apiKey);
   }
 
-  public async sendEmail(payload: EmailPayload): Promise<CreateEmailResponse> {
-    const response = await this.client.emails.send({
+  public async sendEmail(
+    payload: EmailPayload
+  ): Promise<sgMail.ClientResponse> {
+    const [response] = await sgMail.send({
       from: this.from,
       to: payload.recipient,
       subject: payload.subject,
@@ -33,12 +34,8 @@ class ResendEmailProvider implements EmailProvider {
       text: payload.text,
       replyTo: payload.replyTo
     });
-    if (response.error) {
-      throw Error(response.error.message ?? 'Could not send mail.');
-    }
-
     return response;
   }
 }
 
-export default new ResendEmailProvider();
+export default new SendGridEmailProvider();

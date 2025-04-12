@@ -144,7 +144,7 @@ BILLING_PRO_PRODUCT_PRICE_ID=
 
 ### SMTP Provider
 
-The starter kit supports NodeMailer (SMTP) and Resend.
+The starter kit supports Nodemailer (SMTP) and Resend.
 
 1. Choose an SMTP provider in `packages/email/provider/index.ts`.
 2. Update dashboard `apps/dashboard/.env` with SMTP credentials.
@@ -152,12 +152,17 @@ The starter kit supports NodeMailer (SMTP) and Resend.
 ```bash
 EMAIL_FROM=
 
-# NodeMailer
-
+# Provider: NodeMailer
 EMAIL_NODEMAILER_URL=
 
-# Resend
+# Provider: Postmark
+EMAIL_POSTMARK_SERVER_TOKEN=
+
+# Provider: Resend
 EMAIL_RESEND_API_KEY=
+
+# Provider: SendGrid
+EMAIL_SENDGRID_API_KEY=
 ```
 
 For Gmail you need an **app-specific password** and set it up like this
@@ -165,6 +170,8 @@ For Gmail you need an **app-specific password** and set it up like this
 ```bash
 EMAIL_NODEMAILER_URL=smtp://myemail@gmail.com:suyz yeba qtgv xrnp@smtp.gmail.com:465
 ```
+
+We recommend Resend for the ease of use.
 
 <Callout>SMTP provider is mandatory for credentials login.</Callout>
 
