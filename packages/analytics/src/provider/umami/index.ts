@@ -12,87 +12,20 @@ declare global {
   }
 }
 
-let isInitialized = false;
-let currentUserId: string | undefined;
+class UmamiAnalyticsProvider implements AnalyticsProvider {
+  private isInitialized = false;
+  private currentUserId: string | undefined;
 
-function getUmami() {
-  return typeof window === 'undefined' || !window.umami
-    ? {
-        track: () => {
-          // Do nothing
-        }
-      }
-    : window.umami;
-}
-
-function disableLocalhostTracking(): void {
-  if (typeof window !== 'undefined') {
-    if (window.location.hostname === 'localhost') {
-      localStorage.setItem('umami.disabled', '1');
-    }
-  }
-}
-
-function createUmamiScript(host: string, websiteId: string): Promise<void> {
-  if (typeof document === 'undefined') {
+  public async trackPageView(): Promise<void> {
+    // Umami has automatic page view tracking
     return Promise.resolve();
   }
 
-  const script = document.createElement('script');
-  script.src = host;
-  script.async = true;
-  script.defer = true;
-
-  script.setAttribute('data-website-id', websiteId);
-  document.head.appendChild(script);
-
-  return new Promise<void>((resolve) => {
-    script.onload = () => {
-      resolve();
-    };
-  });
-}
-
-async function initialize(): Promise<void> {
-  if (isInitialized) {
-    return Promise.resolve();
-  }
-
-  const host = keys().NEXT_PUBLIC_ANALYTICS_UMAMI_HOST;
-  if (!host) {
-    throw new Error(
-      'Host is not set. Please set the environment variable NEXT_PUBLIC_ANALYTICS_UMAMI_HOST.'
-    );
-  }
-
-  const websiteId = keys().NEXT_PUBLIC_ANALYTICS_UMAMI_WEBSITE_ID;
-  if (!websiteId) {
-    throw new Error(
-      'Website ID is not set. Please set the environment variable NEXT_PUBLIC_ANALYTICS_UMAMI_WEBSITE_ID.'
-    );
-  }
-
-  if (keys().NEXT_PUBLIC_ANALYTICS_UMAMI_DISABLE_LOCALHOST_TRACKING) {
-    disableLocalhostTracking();
-  }
-
-  await createUmamiScript(host, websiteId);
-  isInitialized = true;
-}
-
-export default {
-  trackPageView: async (): Promise<void> => {
-    // Umami tracks page views automatically
-    return Promise.resolve();
-  },
-
-  trackEvent: async (
+  public async trackEvent(
     eventName: string,
     eventProperties: Record<string, string | string[]> = {}
-  ): Promise<void> => {
-    if (!isInitialized) {
-      await initialize();
-    }
+  ): Promise<void> {
+    await this.initialize();
 
     const processedProperties: Record<string, string> = {};
     Object.entries(eventProperties).forEach(([key, value]) => {
@@ -103,18 +36,80 @@ export default {
       }
     });
 
-    if (currentUserId) {
-      processedProperties.user_id = currentUserId;
+    if (this.currentUserId) {
+      processedProperties.user_id = this.currentUserId;
     }
 
-    getUmami().track(eventName, processedProperties);
-  },
-
-  identify: async (userId: string): Promise<void> => {
-    if (!isInitialized) {
-      await initialize();
-    }
-
-    currentUserId = userId;
+    this.getUmami().track(eventName, processedProperties);
   }
-} satisfies AnalyticsProvider;
+
+  public async identify(userId: string): Promise<void> {
+    await this.initialize();
+    this.currentUserId = userId;
+  }
+
+  private getUmami() {
+    return typeof window === 'undefined' || !window.umami
+      ? {
+          track: () => {}
+        }
+      : window.umami;
+  }
+
+  private async initialize(): Promise<void> {
+    if (this.isInitialized) {
+      return Promise.resolve();
+    }
+
+    const host = keys().NEXT_PUBLIC_ANALYTICS_UMAMI_HOST;
+    if (!host) {
+      throw new Error(
+        'Host is not set. Please set the environment variable NEXT_PUBLIC_ANALYTICS_UMAMI_HOST.'
+      );
+    }
+
+    const websiteId = keys().NEXT_PUBLIC_ANALYTICS_UMAMI_WEBSITE_ID;
+    if (!websiteId) {
+      throw new Error(
+        'Website ID is not set. Please set the environment variable NEXT_PUBLIC_ANALYTICS_UMAMI_WEBSITE_ID.'
+      );
+    }
+
+    if (keys().NEXT_PUBLIC_ANALYTICS_UMAMI_DISABLE_LOCALHOST_TRACKING) {
+      this.disableLocalhostTracking();
+    }
+
+    await this.createUmamiScript(host, websiteId);
+    this.isInitialized = true;
+  }
+
+  private disableLocalhostTracking(): void {
+    if (typeof window !== 'undefined') {
+      if (window.location.hostname === 'localhost') {
+        localStorage.setItem('umami.disabled', '1');
+      }
+    }
+  }
+
+  private createUmamiScript(host: string, websiteId: string): Promise<void> {
+    if (typeof document === 'undefined') {
+      return Promise.resolve();
+    }
+
+    const script = document.createElement('script');
+    script.src = host;
+    script.async = true;
+    script.defer = true;
+
+    script.setAttribute('data-website-id', websiteId);
+    document.head.appendChild(script);
+
+    return new Promise<void>((resolve) => {
+      script.onload = () => {
+        resolve();
+      };
+    });
+  }
+}
+
+export default new UmamiAnalyticsProvider();

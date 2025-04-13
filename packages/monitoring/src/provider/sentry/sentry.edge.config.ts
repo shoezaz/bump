@@ -1,4 +1,4 @@
-import * as Sentry from '@sentry/nextjs';
+import { init } from '@sentry/nextjs';
 
 import { keys } from '../../../keys';
 
@@ -9,9 +9,9 @@ type Parameters<T extends (args: never) => unknown> = T extends (
   : never;
 
 export function initializeSentryEdgeClient(
-  props: Parameters<typeof Sentry.init>[0] = {}
+  props: Parameters<typeof init>[0] = {}
 ) {
-  return Sentry.init({
+  return init({
     dsn: keys().NEXT_PUBLIC_MONITORING_SENTRY_DSN,
     integrations: [
       // https://docs.sentry.io/platforms/javascript/configuration/integrations/

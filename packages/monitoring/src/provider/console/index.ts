@@ -1,15 +1,15 @@
 import type { ErrorContext, ErrorRequest, MonitoringProvider } from '../types';
 
-export default {
-  withConfig<C>(nextConfig: C): C {
+class ConsoleMonitoringProvider implements MonitoringProvider {
+  public withConfig<C>(nextConfig: C): C {
     return nextConfig;
-  },
+  }
 
-  async register(): Promise<void> {
+  public async register(): Promise<void> {
     console.info(`[Console Monitoring] Registered.`);
-  },
+  }
 
-  captureRequestError(
+  public captureRequestError(
     error: unknown,
     errorRequest: Readonly<ErrorRequest>,
     errorContext: Readonly<ErrorContext>
@@ -38,9 +38,12 @@ export default {
         revalidateReason: errorContext.revalidateReason ?? 'N/A'
       });
     }
-  },
+  }
 
-  captureError<Extra extends object>(error: unknown, extra?: Extra): void {
+  public captureError<Extra extends object>(
+    error: unknown,
+    extra?: Extra
+  ): void {
     if (error instanceof Error) {
       console.error('[Console Monitoring] Error:', {
         name: error.name,
@@ -57,13 +60,18 @@ export default {
         extra
       );
     }
-  },
+  }
 
-  captureEvent<Extra extends object>(event: string, extra?: Extra): void {
+  public captureEvent<Extra extends object>(
+    event: string,
+    extra?: Extra
+  ): void {
     console.info(`[Console Monitoring] Event captured:`, { event, extra });
-  },
+  }
 
-  setUser<Info extends { id: string }>(user: Info): void {
+  public setUser<Info extends { id: string }>(user: Info): void {
     console.info(`[Console Monitoring] User tracked:`, user);
   }
-} satisfies MonitoringProvider;
+}
+
+export default new ConsoleMonitoringProvider();

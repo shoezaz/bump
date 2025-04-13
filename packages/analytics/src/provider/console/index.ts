@@ -1,16 +1,26 @@
 import type { AnalyticsProvider } from '../types';
 
-function noop(operation: string): (...args: unknown[]) => Promise<void> {
-  return async (...args: unknown[]) => {
+class ConsoleAnalyticsProvider implements AnalyticsProvider {
+  public async trackPageView(...args: unknown[]): Promise<void> {
     console.debug(
-      `[Console Analytics] Called '${operation}' with args:`,
+      `[Console Analytics] Called 'trackPageView' with args:`,
       ...args.filter(Boolean)
     );
-  };
+  }
+
+  public async trackEvent(...args: unknown[]): Promise<void> {
+    console.debug(
+      `[Console Analytics] Called 'trackEvent' with args:`,
+      ...args.filter(Boolean)
+    );
+  }
+
+  public async identify(...args: unknown[]): Promise<void> {
+    console.debug(
+      `[Console Analytics] Called 'identify' with args:`,
+      ...args.filter(Boolean)
+    );
+  }
 }
 
-export default {
-  trackPageView: noop('trackPageView'),
-  trackEvent: noop('trackEvent'),
-  identify: noop('identify')
-} satisfies AnalyticsProvider;
+export default new ConsoleAnalyticsProvider();

@@ -8,77 +8,11 @@ declare global {
 }
 
 type GtagCommand = 'config' | 'event' | 'set' | 'js' | 'consent';
-let isInitialized = false;
 
-function gtag(command: GtagCommand, ...args: unknown[]) {
-  if (typeof window === 'undefined') {
-    return;
-  }
+class GtagAnalyticsProvider implements AnalyticsProvider {
+  private isInitialized = false;
 
-  window.dataLayer = window.dataLayer || [];
-  window.dataLayer.push([command, ...args]);
-}
-
-function setLocalHostTrackingDisabled(measurementId: string): void {
-  if (
-    typeof window !== 'undefined' &&
-    window.location.hostname === 'localhost'
-  ) {
-    // @ts-expect-error: This is a custom property
-    window['ga-disable-' + measurementId] = true;
-  }
-}
-
-function createGtagScript(measurementId: string): Promise<void> {
-  return new Promise((resolve) => {
-    if (typeof window === 'undefined') {
-      resolve();
-      return;
-    }
-
-    const script = document.createElement('script');
-    script.src = `https://www.googletagmanager.com/gtag/js?id=${measurementId}`;
-    script.async = true;
-    document.head.appendChild(script);
-
-    script.onload = () => {
-      isInitialized = true;
-
-      gtag('config', measurementId, {
-        send_page_view: false
-      });
-
-      gtag('js', new Date());
-      resolve();
-    };
-  });
-}
-
-async function initialize(): Promise<void> {
-  if (isInitialized || typeof window === 'undefined') {
-    return Promise.resolve();
-  }
-
-  const measurementId = keys().NEXT_PUBLIC_ANALYTICS_GA_MEASUREMENT_ID;
-  if (!measurementId) {
-    throw new Error(
-      'Measurement ID is not set. Please set the environment variable NEXT_PUBLIC_ANALYTICS_GA_MEASUREMENT_ID.'
-    );
-  }
-
-  if (typeof window !== 'undefined') {
-    window.dataLayer = window.dataLayer || [];
-  }
-
-  if (keys().NEXT_PUBLIC_ANALYTICS_GA_DISABLE_LOCALHOST_TRACKING) {
-    setLocalHostTrackingDisabled(measurementId);
-  }
-
-  return createGtagScript(measurementId);
-}
-
-export default {
-  trackPageView: async (path: string): Promise<void> => {
+  public async trackPageView(path: string): Promise<void> {
     if (typeof window === 'undefined') {
       return;
     }
@@ -87,62 +21,157 @@ export default {
       return;
     }
 
-    if (!isInitialized) {
-      await initialize();
+    if (!this.isInitialized) {
+      await this.initialize();
+    }
+    if (!this.isInitialized) {
+      return;
     }
 
     const measurementId = keys().NEXT_PUBLIC_ANALYTICS_GA_MEASUREMENT_ID;
     if (!measurementId) {
+      console.error('GA Measurement ID missing for trackPageView');
       return;
     }
 
     const newUrl = new URL(path, window.location.href).href;
 
-    gtag('config', measurementId, {
-      send_page_view: false,
+    this.gtag('event', 'page_view', {
       page_location: newUrl,
-      update: true
+      page_path: path
     });
+  }
 
-    gtag('event', 'page_view');
-  },
-
-  trackEvent: async (
+  public async trackEvent(
     eventName: string,
-    eventProperties: Record<string, string | string[]> = {}
-  ): Promise<void> => {
-    if (!isInitialized) {
-      await initialize();
+    eventProperties: Record<string, string | string[] | number | boolean> = {}
+  ): Promise<void> {
+    if (typeof window === 'undefined') {
+      return;
     }
 
-    const processedProperties: Record<string, string> = {};
+    if (!this.isInitialized) {
+      await this.initialize();
+    }
+    if (!this.isInitialized) {
+      return;
+    }
+
+    const processedProperties: Record<string, string | number | boolean> = {};
     Object.entries(eventProperties).forEach(([key, value]) => {
       if (Array.isArray(value)) {
         processedProperties[key] = value.join(',');
-      } else {
-        processedProperties[key] = value;
+      } else if (value !== null && value !== undefined) {
+        processedProperties[key] = value as string | number | boolean;
       }
     });
 
-    gtag('event', eventName, processedProperties);
-  },
+    this.gtag('event', eventName, processedProperties);
+  }
 
-  identify: async (
+  public async identify(
     userId: string,
-    traits: Record<string, string> = {}
-  ): Promise<void> => {
-    if (!isInitialized) {
-      await initialize();
+    traits: Record<string, string | number | boolean> = {}
+  ): Promise<void> {
+    if (typeof window === 'undefined') {
+      return;
+    }
+
+    if (!this.isInitialized) {
+      await this.initialize();
+    }
+    if (!this.isInitialized) {
+      return;
     }
 
     const measurementId = keys().NEXT_PUBLIC_ANALYTICS_GA_MEASUREMENT_ID;
     if (!measurementId) {
+      console.error('GA Measurement ID missing for identify');
       return;
     }
 
-    gtag('config', measurementId, {
-      user_id: userId,
-      ...traits
+    this.gtag('config', measurementId, {
+      user_id: userId
+    });
+
+    if (Object.keys(traits).length > 0) {
+      this.gtag('set', 'user_properties', traits);
+    }
+  }
+
+  private async initialize(): Promise<void> {
+    if (this.isInitialized || typeof window === 'undefined') {
+      return Promise.resolve();
+    }
+
+    const measurementId = keys().NEXT_PUBLIC_ANALYTICS_GA_MEASUREMENT_ID;
+    if (!measurementId) {
+      throw new Error(
+        'Measurement ID is not set. Please set the environment variable NEXT_PUBLIC_ANALYTICS_GA_MEASUREMENT_ID.'
+      );
+    }
+
+    if (keys().NEXT_PUBLIC_ANALYTICS_GA_DISABLE_LOCALHOST_TRACKING) {
+      this.setLocalHostTrackingDisabled(measurementId);
+    }
+
+    if (this.isInitialized) {
+      return Promise.resolve();
+    }
+
+    return this.createGtagScript(measurementId);
+  }
+
+  private setLocalHostTrackingDisabled(measurementId: string): void {
+    if (
+      typeof window !== 'undefined' &&
+      window.location.hostname === 'localhost'
+    ) {
+      // @ts-expect-error: This is a custom property used by Google Analytics
+      window['ga-disable-' + measurementId] = true;
+    }
+  }
+
+  private createGtagScript(measurementId: string): Promise<void> {
+    return new Promise((resolve) => {
+      if (typeof window === 'undefined' || typeof document === 'undefined') {
+        resolve();
+        return;
+      }
+
+      const script = document.createElement('script');
+      script.src = `https://www.googletagmanager.com/gtag/js?id=${measurementId}`;
+      script.async = true;
+
+      script.onload = () => {
+        window.dataLayer = window.dataLayer || [];
+        this.gtag('js', new Date());
+        this.gtag('config', measurementId, {
+          send_page_view: false
+        });
+        this.isInitialized = true;
+        resolve();
+      };
+
+      script.onerror = (error) => {
+        console.error(
+          `Failed to load Google Analytics script for ${measurementId}:`,
+          error
+        );
+        resolve();
+      };
+
+      document.head.appendChild(script);
     });
   }
-} satisfies AnalyticsProvider;
+
+  private gtag(command: GtagCommand, ...args: unknown[]) {
+    if (typeof window === 'undefined') {
+      return;
+    }
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push([command, ...args]);
+  }
+}
+
+export default new GtagAnalyticsProvider();

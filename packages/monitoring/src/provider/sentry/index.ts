@@ -1,11 +1,19 @@
-import * as Sentry from '@sentry/nextjs';
+import {
+  captureEvent,
+  captureException,
+  captureRequestError,
+  setUser,
+  withSentryConfig,
+  type Event as SentryEvent,
+  type User as SentryUser
+} from '@sentry/nextjs';
 
 import { keys } from '../../../keys';
 import type { ErrorContext, ErrorRequest, MonitoringProvider } from '../types';
 
-export default {
-  withConfig<C>(nextConfig: C): C {
-    return Sentry.withSentryConfig(nextConfig, {
+class SentryMonitoringProvider implements MonitoringProvider {
+  public withConfig<C>(nextConfig: C): C {
+    return withSentryConfig(nextConfig, {
       org: keys().MONITORING_SENTRY_ORG,
       project: keys().MONITORING_SENTRY_PROJECT,
       authToken: keys().MONITORING_SENTRY_AUTH_TOKEN, // Required for uploading source maps
@@ -14,9 +22,9 @@ export default {
       widenClientFileUpload: true,
       telemetry: false
     });
-  },
+  }
 
-  async register(): Promise<void> {
+  public async register(): Promise<void> {
     try {
       if (typeof window !== 'undefined') {
         const { initializeSentryBrowserClient } = await import(
@@ -39,31 +47,33 @@ export default {
     } catch (error) {
       console.error('[Sentry Monitoring] Registration failed:', error);
     }
-  },
+  }
 
-  async captureRequestError(
+  public async captureRequestError(
     error: unknown,
     errorRequest: Readonly<ErrorRequest>,
     errorContext: Readonly<ErrorContext>
   ): Promise<void> {
-    return Sentry.captureRequestError(error, errorRequest, errorContext);
-  },
+    return captureRequestError(error, errorRequest, errorContext);
+  }
 
-  captureError(error: unknown): string {
-    return Sentry.captureException(error);
-  },
+  public captureError(error: unknown): string {
+    return captureException(error);
+  }
 
-  captureEvent<Extra extends Sentry.Event>(
+  public captureEvent<Extra extends SentryEvent>(
     event: string,
     extra?: Extra
   ): string {
-    return Sentry.captureEvent({
+    return captureEvent({
       message: event,
       ...(extra ?? {})
     });
-  },
-
-  setUser<Info extends { id: string }>(user: Info): void {
-    Sentry.setUser(user);
   }
-} satisfies MonitoringProvider;
+
+  public setUser(user: SentryUser): void {
+    setUser(user);
+  }
+}
+
+export default new SentryMonitoringProvider();
