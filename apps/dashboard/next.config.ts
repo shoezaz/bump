@@ -11,8 +11,6 @@ const INTERNAL_PACKAGES = [
   '@workspace/common',
   '@workspace/database',
   '@workspace/email',
-  '@workspace/image-processing',
-  '@workspace/markdown',
   '@workspace/monitoring',
   '@workspace/rate-limit',
   '@workspace/routes',

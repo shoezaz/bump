@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { PasswordResetEmail } from '@workspace/email/templates/password-reset-email';
 
-export default function RenderedEmail(): React.JSX.Element {
+export default function PasswordResetEmailPreview(): React.JSX.Element {
   return (
     <PasswordResetEmail
       appName="Acme"

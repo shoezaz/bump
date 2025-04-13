@@ -2,10 +2,10 @@ import { createHash } from 'crypto';
 import type { Account, NextAuthConfig, Profile, User } from 'next-auth';
 
 import { APP_NAME } from '@workspace/common/app';
+import { resizeImage } from '@workspace/common/image';
 import { prisma } from '@workspace/database/client';
 import { sendConnectedAccountSecurityAlertEmail } from '@workspace/email/send-connected-account-security-alert-email';
 import { sendWelcomeEmail } from '@workspace/email/send-welcome-email';
-import { resizeImage } from '@workspace/image-processing/resize-image';
 import { baseUrl, getUserImageUrl, routes } from '@workspace/routes';
 
 import { OAuthProvider } from './providers.types';

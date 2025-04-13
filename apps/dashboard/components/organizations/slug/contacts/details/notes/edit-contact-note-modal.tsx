@@ -3,8 +3,6 @@
 import NiceModal, { type NiceModalHocProps } from '@ebay/nice-modal-react';
 import { type SubmitHandler } from 'react-hook-form';
 
-import { convertHtmlToMarkdown } from '@workspace/markdown/convert-html-to-markdown';
-import { convertMarkdownToHtml } from '@workspace/markdown/convert-markdown-to-html';
 import { Button } from '@workspace/ui/components/button';
 import {
   Dialog,
@@ -38,6 +36,7 @@ import { cn } from '@workspace/ui/lib/utils';
 import { updateContactNote } from '~/actions/contacts/update-contact-note';
 import { useEnhancedModal } from '~/hooks/use-enhanced-modal';
 import { useZodForm } from '~/hooks/use-zod-form';
+import { convertHtmlToMarkdown, convertMarkdownToHtml } from '~/lib/markdown';
 import {
   updateContactNoteSchema,
   type UpdateContactNoteSchema

@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { FeedbackEmail } from '@workspace/email/templates/feedback-email';
 
-export default function RenderedEmail(): React.JSX.Element {
+export default function FeedbackEmailPreview(): React.JSX.Element {
   return (
     <FeedbackEmail
       appName="Acme"

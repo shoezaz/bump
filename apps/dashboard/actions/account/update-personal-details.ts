@@ -3,11 +3,10 @@
 import { createHash } from 'crypto';
 import { revalidateTag } from 'next/cache';
 
+import { decodeBase64Image, resizeImage } from '@workspace/common/image';
 import type { Maybe } from '@workspace/common/maybe';
 import { type Prisma } from '@workspace/database';
 import { prisma } from '@workspace/database/client';
-import { decodeBase64Image } from '@workspace/image-processing/decode-base64-image';
-import { resizeImage } from '@workspace/image-processing/resize-image';
 import { getUserImageUrl } from '@workspace/routes';
 
 import { authActionClient } from '~/actions/safe-action';

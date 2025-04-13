@@ -199,6 +199,18 @@ pnpm --filter marketing dev
 
 You’re all set to start!
 
+## Public API Application
+
+1. Start the public API application
+
+```bash
+pnpm --filter public-api dev
+```
+
+2. Navigate to http://localhost:3002
+
+You’re all set to start!
+
 ## Troubleshoot
 
 ### The generated Prisma types are not loaded.

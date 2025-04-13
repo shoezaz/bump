@@ -9,6 +9,7 @@
     "generate": "prisma generate",
     "migrate": "prisma migrate",
     "push": "prisma db push --skip-generate",
+    "studio": "prisma studio --port 3003 --browser none",
     "postinstall": "prisma generate"
   },
   "dependencies": {

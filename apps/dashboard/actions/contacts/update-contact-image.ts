@@ -4,10 +4,9 @@ import { createHash } from 'crypto';
 import { revalidateTag } from 'next/cache';
 
 import { NotFoundError } from '@workspace/common/errors';
+import { decodeBase64Image, resizeImage } from '@workspace/common/image';
 import type { Maybe } from '@workspace/common/maybe';
 import { prisma } from '@workspace/database/client';
-import { decodeBase64Image } from '@workspace/image-processing/decode-base64-image';
-import { resizeImage } from '@workspace/image-processing/resize-image';
 import { getContactImageUrl } from '@workspace/routes';
 
 import { updateContactAndCaptureEvent } from '~/actions/contacts/_contact-event-capture';

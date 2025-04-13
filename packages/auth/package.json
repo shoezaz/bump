@@ -17,7 +17,6 @@
     "@workspace/common": "workspace:*",
     "@workspace/database": "workspace:*",
     "@workspace/email": "workspace:*",
-    "@workspace/image-processing": "workspace:*",
     "@workspace/rate-limit": "workspace:*",
     "@workspace/routes": "workspace:*",
     "bcryptjs": "2.4.3",

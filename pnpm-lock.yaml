@@ -80,12 +80,6 @@ importers:
       '@workspace/email':
         specifier: workspace:*
         version: link:../../packages/email
-      '@workspace/image-processing':
-        specifier: workspace:*
-        version: link:../../packages/image-processing
-      '@workspace/markdown':
-        specifier: workspace:*
-        version: link:../../packages/markdown
       '@workspace/monitoring':
         specifier: workspace:*
         version: link:../../packages/monitoring
@@ -107,6 +101,9 @@ importers:
       lucide-react:
         specifier: 0.477.0
         version: 0.477.0(react@19.0.0)
+      markdown-it:
+        specifier: 14.1.0
+        version: 14.1.0
       next:
         specifier: 15.2.1
         version: 15.2.1(@babel/core@7.26.10)(@opentelemetry/api@1.9.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
@@ -140,6 +137,9 @@ importers:
       recharts:
         specifier: 2.15.1
         version: 2.15.1(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      sanitize-html:
+        specifier: 2.14.0
+        version: 2.14.0
       server-only:
         specifier: 0.0.1
         version: 0.0.1
@@ -149,6 +149,9 @@ importers:
       stripe:
         specifier: 16.12.0
         version: 16.12.0
+      turndown:
+        specifier: 7.2.0
+        version: 7.2.0
       uuid:
         specifier: 11.1.0
         version: 11.1.0
@@ -171,6 +174,9 @@ importers:
       '@types/file-saver':
         specifier: 2.0.7
         version: 2.0.7
+      '@types/markdown-it':
+        specifier: 14.1.2
+        version: 14.1.2
       '@types/node':
         specifier: 22.13.9
         version: 22.13.9
@@ -183,6 +189,12 @@ importers:
       '@types/react-dom':
         specifier: 19.0.4
         version: 19.0.4(@types/react@19.0.10)
+      '@types/sanitize-html':
+        specifier: 2.13.0
+        version: 2.13.0
+      '@types/turndown':
+        specifier: 5.0.5
+        version: 5.0.5
       '@types/uuid':
         specifier: 10.0.0
         version: 10.0.0
@@ -374,12 +386,6 @@ importers:
         specifier: 1.0.7
         version: 1.0.7(tailwindcss@3.4.17(ts-node@10.9.2(@types/node@22.13.9)(typescript@5.7.2)))
 
-  apps/prisma-studio:
-    devDependencies:
-      prisma:
-        specifier: 6.4.1
-        version: 6.4.1(typescript@5.7.2)
-
   apps/public-api:
     dependencies:
       '@workspace/api-keys':
@@ -431,36 +437,6 @@ importers:
       '@workspace/typescript-config':
         specifier: workspace:*
         version: link:../../tooling/typescript-config
-
-  apps/react-email-preview:
-    dependencies:
-      '@react-email/components':
-        specifier: 0.0.33
-        version: 0.0.33(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
-      '@workspace/email':
-        specifier: workspace:*
-        version: link:../../packages/email
-      react:
-        specifier: 19.0.0
-        version: 19.0.0
-      react-email:
-        specifier: 3.0.7
-        version: 3.0.7(@opentelemetry/api@1.9.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
-    devDependencies:
-      '@types/react':
-        specifier: 19.0.10
-        version: 19.0.10
-      '@workspace/eslint-config':
-        specifier: workspace:*
-        version: link:../../tooling/eslint-config
-      '@workspace/prettier-config':
-        specifier: workspace:*
-        version: link:../../tooling/prettier-config
-      '@workspace/typescript-config':
-        specifier: workspace:*
-        version: link:../../tooling/typescript-config
-
-  apps/requirements-check: {}
 
   packages/analytics:
     dependencies:
@@ -547,9 +523,6 @@ importers:
       '@workspace/email':
         specifier: workspace:*
         version: link:../email
-      '@workspace/image-processing':
-        specifier: workspace:*
-        version: link:../image-processing
       '@workspace/rate-limit':
         specifier: workspace:*
         version: link:../rate-limit
@@ -638,6 +611,10 @@ importers:
         version: link:../../tooling/typescript-config
 
   packages/common:
+    dependencies:
+      sharp:
+        specifier: 0.33.5
+        version: 0.33.5
     devDependencies:
       '@types/node':
         specifier: 22.13.9
@@ -734,59 +711,6 @@ importers:
       '@types/react-dom':
         specifier: 19.0.4
         version: 19.0.4(@types/react@19.0.10)
-      '@workspace/eslint-config':
-        specifier: workspace:*
-        version: link:../../tooling/eslint-config
-      '@workspace/prettier-config':
-        specifier: workspace:*
-        version: link:../../tooling/prettier-config
-      '@workspace/typescript-config':
-        specifier: workspace:*
-        version: link:../../tooling/typescript-config
-
-  packages/image-processing:
-    dependencies:
-      '@workspace/common':
-        specifier: workspace:*
-        version: link:../common
-      sharp:
-        specifier: 0.33.5
-        version: 0.33.5
-    devDependencies:
-      '@types/node':
-        specifier: 22.13.9
-        version: 22.13.9
-      '@workspace/eslint-config':
-        specifier: workspace:*
-        version: link:../../tooling/eslint-config
-      '@workspace/prettier-config':
-        specifier: workspace:*
-        version: link:../../tooling/prettier-config
-      '@workspace/typescript-config':
-        specifier: workspace:*
-        version: link:../../tooling/typescript-config
-
-  packages/markdown:
-    dependencies:
-      markdown-it:
-        specifier: 14.1.0
-        version: 14.1.0
-      sanitize-html:
-        specifier: 2.14.0
-        version: 2.14.0
-      turndown:
-        specifier: 7.2.0
-        version: 7.2.0
-    devDependencies:
-      '@types/markdown-it':
-        specifier: 14.1.2
-        version: 14.1.2
-      '@types/sanitize-html':
-        specifier: 2.13.0
-        version: 2.13.0
-      '@types/turndown':
-        specifier: 5.0.5
-        version: 5.0.5
       '@workspace/eslint-config':
         specifier: workspace:*
         version: link:../../tooling/eslint-config
@@ -1161,6 +1085,8 @@ importers:
       prettier-plugin-tailwindcss:
         specifier: 0.6.11
         version: 0.6.11(@ianvs/prettier-plugin-sort-imports@4.4.1(prettier@3.4.2))(prettier@3.4.2)
+
+  tooling/requirements-check: {}
 
   tooling/tailwind-config:
     devDependencies:

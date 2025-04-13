@@ -18,7 +18,7 @@
     "update": "pnpm update -r",
     "syncpack:list": "pnpm dlx syncpack list-mismatches",
     "syncpack:fix": "pnpm dlx syncpack fix-mismatches",
-    "preinstall": "pnpm run --filter requirements-check requirements",
+    "preinstall": "pnpm run --filter @tooling/requirements-check requirements",
     "postinstall": "manypkg fix"
   },
   "devDependencies": {

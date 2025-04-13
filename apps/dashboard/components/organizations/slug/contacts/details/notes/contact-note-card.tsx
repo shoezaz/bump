@@ -5,7 +5,6 @@ import NiceModal from '@ebay/nice-modal-react';
 import { format } from 'date-fns';
 import { ClockIcon, MoreHorizontalIcon } from 'lucide-react';
 
-import { convertMarkdownToHtml } from '@workspace/markdown/convert-markdown-to-html';
 import {
   Avatar,
   AvatarFallback,
@@ -31,6 +30,7 @@ import { Separator } from '@workspace/ui/components/separator';
 import { DeleteContactNoteModal } from '~/components/organizations/slug/contacts/details/notes/delete-contact-note-modal';
 import { EditContactNoteModal } from '~/components/organizations/slug/contacts/details/notes/edit-contact-note-modal';
 import { getInitials } from '~/lib/formatters';
+import { convertMarkdownToHtml } from '~/lib/markdown';
 import type { ContactNoteDto } from '~/types/dtos/contact-note-dto';
 
 type ContactNoteCardProps = CardProps & {

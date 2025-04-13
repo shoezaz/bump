@@ -3,7 +3,11 @@ import { withContentCollections } from '@content-collections/next';
 import withBundleAnalyzer from '@next/bundle-analyzer';
 import { createSecureHeaders } from 'next-secure-headers';
 
-const INTERNAL_PACKAGES = ['@workspace/common', '@workspace/ui'];
+const INTERNAL_PACKAGES = [
+  '@workspace/common',
+  '@workspace/routes',
+  '@workspace/ui'
+];
 
 const svgLoader = {
   loader: '@svgr/webpack',
