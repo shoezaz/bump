@@ -17,6 +17,7 @@ export async function sendFeedbackEmail(
     recipient: input.recipient,
     subject: 'User Feedback',
     html,
-    text
+    text,
+    replyTo: input.email
   });
 }
