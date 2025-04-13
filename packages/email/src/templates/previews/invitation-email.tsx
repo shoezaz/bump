@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { InvitationEmail } from '@workspace/email/templates/invitation-email';
+import { InvitationEmail } from '../invitation-email';
 
 export default function InvitationEmailPreview(): React.JSX.Element {
   return (

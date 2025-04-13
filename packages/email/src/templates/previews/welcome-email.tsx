@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { WelcomeEmail } from '@workspace/email/templates/welcome-email';
+import { WelcomeEmail } from '../welcome-email';
 
 export default function WelcomeEmailPreview(): React.JSX.Element {
   return (

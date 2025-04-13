@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "node ./src/dev.js",
-    "requirements": "node ./src/requirements.js"
+    "dev": "node ./dev.js",
+    "requirements": "node ./requirements.js"
   }
 }

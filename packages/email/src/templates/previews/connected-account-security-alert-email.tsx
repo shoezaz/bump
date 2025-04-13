@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { ConnectedAccountSecurityAlertEmail } from '@workspace/email/templates/connected-account-security-alert-email';
+import { ConnectedAccountSecurityAlertEmail } from '../connected-account-security-alert-email';
 
 export default function ConnectedAccountSecurityAlertEmailPreview(): React.JSX.Element {
   return (

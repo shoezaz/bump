@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { ConfirmEmailAddressChangeEmail } from '@workspace/email/templates/confirm-email-address-change-email';
+import { ConfirmEmailAddressChangeEmail } from '../confirm-email-address-change-email';
 
 export default function ConfirmEmailAddressChangeEmailPreview(): React.JSX.Element {
   return (
