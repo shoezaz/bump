@@ -7,5 +7,12 @@
   "eslint.useFlatConfig": true,
   "search.exclude": {
     "**/.next": true
-  }
+  },
+  "typescript.preferences.autoImportSpecifierExcludeRegexes": [
+    "@radix-ui",
+    "next/dist",
+    "next/document",
+    "next/head",
+    "next/router"
+  ]
 }
