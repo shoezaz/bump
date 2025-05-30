@@ -4,7 +4,7 @@ import { revalidateTag } from 'next/cache';
 import { redirect } from 'next/navigation';
 
 import { isOrganizationAdmin } from '@workspace/auth/permissions';
-import { updateOrganizationSubscriptionQuantity } from '@workspace/billing/organization';
+import { adjustSeats } from '@workspace/billing/seats';
 import { ForbiddenError, NotFoundError } from '@workspace/common/errors';
 import { prisma } from '@workspace/database/client';
 import { routes } from '@workspace/routes';
@@ -73,7 +73,7 @@ export const removeMember = authOrganizationActionClient
     );
 
     try {
-      await updateOrganizationSubscriptionQuantity(ctx.organization.id);
+      await adjustSeats(ctx.organization.id);
     } catch (e) {
       console.error(e);
     }

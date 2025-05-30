@@ -2,7 +2,7 @@
 
 import { revalidateTag } from 'next/cache';
 
-import { stripeServer } from '@workspace/billing/stripe-server';
+import { BillingProvider } from '@workspace/billing/provider';
 import { prisma } from '@workspace/database/client';
 
 import { authOrganizationActionClient } from '~/actions/safe-action';
@@ -27,20 +27,18 @@ export const updateOrganizationDetails = authOrganizationActionClient
       }
     });
 
-    if (ctx.organization.name !== ctx.organization.name) {
-      if (ctx.organization.stripeCustomerId) {
+    if (ctx.organization.name !== parsedInput.name) {
+      if (ctx.organization.billingCustomerId) {
         try {
-          await stripeServer.customers.update(
-            ctx.organization.stripeCustomerId,
-            {
-              name: parsedInput.name
-            }
-          );
+          await BillingProvider.updateCustomerName({
+            customerId: ctx.organization.billingCustomerId,
+            name: parsedInput.name
+          });
         } catch (e) {
           console.error(e);
         }
       } else {
-        console.warn('Stripe customer ID is missing');
+        console.warn('Billing customer ID is missing');
       }
     }
 

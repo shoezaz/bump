@@ -17,7 +17,6 @@ export const updateBusinessHours = authOrganizationActionClient
       where: { id: ctx.organization.id },
       select: {
         name: true,
-        stripeCustomerId: true,
         businessHours: {
           select: {
             id: true,

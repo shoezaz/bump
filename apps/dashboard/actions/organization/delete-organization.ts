@@ -3,7 +3,7 @@
 import { revalidateTag } from 'next/cache';
 
 import { isOrganizationOwner } from '@workspace/auth/permissions';
-import { deleteOrganizationFromStripe } from '@workspace/billing/organization';
+import { BillingProvider } from '@workspace/billing/provider';
 import { ForbiddenError } from '@workspace/common/errors';
 import { prisma } from '@workspace/database/client';
 
@@ -42,9 +42,22 @@ export const deleteOrganization = authOrganizationActionClient
       );
     }
 
-    try {
-      await deleteOrganizationFromStripe(ctx.organization.stripeCustomerId);
-    } catch (e) {
-      console.error(e);
+    if (ctx.organization.billingCustomerId) {
+      for (const subscription of ctx.organization.subscriptions) {
+        try {
+          await BillingProvider.cancelSubscription({
+            subscriptionId: subscription.id
+          });
+        } catch (e) {
+          console.error(e);
+        }
+      }
+      try {
+        await BillingProvider.deleteCustomer({
+          customerId: ctx.organization.billingCustomerId
+        });
+      } catch (e) {
+        console.error(e);
+      }
     }
   });

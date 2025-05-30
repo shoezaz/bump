@@ -9,11 +9,8 @@ import {
   createInvitation,
   sendInvitationRequest
 } from '@workspace/auth/invitations';
-import {
-  addOrganizationToStripe,
-  updateOrganizationSubscriptionQuantity
-} from '@workspace/billing/organization';
-import { Tier } from '@workspace/billing/tier';
+import { BillingProvider } from '@workspace/billing/provider';
+import { adjustSeats } from '@workspace/billing/seats';
 import { decodeBase64Image, resizeImage } from '@workspace/common/image';
 import type { Maybe } from '@workspace/common/maybe';
 import {
@@ -122,9 +119,7 @@ export const completeOnboarding = authActionClient
 
     for (const membership of memberships) {
       try {
-        await updateOrganizationSubscriptionQuantity(
-          membership.organization.id
-        );
+        await adjustSeats(membership.organization.id);
       } catch (e) {
         console.error(e);
       }
@@ -220,17 +215,6 @@ async function handleOrganizationStep(
     return;
   }
 
-  let stripeCustomerId = '';
-  try {
-    stripeCustomerId = await addOrganizationToStripe(
-      step.name,
-      userEmail,
-      organizationId
-    );
-  } catch {
-    console.warn('Stripe customer ID is missing');
-  }
-
   let logoUrl: Maybe<string> = undefined;
   if (step.logo) {
     const { buffer, mimeType } = decodeBase64Image(step.logo);
@@ -253,16 +237,27 @@ async function handleOrganizationStep(
     logoUrl = getOrganizationLogoUrl(organizationId, hash);
   }
 
+  let billingCustomerId: string | undefined = undefined;
+  try {
+    billingCustomerId = await BillingProvider.createCustomer({
+      organizationId: organizationId,
+      name: step.name,
+      email: userEmail
+    });
+  } catch (e) {
+    console.error(e);
+  }
+
   transactions.push(
     prisma.organization.create({
       data: {
         id: organizationId,
         logo: logoUrl,
         name: step.name,
-        stripeCustomerId,
         slug: step.slug,
-        tier: Tier.Free,
         businessHours: createDefaultBusinessHours(),
+        billingCustomerId,
+        billingEmail: billingCustomerId ? userEmail : undefined,
         memberships: {
           create: {
             userId,

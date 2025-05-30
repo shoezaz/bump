@@ -2,7 +2,7 @@ import * as React from 'react';
 import type { Metadata } from 'next';
 
 import { PricingFAQ } from '~/components/sections/pricing-faq';
-import { PricingPlans } from '~/components/sections/pricing-plans';
+import { PricingHero } from '~/components/sections/pricing-hero';
 import { createTitle } from '~/lib/formatters';
 
 export const metadata: Metadata = {
@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 export default function PricingPage(): React.JSX.Element {
   return (
     <>
-      <PricingPlans />
+      <PricingHero />
       <PricingFAQ />
     </>
   );

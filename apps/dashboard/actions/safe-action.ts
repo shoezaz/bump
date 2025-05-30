@@ -10,7 +10,6 @@ import {
 } from '@workspace/auth/context';
 import {
   ForbiddenError,
-  GatewayError,
   NotFoundError,
   PreConditionError,
   ValidationError
@@ -22,8 +21,7 @@ export const actionClient = createSafeActionClient({
       e instanceof ValidationError ||
       e instanceof ForbiddenError ||
       e instanceof NotFoundError ||
-      e instanceof PreConditionError ||
-      e instanceof GatewayError
+      e instanceof PreConditionError
     ) {
       return e.message;
     }

@@ -3,7 +3,7 @@
 import { revalidateTag } from 'next/cache';
 import { redirect } from 'next/navigation';
 
-import { updateOrganizationSubscriptionQuantity } from '@workspace/billing/organization';
+import { adjustSeats } from '@workspace/billing/seats';
 import { NotFoundError, PreConditionError } from '@workspace/common/errors';
 import { InvitationStatus } from '@workspace/database';
 import { prisma } from '@workspace/database/client';
@@ -65,7 +65,7 @@ export const acceptInvitation = authActionClient
     ]);
 
     try {
-      await updateOrganizationSubscriptionQuantity(invitation.organizationId);
+      await adjustSeats(invitation.organizationId);
     } catch (e) {
       console.error(e);
     }

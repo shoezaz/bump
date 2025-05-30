@@ -29,11 +29,3 @@ export class NotFoundError extends Error {
     Object.setPrototypeOf(this, NotFoundError.prototype);
   }
 }
-
-export class GatewayError extends Error {
-  constructor(message: string = 'Gateway or service responsed with error.') {
-    super(message);
-    this.name = 'GatewayError';
-    Object.setPrototypeOf(this, GatewayError.prototype);
-  }
-}

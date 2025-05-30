@@ -25,12 +25,36 @@ const dedupedGetActiveOrganization = cache(async function () {
       id: true,
       logo: true,
       name: true,
-      tier: true,
-      stripeCustomerId: true,
+      email: true,
       slug: true,
       memberships: {
         select: {
           userId: true
+        }
+      },
+      billingCustomerId: true,
+      subscriptions: {
+        select: {
+          id: true,
+          active: true,
+          status: true,
+          cancelAtPeriodEnd: true,
+          currency: true,
+          provider: true,
+          trialStartsAt: true,
+          trialEndsAt: true,
+          periodStartsAt: true,
+          periodEndsAt: true,
+          items: true
+        }
+      },
+      orders: {
+        select: {
+          id: true,
+          status: true,
+          currency: true,
+          provider: true,
+          items: true
         }
       }
     }

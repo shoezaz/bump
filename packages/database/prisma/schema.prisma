@@ -291,15 +291,15 @@ model Invitation {
 }
 
 model Membership {
-  id                String         @id(map: "PK_Membership") @default(uuid()) @db.Uuid
-  organizationId    String         @db.Uuid
-  userId            String         @db.Uuid
-  role              Role           @default(MEMBER)
-  isOwner           Boolean        @default(false)
-  createdAt         DateTime       @default(now())
-  user              User           @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  organization      Organization   @relation(fields: [organizationId], references: [id], onDelete: Cascade, onUpdate: Cascade)
- 
+  id             String       @id(map: "PK_Membership") @default(uuid()) @db.Uuid
+  organizationId String       @db.Uuid
+  userId         String       @db.Uuid
+  role           Role         @default(MEMBER)
+  isOwner        Boolean      @default(false)
+  createdAt      DateTime     @default(now())
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
   @@unique([organizationId, userId])
 }
 
@@ -318,40 +318,77 @@ model Notification {
   @@index([userId], map: "IX_Notification_userId")
 }
 
-model Organization {
-  id                  String       @id(map: "PK_Organization") @default(uuid()) @db.Uuid
-  stripeCustomerId    String
-  slug                String       @unique @db.VarChar(255)
-  logo                String?      @db.VarChar(2048)
-  name                String       @db.VarChar(255)
-  address             String?      @db.VarChar(255)
-  phone               String?      @db.VarChar(32)
-  email               String?      @db.VarChar(255)
-  website             String?      @db.VarChar(2000)
-  linkedInProfile     String?      @db.VarChar(2000)
-  instagramProfile    String?      @db.VarChar(2000)
-  youTubeChannel      String?      @db.VarChar(2000)
-  xProfile            String?      @db.VarChar(2000)
-  tikTokProfile       String?      @db.VarChar(2000)
-  facebookPage        String?      @db.VarChar(2000)
-  tier                String       @default("free") @db.VarChar(255)
-  apiKeys             ApiKey[]
-  businessHours       WorkHours[]
-  contacts            Contact[]
-  feedback            Feedback[]
-  invitations         Invitation[]
-  memberships         Membership[]
-  webhooks            Webhook[]
+model Order {
+  id             String       @id(map: "PK_Order") @db.Text
+  organizationId String       @db.Uuid
+  status         String       @db.VarChar(64)
+  provider       String       @db.VarChar(32)
+  totalAmount    Decimal      @default(0)
+  currency       String       @db.VarChar(3)
+  items          OrderItem[]
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
 
-  @@index([stripeCustomerId], map: "IX_Organization_stripeCustomerId")
+  @@index([organizationId], map: "IX_Order_organizationId")
+}
+
+model OrderItem {
+  id          String  @id(map: "PK_OrderItem") @db.Text
+  orderId     String  @db.Text
+  quantity    Int
+  productId   String
+  variantId   String
+  priceAmount Float?
+  type        String?
+  model       String?
+  order       Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@index([orderId], map: "IX_OrderItem_orderId")
+}
+
+model Organization {
+  id                String         @id(map: "PK_Organization") @default(uuid()) @db.Uuid
+  slug              String         @unique @db.VarChar(255)
+  logo              String?        @db.VarChar(2048)
+  name              String         @db.VarChar(255)
+  address           String?        @db.VarChar(255)
+  phone             String?        @db.VarChar(32)
+  email             String?        @db.VarChar(255)
+  website           String?        @db.VarChar(2000)
+  linkedInProfile   String?        @db.VarChar(2000)
+  instagramProfile  String?        @db.VarChar(2000)
+  youTubeChannel    String?        @db.VarChar(2000)
+  xProfile          String?        @db.VarChar(2000)
+  tikTokProfile     String?        @db.VarChar(2000)
+  facebookPage      String?        @db.VarChar(2000)
+  billingCustomerId String?
+  billingEmail      String?        @db.VarChar(255)
+  billingLine1      String?        @db.VarChar(255)
+  billingLine2      String?        @db.VarChar(255)
+  billingCountry    String?        @db.VarChar(3)
+  billingPostalCode String?        @db.VarChar(16)
+  billingCity       String?        @db.VarChar(255)
+  billingState      String?        @db.VarChar(255)
+  apiKeys           ApiKey[]
+  businessHours     WorkHours[]
+  contacts          Contact[]
+  feedback          Feedback[]
+  invitations       Invitation[]
+  memberships       Membership[]
+  orders            Order[]
+  subscriptions     Subscription[]
+  webhooks          Webhook[]
+
+  @@index([billingCustomerId], map: "IX_Organization_billingCustomerId")
 }
 
 model OrganizationLogo {
-  id          String  @id(map: "PK_OrganizationLogo") @default(uuid()) @db.Uuid
-  organizationId   String  @db.Uuid
-  data        Bytes?
-  contentType String? @db.VarChar(255)
-  hash        String? @db.VarChar(64)
+  id             String  @id(map: "PK_OrganizationLogo") @default(uuid()) @db.Uuid
+  organizationId String  @db.Uuid
+  data           Bytes?
+  contentType    String? @db.VarChar(255)
+  hash           String? @db.VarChar(64)
 
   @@index([organizationId], map: "IX_OrganizationLogo_organizationId")
 }
@@ -376,6 +413,42 @@ model Session {
   updatedAt    DateTime @updatedAt
 
   @@index([userId], map: "IX_Session_userId")
+}
+
+model Subscription {
+  id                String             @id(map: "PK_Subscription") @db.Text
+  organizationId    String             @db.Uuid
+  status            String             @db.VarChar(64)
+  active            Boolean            @default(false)
+  provider          String             @db.VarChar(32)
+  cancelAtPeriodEnd Boolean            @default(false)
+  currency          String             @db.VarChar(3)
+  periodStartsAt    DateTime           @db.Timestamptz(6)
+  periodEndsAt      DateTime           @db.Timestamptz(6)
+  trialStartsAt     DateTime?          @db.Timestamptz(6)
+  trialEndsAt       DateTime?          @db.Timestamptz(6)
+  items             SubscriptionItem[]
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+  organization      Organization       @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId], map: "IX_Subscription_organizationId")
+}
+
+model SubscriptionItem {
+  id             String       @id(map: "PK_SubscriptionItem") @db.Text
+  subscriptionId String       @db.Text
+  quantity       Int
+  productId      String
+  variantId      String
+  priceAmount    Float?
+  interval       String
+  intervalCount  Int
+  type           String?
+  model          String?
+  subscription   Subscription @relation(fields: [subscriptionId], references: [id], onDelete: Cascade)
+
+  @@index([subscriptionId], map: "IX_SubscriptionItem_subscriptionId")
 }
 
 model User {

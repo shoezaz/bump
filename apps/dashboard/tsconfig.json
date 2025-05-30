@@ -3,8 +3,12 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "~/*": ["./*"],
-      "@workspace/ui/*": ["../../packages/ui/src/*"]
+      "~/*": [
+        "./*"
+      ],
+      "@workspace/ui/*": [
+        "../../packages/ui/src/*"
+      ]
     }
   },
   "include": [
@@ -14,7 +18,15 @@
     "**/*.ts",
     "**/*.tsx",
     "*.mjs",
-    ".next/types/**/*.ts"
+    ".next/types/**/*.ts",
+    "../../packages/billing/src/seats.ts"
   ],
-  "exclude": [".cache", ".next", ".turbo", "build", "dist", "node_modules"]
+  "exclude": [
+    ".cache",
+    ".next",
+    ".turbo",
+    "build",
+    "dist",
+    "node_modules"
+  ]
 }

@@ -4,6 +4,7 @@ import * as React from 'react';
 import Link from 'next/link';
 import { MoreHorizontalIcon } from 'lucide-react';
 
+import { formatCurrency } from '@workspace/billing/helpers';
 import { Badge, type BadgeProps } from '@workspace/ui/components/badge';
 import { Button } from '@workspace/ui/components/button';
 import {
@@ -15,7 +16,7 @@ import {
 import { cn } from '@workspace/ui/lib/utils';
 
 import { capitalize } from '~/lib/formatters';
-import type { InvoiceDto, InvoiceStatus } from '~/types/dtos/invoice-dto';
+import type { InvoiceDto } from '~/types/dtos/invoice-dto';
 
 export type InvoiceListProps = React.HtmlHTMLAttributes<HTMLUListElement> & {
   invoices: InvoiceDto[];
@@ -60,16 +61,25 @@ function InvoiceListItem({
       <div className="min-w-0 flex-1">
         <div className="flex flex-row items-center gap-2 text-sm font-medium">
           #{invoice.number}
-          {!!invoice.status && (
+          {invoice.status && (
             <Badge variant={mapInvoiceStatusToBadgeVariant(invoice.status)}>
               {capitalize(invoice.status)}
             </Badge>
           )}
         </div>
         <div className="mt-1 text-xs font-normal text-muted-foreground">
-          {formatDate(invoice.date)}
-          <span className="mx-1">•</span>
-          <span>{formatAmount(invoice.amount, invoice.currency)}</span>
+          {invoice.date && formatDate(invoice.date)}
+          {typeof invoice.amount !== 'undefined' && (
+            <>
+              <span className="mx-1">•</span>
+              <span>
+                {formatCurrency(
+                  invoice.amount,
+                  invoice.currency?.toLowerCase()
+                )}
+              </span>
+            </>
+          )}
         </div>
       </div>
       <DropdownMenu modal={false}>
@@ -88,9 +98,9 @@ function InvoiceListItem({
           <DropdownMenuItem
             asChild
             className="cursor-pointer"
-            disabled={!invoice.invoicePdfUrl}
+            disabled={!invoice.url}
           >
-            <Link href={invoice.invoicePdfUrl ?? '~/'}>Download</Link>
+            <Link href={invoice.url ?? '~/'}>Download</Link>
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
@@ -98,9 +108,7 @@ function InvoiceListItem({
   );
 }
 
-function mapInvoiceStatusToBadgeVariant(
-  status: InvoiceStatus
-): BadgeProps['variant'] {
+function mapInvoiceStatusToBadgeVariant(status: string): BadgeProps['variant'] {
   switch (status) {
     case 'draft':
     case 'open': {
@@ -122,18 +130,10 @@ function mapInvoiceStatusToBadgeVariant(
   }
 }
 
-function formatDate(timestamp: number): string {
-  return new Date(timestamp * 1000).toLocaleDateString('en-US', {
+function formatDate(date: string): string {
+  return new Date(date).toLocaleDateString('en-US', {
     month: 'long',
     day: 'numeric',
     year: 'numeric'
   });
-}
-
-function formatAmount(amount: number, currency: string): string {
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: currency,
-    minimumFractionDigits: 2
-  }).format(amount);
 }

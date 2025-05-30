@@ -2,7 +2,7 @@
 
 import { revalidateTag } from 'next/cache';
 
-import { updateOrganizationSubscriptionQuantity } from '@workspace/billing/organization';
+import { adjustSeats } from '@workspace/billing/seats';
 import { prisma } from '@workspace/database/client';
 
 import { authActionClient } from '~/actions/safe-action';
@@ -50,7 +50,7 @@ export const deleteAccount = authActionClient
         )
       );
       try {
-        await updateOrganizationSubscriptionQuantity(membership.organizationId);
+        await adjustSeats(membership.organizationId);
       } catch (e) {
         console.error(e);
       }

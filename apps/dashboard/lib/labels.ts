@@ -1,6 +1,5 @@
 import { AuthErrorCode } from '@workspace/auth/errors';
 import { Provider } from '@workspace/auth/providers.types';
-import { Tier } from '@workspace/billing/tier';
 import {
   ContactRecord,
   ContactStage,
@@ -47,12 +46,6 @@ export const identityProviderLabels: Record<Provider, string> = {
   [Provider.RecoveryCode]: 'Recovery code',
   [Provider.Google]: 'Google',
   [Provider.MicrosoftEntraId]: 'Microsoft'
-};
-
-export const tierLabels: Record<Tier, string> = {
-  [Tier.Free]: 'Free',
-  [Tier.Pro]: 'Pro',
-  [Tier.ProPendingCancel]: 'Pro'
 };
 
 export const authErrorLabels: Record<AuthErrorCode, string> = {
