@@ -97,7 +97,7 @@ function ApiKeyListItem({
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem
-            className="!text-destructive cursor-pointer"
+            className="text-destructive! cursor-pointer"
             onClick={handleShowRevokeApiKeyModal}
           >
             Revoke

@@ -30,7 +30,7 @@ export function WelcomeEmail({
       <Preview>Welcome to {appName}!</Preview>
       <Tailwind>
         <Body className="m-auto bg-white px-2 font-sans">
-          <Container className="mx-auto my-[40px] max-w-[465px] rounded border border-solid border-[#eaeaea] p-[20px]">
+          <Container className="mx-auto my-[40px] max-w-[465px] rounded-sm border border-solid border-[#eaeaea] p-[20px]">
             <Heading className="mx-0 my-[30px] p-0 text-center text-[24px] font-normal text-black">
               Welcome to {appName}!
             </Heading>
@@ -45,7 +45,7 @@ export function WelcomeEmail({
             <Section className="my-[32px] text-center">
               <Button
                 href={getStartedLink}
-                className="rounded bg-[#000000] px-5 py-3 text-center text-[12px] font-semibold text-white no-underline"
+                className="rounded-sm bg-[#000000] px-5 py-3 text-center text-[12px] font-semibold text-white no-underline"
               >
                 Get started
               </Button>

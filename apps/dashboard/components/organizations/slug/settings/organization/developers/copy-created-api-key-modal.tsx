@@ -50,16 +50,14 @@ export const CopyCreatedApiKeyModal =
           </AlertDialogHeader>
           <div className="flex flex-col items-start gap-4">
             <Alert variant="warning">
-              <div className="flex flex-row items-start gap-2">
-                <AlertCircleIcon className="mt-0.5 size-[18px] shrink-0" />
-                <AlertDescription>
-                  <h3 className="mb-2 font-semibold">
-                    We'll show you this key just once
-                  </h3>
-                  Please copy your key and store it in a safe place. For
-                  security reasons we cannot show it again.
-                </AlertDescription>
-              </div>
+              <AlertCircleIcon className="size-[18px] shrink-0" />
+              <AlertDescription className="inline">
+                <h3 className="mb-2 font-semibold">
+                  We'll show you this key just once
+                </h3>
+                Please copy your key and store it in a safe place. For security
+                reasons we cannot show it again.
+              </AlertDescription>
             </Alert>
             <div className="flex w-full flex-col space-y-2">
               <Label>API key</Label>

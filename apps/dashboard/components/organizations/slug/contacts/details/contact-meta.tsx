@@ -19,7 +19,7 @@ export function ContactMeta({ contact }: ContactMetaProps): React.JSX.Element {
     <ResponsiveScrollArea
       breakpoint={MediaQueries.MdUp}
       mediaQueryOptions={{ ssr: true }}
-      className="h-full"
+      className="sm:h-full"
     >
       <div className="size-full divide-y border-b md:w-[360px] md:min-w-[360px]">
         <ContactDetailsSection contact={contact} />

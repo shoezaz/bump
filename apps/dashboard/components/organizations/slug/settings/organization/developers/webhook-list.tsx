@@ -109,7 +109,7 @@ function WebhookListItem({
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem
-            className="!text-destructive cursor-pointer"
+            className="text-destructive! cursor-pointer"
             onClick={handleShowDeleteWebhookModal}
           >
             Delete

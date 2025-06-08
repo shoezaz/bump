@@ -43,7 +43,7 @@ export function ContactNotes({
           size="default"
           onClick={handleShowAddContactNoteModal}
         >
-          <FilePlus2Icon className="mr-2 size-4 shrink-0" />
+          <FilePlus2Icon className="size-4 shrink-0" />
           Add note
         </Button>
       </div>

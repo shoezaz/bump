@@ -81,11 +81,8 @@ export function TermsOfUse(): React.JSX.Element {
           title="Terms of Use"
           description="By accessing our platform, you agree to the terms outlined below. Please read them carefully to ensure you understand your rights and responsibilities."
         />
-        <Alert
-          variant="warning"
-          className="rounded-lg border border-yellow-500 dark:border-yellow-900"
-        >
-          <AlertDescription className="ml-3 text-base">
+        <Alert variant="warning">
+          <AlertDescription className="ml-3 text-base inline">
             These terms provide a general framework. They should be reviewed and
             customized by a legal professional to suit your jurisdiction and use
             case.

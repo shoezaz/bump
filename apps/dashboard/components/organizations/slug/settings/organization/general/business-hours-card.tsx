@@ -42,6 +42,7 @@ import {
   TooltipContent,
   TooltipTrigger
 } from '@workspace/ui/components/tooltip';
+import { cn } from '@workspace/ui/lib/utils';
 
 import { updateBusinessHours } from '~/actions/organization/update-business-hours';
 import { useZodForm } from '~/hooks/use-zod-form';
@@ -61,6 +62,7 @@ export type BusinessHoursCardProps = CardProps & {
 
 export function BusinessHoursCard({
   businessHours: initialBusinessHours,
+  className,
   ...other
 }: BusinessHoursCardProps): React.JSX.Element {
   const methods = useZodForm({
@@ -90,7 +92,10 @@ export function BusinessHoursCard({
   };
   return (
     <FormProvider {...methods}>
-      <Card {...other}>
+      <Card
+        className={cn('pt-0 gap-0', className)}
+        {...other}
+      >
         <CardContent className="p-0">
           <BusinessHoursSchedule name="businessHours" />
         </CardContent>
@@ -208,7 +213,7 @@ function WorkDay({ name, index, dayOfWeek }: WorkDayProps): React.JSX.Element {
             onCheckedChange={handleToggleDayOfWeek}
           />
           <Label
-            className="leading-2 !mt-0 cursor-pointer text-sm"
+            className="leading-2 mt-0! cursor-pointer text-sm"
             onClick={handleToggleDayOfWeek}
           >
             <span className="hidden md:inline">{labelShort}</span>

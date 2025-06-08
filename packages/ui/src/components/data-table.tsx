@@ -86,7 +86,7 @@ function DataTable<TData>({
   const flexColumns = visibleColumns - helperColumns;
   return (
     <Table {...other}>
-      <TableHeader className={cn(fixedHeader && 'sticky top-0 z-20 shadow-sm')}>
+      <TableHeader className={cn(fixedHeader && 'sticky top-0 z-20 shadow-xs')}>
         {table.getHeaderGroups().map((headerGroup) => (
           <TableRow key={headerGroup.id}>
             {headerGroup.headers.map((header) => (
@@ -133,7 +133,7 @@ function DataTable<TData>({
             </TableRow>
           ))
         ) : (
-          <TableRow className="!bg-transparent">
+          <TableRow className="bg-transparent!">
             <TableCell
               colSpan={table.getAllColumns().length}
               className="h-24 text-center"
@@ -146,7 +146,6 @@ function DataTable<TData>({
     </Table>
   );
 }
-DataTable.displayName = 'DataTable';
 
 export type DataTableColumnHeaderProps<TData, TValue> =
   React.HTMLAttributes<HTMLDivElement> & {
@@ -172,11 +171,11 @@ function DataTableColumnHeader<TData, TValue>({
           >
             <span>{title}</span>
             {column.getIsSorted() === 'desc' ? (
-              <ArrowDownIcon className="ml-2 size-4 shrink-0" />
+              <ArrowDownIcon className="size-4 shrink-0" />
             ) : column.getIsSorted() === 'asc' ? (
-              <ArrowUpIcon className="ml-2 size-4 shrink-0" />
+              <ArrowUpIcon className="size-4 shrink-0" />
             ) : (
-              <ArrowUpDownIcon className="ml-2 size-4 shrink-0" />
+              <ArrowUpDownIcon className="size-4 shrink-0" />
             )}
           </Button>
         </DropdownMenuTrigger>
@@ -187,14 +186,14 @@ function DataTableColumnHeader<TData, TValue>({
                 className="cursor-pointer"
                 onClick={() => column.toggleSorting(false)}
               >
-                <ArrowUpIcon className="mr-2 size-3.5 text-muted-foreground/70" />
+                <ArrowUpIcon className="size-3.5 text-muted-foreground/70" />
                 Sort ascending
               </DropdownMenuItem>
               <DropdownMenuItem
                 className="cursor-pointer"
                 onClick={() => column.toggleSorting(true)}
               >
-                <ArrowDownIcon className="mr-2 size-3.5 text-muted-foreground/70" />
+                <ArrowDownIcon className="size-3.5 text-muted-foreground/70" />
                 Sort descending
               </DropdownMenuItem>
             </>
@@ -207,7 +206,7 @@ function DataTableColumnHeader<TData, TValue>({
               className="cursor-pointer"
               onClick={() => column.toggleVisibility(false)}
             >
-              <EyeOffIcon className="mr-2 size-3.5 text-muted-foreground/70" />
+              <EyeOffIcon className="size-3.5 text-muted-foreground/70" />
               Hide column
             </DropdownMenuItem>
           )}
@@ -216,7 +215,6 @@ function DataTableColumnHeader<TData, TValue>({
     </div>
   );
 }
-DataTableColumnHeader.displayName = 'DataTableColumnHeader';
 
 export type DataTableColumnOptionsHeaderProps<TData> = {
   table: ReactTable<TData>;
@@ -266,7 +264,6 @@ function DataTableColumnOptionsHeader<TData>({
     </DropdownMenu>
   );
 }
-DataTableColumnOptionsHeader.displayName = 'DataTableColumnOptionsHeader';
 
 export type DataTablePaginationProps<TData> = {
   table: ReactTable<TData>;
@@ -275,7 +272,7 @@ export type DataTablePaginationProps<TData> = {
 function DataTablePagination<TData>({
   table,
   pageSizeOptions = [10, 20, 30, 40, 50]
-}: DataTablePaginationProps<TData>) {
+}: DataTablePaginationProps<TData>): React.JSX.Element {
   return (
     <div className="sticky inset-x-0 bottom-0 z-20 border-t bg-background">
       <div className="flex flex-row items-center justify-between gap-2 space-x-2 px-6 py-3">
@@ -367,7 +364,6 @@ function DataTablePagination<TData>({
     </div>
   );
 }
-DataTablePagination.displayName = 'DataTablePagination';
 
 export type DataTableSelectionProps<TData> = React.PropsWithChildren<{
   table: ReactTable<TData>;
@@ -385,7 +381,6 @@ function DataTableBulkActions<TData>({
     </div>
   );
 }
-DataTableBulkActions.displayName = 'DataTableBulkActions';
 
 export type DataTableFilterProps = {
   title?: string;
@@ -412,7 +407,7 @@ function DataTableFilter({
           size="sm"
           className="h-9 border-dashed text-sm"
         >
-          <PlusCircleIcon className="mr-2 size-4 shrink-0" />
+          <PlusCircleIcon className="size-4 shrink-0" />
           {title}
           {selectedValues?.size > 0 && (
             <>
@@ -485,7 +480,7 @@ function DataTableFilter({
                             : 'opacity-50 [&_svg]:invisible'
                         )}
                       >
-                        <CheckIcon className="size-4 shrink-0" />
+                        <CheckIcon className="text-current size-4 shrink-0" />
                       </div>
                       {option.icon && (
                         <option.icon className="mr-2 size-4 text-muted-foreground" />
@@ -515,7 +510,6 @@ function DataTableFilter({
     </Popover>
   );
 }
-DataTableFilter.displayName = 'DataTableFilter';
 
 export {
   DataTable,

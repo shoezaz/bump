@@ -126,7 +126,7 @@ const components = {
       {...props}
     />
   ),
-  hr: ({ ...props }: React.HTMLAttributes<HTMLHRElement>) => (
+  hr: (props: React.HTMLAttributes<HTMLHRElement>) => (
     <hr
       className="my-4 md:my-8"
       {...props}
@@ -167,7 +167,7 @@ const components = {
   pre: ({ className, ...props }: React.HTMLAttributes<HTMLElement>) => (
     <pre
       className={cn(
-        'relative mt-4 max-w-[calc(100svw-64px)] overflow-x-auto rounded bg-muted px-1 py-2 font-mono text-sm',
+        'relative mt-4 max-w-[calc(100svw-64px)] overflow-x-auto rounded-sm bg-muted px-1 py-2 font-mono text-sm',
         className
       )}
       {...props}
@@ -176,7 +176,7 @@ const components = {
   code: ({ className, ...props }: React.HTMLAttributes<HTMLElement>) => (
     <code
       className={cn(
-        'relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm',
+        'relative rounded-sm bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm',
         className
       )}
       {...props}

@@ -40,7 +40,7 @@ export function VerifyEmailExpiredCard({
   return (
     <Card
       className={cn(
-        'w-full px-4 py-2 border-transparent dark:border-border',
+        'w-full px-4 py-8 border-transparent dark:border-border',
         className
       )}
       {...other}

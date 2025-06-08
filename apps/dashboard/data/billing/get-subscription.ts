@@ -43,7 +43,6 @@ export async function getSubscription(): Promise<SubscriptionDto | undefined> {
   };
 
   if (ctx.organization.billingCustomerId) {
-
     for (const item of response.items) {
       const { price } = getProductPricePair(item.variantId);
       if (price && price.meter && price.meter.id) {

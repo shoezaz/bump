@@ -16,7 +16,7 @@
     "@workspace/database": "workspace:*"
   },
   "devDependencies": {
-    "@types/node": "22.13.9",
+    "@types/node": "22.15.30",
     "@workspace/eslint-config": "workspace:*",
     "@workspace/prettier-config": "workspace:*",
     "@workspace/typescript-config": "workspace:*"

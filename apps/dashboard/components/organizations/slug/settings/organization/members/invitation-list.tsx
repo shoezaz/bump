@@ -138,7 +138,7 @@ function InvitationListItem({
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
-                  className="!text-destructive cursor-pointer"
+                  className="text-destructive! cursor-pointer"
                   onClick={handleShowRevokeInvitationModal}
                 >
                   Revoke
@@ -147,7 +147,7 @@ function InvitationListItem({
             )}
             {invitation.status === InvitationStatus.REVOKED && (
               <DropdownMenuItem
-                className="!text-destructive cursor-pointer"
+                className="text-destructive! cursor-pointer"
                 onClick={handleDeleteInvitation}
               >
                 Delete

@@ -14,15 +14,14 @@ import {
   type InputWithAdornmentsProps
 } from './input-with-adornments';
 
-type InputColorProps = Omit<
+export type InputColorProps = Omit<
   InputWithAdornmentsProps,
   'value' | 'color' | 'onChange'
 > & {
   value?: string;
   onChange?: (color: string) => void;
 };
-
-export function InputColor({
+function InputColor({
   value = DEFAULT_COLOR,
   onChange,
   disabled,
@@ -71,10 +70,19 @@ export function InputColor({
 
   const handlePickerChange = React.useCallback(
     (hex: string) => {
+      setInputValue(hex);
       onChange?.(hex);
     },
     [onChange]
   );
+
+  React.useEffect(() => {
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, []);
 
   return (
     <InputWithAdornments
@@ -96,4 +104,5 @@ export function InputColor({
     />
   );
 }
-InputColor.displayName = 'InputColor';
+
+export { InputColor };

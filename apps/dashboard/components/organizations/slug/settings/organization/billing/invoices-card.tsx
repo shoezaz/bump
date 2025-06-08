@@ -23,7 +23,7 @@ export function InvoicesCard({
 }: InvoicesCardProps): React.JSX.Element {
   return (
     <Card
-      className={cn('flex h-full flex-col', className)}
+      className={cn('flex h-full flex-col p-0', className)}
       {...other}
     >
       <CardContent className="max-h-72 flex-1 overflow-hidden p-0">
@@ -32,7 +32,9 @@ export function InvoicesCard({
             <InvoiceList invoices={invoices} />
           </ScrollArea>
         ) : (
-          <EmptyText className="p-6">No invoices received yet.</EmptyText>
+          <EmptyText className="p-6 h-full flex items-center">
+            No invoices received yet.
+          </EmptyText>
         )}
       </CardContent>
     </Card>

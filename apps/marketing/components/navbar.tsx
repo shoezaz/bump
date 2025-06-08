@@ -61,12 +61,12 @@ export function Navbar(): React.JSX.Element {
                               ? ''
                               : undefined
                           }
-                          className="rounded-xl text-[15px] font-normal data-[active]:bg-accent"
+                          className="rounded-xl text-[15px] font-normal data-active:bg-accent"
                         >
                           {item.title}
                         </NavigationMenuTrigger>
                         <NavigationMenuContent>
-                          <ul className="w-96 list-none p-4">
+                          <ul className="w-96 list-none p-2">
                             {item.items.map((subItem, subIndex) => (
                               <li key={subIndex}>
                                 <NavigationMenuLink asChild>
@@ -89,7 +89,7 @@ export function Navbar(): React.JSX.Element {
                                       <div className="text-sm font-medium">
                                         {subItem.title}
                                         {subItem.external && (
-                                          <ExternalLink className="-mt-2 ml-1 inline text-muted-foreground" />
+                                          <ExternalLink className="-mt-2 ml-1 size-2 inline text-muted-foreground" />
                                         )}
                                       </div>
                                       <p className="text-sm leading-snug text-muted-foreground">
@@ -115,7 +115,7 @@ export function Navbar(): React.JSX.Element {
                           }
                           className={cn(
                             navigationMenuTriggerStyle(),
-                            'rounded-xl text-[15px] font-normal data-[active]:bg-accent'
+                            'rounded-xl text-[15px] font-normal data-active:bg-accent'
                           )}
                         >
                           <Link
@@ -137,7 +137,6 @@ export function Navbar(): React.JSX.Element {
           </div>
           <div className="flex items-center gap-2">
             <ThemeToggle className="rounded-xl border-none shadow-none" />
-
             <Link
               href={routes.dashboard.auth.SignIn}
               className={cn(

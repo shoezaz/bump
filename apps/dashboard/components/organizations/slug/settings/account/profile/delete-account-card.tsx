@@ -32,14 +32,14 @@ export function DeleteAccountCard({
       className={cn('border-destructive', className)}
       {...other}
     >
-      <CardContent className="pt-6">
+      <CardContent>
         <p className="text-sm font-normal text-muted-foreground">
           Deleting your account is irreversible. All your data will be
           permanently removed from our servers.
         </p>
       </CardContent>
       <Separator />
-      <CardFooter className="flex w-full justify-end pt-6">
+      <CardFooter className="flex w-full justify-end">
         <Button
           type="button"
           variant="destructive"

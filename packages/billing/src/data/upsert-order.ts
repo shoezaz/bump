@@ -9,7 +9,9 @@ export async function upsertOrder(order: UpsertOrder): Promise<void> {
       select: { id: true }
     });
     if (!organization) {
-      throw new Error(`Billing customer not found for customerId: ${order.customerId}`);
+      throw new Error(
+        `Billing customer not found for customerId: ${order.customerId}`
+      );
     }
     order.organizationId = organization.id;
   }

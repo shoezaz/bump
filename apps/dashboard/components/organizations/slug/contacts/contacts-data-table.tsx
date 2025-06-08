@@ -368,7 +368,7 @@ function ActionsCell({ row }: { row: Row<ContactDto> }): React.JSX.Element {
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem
-          className="cursor-pointer !text-destructive"
+          className="cursor-pointer text-destructive!"
           onClick={(e) => {
             e.stopPropagation();
             handleShowDeleteContactModal();

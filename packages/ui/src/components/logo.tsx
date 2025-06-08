@@ -1,17 +1,15 @@
+'use client';
+
 import * as React from 'react';
 
 import { APP_NAME } from '@workspace/common/app';
 import { cn } from '@workspace/ui/lib/utils';
 
-// The logo size below is 28px x 28px but in a 36px x 36px container.
-// Because of the 8px difference the components <Sidebar /> and <Mobilesheet /> have a pl-0.5 (4px left padding) class applied.
-// When you update the logo make sure to eventually adjust the pl-0.5 class in those two components.
-
-export type LogoProps = React.HTMLAttributes<HTMLDivElement> & {
+export type LogoElement = React.ComponentRef<'div'>;
+export type LogoProps = React.ComponentPropsWithoutRef<'div'> & {
   hideSymbol?: boolean;
   hideWordmark?: boolean;
 };
-
 export function Logo({
   hideSymbol,
   hideWordmark,

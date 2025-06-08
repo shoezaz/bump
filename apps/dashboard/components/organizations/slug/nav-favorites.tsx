@@ -123,7 +123,7 @@ export function NavFavorites({
           asChild
           className="group/label hover:bg-sidebar-accent group-data-[collapsible=icon]:mt-0"
         >
-          <CollapsibleTrigger className="group-data-[collapsible=icon]:invisible">
+          <CollapsibleTrigger className="cursor-pointer group-data-[collapsible=icon]:invisible">
             <span className="text-sm text-muted-foreground">Favorites</span>
             <ChevronRightIcon className="ml-auto hidden transition-transform duration-200 group-hover/label:inline group-data-[state=open]/collapsible:rotate-90 opacity-60" />
           </CollapsibleTrigger>
@@ -169,14 +169,16 @@ export function NavFavorites({
   );
 }
 
-type FavoriteSidebarMenuItemElement = HTMLLIElement;
 type FavoriteSidebarMenuItemProps = React.HTMLAttributes<HTMLLIElement> & {
   favorite: FavoriteDto;
+  ref?: React.Ref<HTMLLIElement>;
 };
-const FavoriteSidebarMenuItem = React.forwardRef<
-  FavoriteSidebarMenuItemElement,
-  FavoriteSidebarMenuItemProps
->(({ favorite, ...other }, ref): React.JSX.Element => {
+
+function FavoriteSidebarMenuItem({
+  favorite,
+  ref,
+  ...other
+}: FavoriteSidebarMenuItemProps): React.JSX.Element {
   const { isMobile, state } = useSidebar();
   const activeOrganization = useActiveOrganization();
   const handleRemoveFromFavorites = async (
@@ -204,7 +206,7 @@ const FavoriteSidebarMenuItem = React.forwardRef<
               'group/fav-item relative'
             )}
           >
-            <GripVerticalIcon className="pointer-events-none absolute -left-0.5 top-3 z-20 !size-3 shrink-0 opacity-0 group-hover/fav-item:opacity-60" />
+            <GripVerticalIcon className="pointer-events-none absolute -left-0.5 top-3 z-20 size-3! shrink-0 opacity-0 group-hover/fav-item:opacity-60" />
             <ContactAvatar
               record={favorite.record}
               src={favorite.image}
@@ -232,7 +234,7 @@ const FavoriteSidebarMenuItem = React.forwardRef<
       </Tooltip>
     </SidebarMenuItem>
   );
-});
+}
 
 function SortableFavoriteSidebarMenuItem(
   props: FavoriteSidebarMenuItemProps

@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { motion, useAnimation, useInView, Variant } from 'framer-motion';
+import { motion, useAnimation, useInView, Variant } from 'motion/react';
 
 import { useMounted } from '@workspace/ui/hooks/use-mounted';
 

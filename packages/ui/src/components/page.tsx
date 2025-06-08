@@ -6,140 +6,146 @@ import { Separator } from './separator';
 import { SidebarTrigger } from './sidebar';
 
 export type PageElement = HTMLDivElement;
-export type PageProps = React.HTMLAttributes<HTMLDivElement>;
-const Page = React.forwardRef<PageElement, PageProps>(
-  ({ children, className, ...other }, ref) => (
+export type PageProps = React.ComponentProps<'div'>;
+function Page({ children, className, ...other }: PageProps): React.JSX.Element {
+  return (
     <div
-      ref={ref}
       className={cn('flex h-full flex-col', className)}
       {...other}
     >
       {children}
     </div>
-  )
-);
-Page.displayName = 'Page';
+  );
+}
 
 export type PageHeaderElement = HTMLDivElement;
-export type PageHeaderProps = React.HTMLAttributes<HTMLDivElement>;
-const PageHeader = React.forwardRef<PageHeaderElement, PageHeaderProps>(
-  ({ className, children, ...other }, ref) => (
+export type PageHeaderProps = React.ComponentProps<'div'>;
+function PageHeader({
+  className,
+  children,
+  ...other
+}: PageHeaderProps): React.JSX.Element {
+  return (
     <div
-      ref={ref}
       className={cn('sticky top-0 z-20 bg-background', className)}
       {...other}
     >
       {children}
     </div>
-  )
-);
-PageHeader.displayName = 'PageHeader';
+  );
+}
 
 export type PagePrimaryBarElement = HTMLDivElement;
-export type PagePrimaryBarProps = React.HTMLAttributes<HTMLDivElement>;
-const PagePrimaryBar = React.forwardRef<
-  PagePrimaryBarElement,
-  PagePrimaryBarProps
->(({ className, children, ...other }, ref) => (
-  <div
-    ref={ref}
-    className={cn(
-      'relative flex h-14 flex-row items-center gap-1 border-b px-4 sm:px-6',
-      className
-    )}
-    {...other}
-  >
-    <SidebarTrigger />
-    <Separator
-      orientation="vertical"
-      className="mr-2 h-4"
-    />
-    <div className="flex w-full flex-row items-center justify-between">
-      {children}
+export type PagePrimaryBarProps = React.ComponentProps<'div'>;
+function PagePrimaryBar({
+  className,
+  children,
+  ...other
+}: PagePrimaryBarProps): React.JSX.Element {
+  return (
+    <div
+      className={cn(
+        'relative flex h-14 flex-row items-center gap-1 border-b px-4 sm:px-6',
+        className
+      )}
+      {...other}
+    >
+      <SidebarTrigger />
+      <Separator
+        orientation="vertical"
+        className="mr-2 h-4!"
+      />
+      <div className="flex w-full flex-row items-center justify-between">
+        {children}
+      </div>
     </div>
-  </div>
-));
-PagePrimaryBar.displayName = 'PagePrimaryBar';
+  );
+}
 
 export type PageTitleElement = HTMLHeadingElement;
-export type PageTitleProps = React.HTMLAttributes<HTMLHeadingElement>;
-const PageTitle = React.forwardRef<PageTitleElement, PageTitleProps>(
-  ({ className, children, ...other }, ref) => (
+export type PageTitleProps = React.ComponentProps<'h1'>;
+function PageTitle({
+  className,
+  children,
+  ...other
+}: PageTitleProps): React.JSX.Element {
+  return (
     <h1
-      ref={ref}
       className={cn('text-sm font-semibold', className)}
       {...other}
     >
       {children}
     </h1>
-  )
-);
-PageTitle.displayName = 'PageTitle';
+  );
+}
 
 export type PageActionsElement = HTMLDivElement;
-export type PageActionsProps = React.HTMLAttributes<HTMLDivElement>;
-const PageActions = React.forwardRef<PageActionsElement, PageActionsProps>(
-  ({ className, children, ...other }, ref) => (
+export type PageActionsProps = React.ComponentProps<'div'>;
+function PageActions({
+  className,
+  children,
+  ...other
+}: PageActionsProps): React.JSX.Element {
+  return (
     <div
-      ref={ref}
       className={cn('flex items-center gap-2', className)}
       {...other}
     >
       {children}
     </div>
-  )
-);
-PageActions.displayName = 'PageActions';
+  );
+}
 
 export type PageSecondaryBarElement = HTMLDivElement;
-export type PageSecondaryBarProps = React.HTMLAttributes<HTMLDivElement>;
-const PageSecondaryBar = React.forwardRef<
-  PageSecondaryBarElement,
-  PageSecondaryBarProps
->(({ className, children, ...other }, ref) => (
-  <div
-    ref={ref}
-    className={cn(
-      'relative flex h-12 items-center justify-between gap-2 border-b px-4 sm:px-6',
-      className
-    )}
-    {...other}
-  >
-    {children}
-  </div>
-));
-PageSecondaryBar.displayName = 'PageSecondaryBar';
+export type PageSecondaryBarProps = React.ComponentProps<'div'>;
+function PageSecondaryBar({
+  className,
+  children,
+  ...other
+}: PageSecondaryBarProps): React.JSX.Element {
+  return (
+    <div
+      className={cn(
+        'relative flex h-12 items-center justify-between gap-2 border-b px-4 sm:px-6',
+        className
+      )}
+      {...other}
+    >
+      {children}
+    </div>
+  );
+}
 
 export type PageBodyElement = HTMLDivElement;
-export type PageBodyProps = React.HTMLAttributes<HTMLDivElement> & {
+export type PageBodyProps = React.ComponentProps<'div'> & {
   disableScroll?: boolean;
 };
-const PageBody = React.forwardRef<PageBodyElement, PageBodyProps>(
-  ({ children, className, disableScroll = false, ...other }, ref) => {
-    if (disableScroll) {
-      return (
-        <div
-          className={cn('flex h-full flex-col', className)}
-          ref={ref}
-          {...other}
-        >
-          {children}
-        </div>
-      );
-    }
-
+function PageBody({
+  children,
+  className,
+  disableScroll = false,
+  ...other
+}: PageBodyProps): React.JSX.Element {
+  if (disableScroll) {
     return (
       <div
-        className={cn('grow overflow-hidden', className)}
-        ref={ref}
+        className={cn('flex h-full flex-col', className)}
         {...other}
       >
-        <ScrollArea className="h-full">{children}</ScrollArea>
+        {children}
       </div>
     );
   }
-);
-PageBody.displayName = 'PageBody';
+
+  return (
+    <div
+      className={cn('grow overflow-hidden', className)}
+      {...other}
+    >
+      <ScrollArea className="h-full">{children}</ScrollArea>
+    </div>
+  );
+}
 
 export {
   Page,

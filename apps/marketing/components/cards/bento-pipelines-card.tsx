@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
 
 import { Badge } from '@workspace/ui/components/badge';
 import {
@@ -73,7 +73,7 @@ export function BentoPipelinesCard({
             {DATA.map((stage, index) => (
               <div
                 key={stage.id}
-                className="hover:!opacity-100 group-hover:opacity-40"
+                className="hover:opacity-100! group-hover:opacity-40"
               >
                 <motion.div
                   className="flex items-center space-x-2 rounded-md pr-4"

@@ -27,7 +27,7 @@ export function ForgotPasswordSuccessCard({
   return (
     <Card
       className={cn(
-        'w-full px-4 py-2 border-transparent dark:border-border',
+        'w-full px-4 py-8 border-transparent dark:border-border',
         className
       )}
       {...other}
@@ -43,14 +43,12 @@ export function ForgotPasswordSuccessCard({
       </CardHeader>
       <CardContent>
         <Alert variant="info">
-          <div className="flex flex-row items-start gap-2">
-            <InfoIcon className="mt-0.5 size-[18px] shrink-0" />
-            <AlertDescription>
-              If you don't receive an email soon, check that the email address
-              you entered is correct, check your spam folder or reach out to
-              support if the issue persists.
-            </AlertDescription>
-          </div>
+          <InfoIcon className="size-[18px] shrink-0" />
+          <AlertDescription className="inline">
+            If you don't receive an email soon, check that the email address you
+            entered is correct, check your spam folder or reach out to support
+            if the issue persists.
+          </AlertDescription>
         </Alert>
       </CardContent>
       <CardFooter className="flex justify-center text-sm">

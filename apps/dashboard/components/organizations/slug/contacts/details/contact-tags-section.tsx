@@ -62,7 +62,6 @@ export function ContactTagsSection({
                     <TagInput
                       {...field}
                       allowDuplicates={false}
-                      inputFieldPosition="top"
                       placeholder="Type your tag and press enter"
                       tags={field.value}
                       onTagsChange={(values) => {

@@ -44,6 +44,7 @@ export const CommandMenu = NiceModal.create<CommandMenuProps>(() => {
     <CommandDialog
       open={modal.visible}
       onOpenChange={modal.handleOpenChange}
+      className="max-w-lg"
     >
       <CommandInput placeholder="Type a command or search..." />
       <CommandList>
@@ -61,7 +62,7 @@ export const CommandMenu = NiceModal.create<CommandMenuProps>(() => {
                   modal.handleClose();
                 }}
               >
-                <item.icon className="mr-2 !h-4 !w-4 shrink-0 text-muted-foreground" />
+                <item.icon className="mr-2 h-4! w-4! shrink-0 text-muted-foreground" />
                 <span>{item.title}</span>
               </CommandItem>
             ))}

@@ -88,7 +88,7 @@ export function RecoveryCodeCard({
   return (
     <Card
       className={cn(
-        'w-full px-4 py-2 border-transparent dark:border-border',
+        'w-full px-4 py-8 border-transparent dark:border-border',
         className
       )}
       {...other}
@@ -131,24 +131,22 @@ export function RecoveryCodeCard({
             />
             {errorMessage && (
               <Alert variant="destructive">
-                <div className="flex flex-row items-center gap-2">
-                  <AlertCircleIcon className="size-[18px] shrink-0" />
-                  <AlertDescription>
-                    {errorMessage}
-                    {errorCode === AuthErrorCode.RequestExpired && (
-                      <Link
-                        href={routes.dashboard.auth.SignIn}
-                        className={cn(
-                          buttonVariants({ variant: 'link' }),
-                          'ml-0.5 h-fit gap-0.5 px-0.5 py-0 text-foreground underline'
-                        )}
-                      >
-                        Sign in again.
-                        <ArrowRightIcon className="size-3 shrink-0" />
-                      </Link>
-                    )}
-                  </AlertDescription>
-                </div>
+                <AlertCircleIcon className="size-[18px] shrink-0" />
+                <AlertDescription className="inline">
+                  {errorMessage}
+                  {errorCode === AuthErrorCode.RequestExpired && (
+                    <Link
+                      href={routes.dashboard.auth.SignIn}
+                      className={cn(
+                        buttonVariants({ variant: 'link' }),
+                        'ml-0.5 h-fit gap-0.5 px-0.5 py-0 text-foreground underline'
+                      )}
+                    >
+                      Sign in again.
+                      <ArrowRightIcon className="size-3 shrink-0" />
+                    </Link>
+                  )}
+                </AlertDescription>
               </Alert>
             )}
             <Button

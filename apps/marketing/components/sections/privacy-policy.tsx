@@ -76,11 +76,8 @@ export function PrivacyPolicy(): React.JSX.Element {
           title="Privacy Policy"
           description="Learn how we collect, use, and protect your data. Please read carefully to understand our practices."
         />
-        <Alert
-          variant="warning"
-          className="rounded-lg border border-yellow-500 dark:border-yellow-900"
-        >
-          <AlertDescription className="ml-3 text-base">
+        <Alert variant="warning">
+          <AlertDescription className="ml-3 text-base inline">
             This policy provides a general framework. It should be reviewed and
             customized by a legal professional to suit your jurisdiction and use
             case.

@@ -99,7 +99,7 @@ export function OrganizationLogoCard({
   return (
     <FormProvider {...methods}>
       <Card {...props}>
-        <CardContent className="pt-6">
+        <CardContent>
           <form
             className="flex items-center space-x-4"
             onSubmit={methods.handleSubmit(onSubmit)}

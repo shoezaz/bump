@@ -1,18 +1,17 @@
-import * as React from 'react';
+import React from 'react';
 
 import { cn } from '../lib/utils';
 
 export type SkeletonElement = HTMLDivElement;
-export type SkeletonProps = React.HtmlHTMLAttributes<HTMLDivElement>;
-const Skeleton = React.forwardRef<SkeletonElement, SkeletonProps>(
-  ({ className, ...other }, ref) => (
+export type SkeletonProps = React.ComponentPropsWithoutRef<'div'>;
+function Skeleton({ className, ...props }: SkeletonProps): React.JSX.Element {
+  return (
     <div
-      ref={ref}
-      className={cn('animate-pulse rounded-md bg-primary/10', className)}
-      {...other}
+      data-slot="skeleton"
+      className={cn('bg-accent animate-pulse rounded-md', className)}
+      {...props}
     />
-  )
-);
-Skeleton.displayName = 'SettingsSections';
+  );
+}
 
 export { Skeleton };

@@ -8,11 +8,18 @@ import {
 } from '@workspace/ui/components/card';
 import { Separator } from '@workspace/ui/components/separator';
 import { Skeleton } from '@workspace/ui/components/skeleton';
+import { cn } from '@workspace/ui/lib/utils';
 
-export function WebhooksSkeletonCard(props: CardProps): React.JSX.Element {
+export function WebhooksSkeletonCard({
+  className,
+  ...props
+}: CardProps): React.JSX.Element {
   return (
-    <Card {...props}>
-      <CardContent className="pt-6">
+    <Card
+      className={cn('pt-0 gap-0', className)}
+      {...props}
+    >
+      <CardContent>
         <div className="flex flex-row justify-between">
           <div className="space-y-4">
             <div className="flex flex-col gap-2">

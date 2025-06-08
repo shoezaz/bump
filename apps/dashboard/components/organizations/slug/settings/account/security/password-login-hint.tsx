@@ -13,14 +13,12 @@ export function PasswordLoginHint({
       className={cn('max-w-4xl px-6', className)}
       {...other}
     >
-      <Alert variant="default">
-        <div className="flex flex-row items-start gap-2">
-          <InfoIcon className="mt-0.5 size-[18px] shrink-0" />
-          <AlertDescription>
-            Regardless of connected accounts, you will always have a password
-            login as well.
-          </AlertDescription>
-        </div>
+      <Alert>
+        <InfoIcon className="size-[18px] shrink-0" />
+        <AlertDescription className="inline">
+          Regardless of connected accounts, you will always have a password
+          login as well.
+        </AlertDescription>
       </Alert>
     </div>
   );

@@ -16,12 +16,12 @@ const spinnerVariants = cva('flex-col items-center justify-center', {
   }
 });
 
-const loaderVariants = cva('animate-spin text-primary', {
+const loaderVariants = cva('animate-spin text-current', {
   variants: {
     size: {
-      small: 'size-6 shrink-0',
-      medium: 'size-8 shrink-0',
-      large: 'size-12 shrink-0'
+      small: 'size-2 shrink-0',
+      medium: 'size-4 shrink-0',
+      large: 'size-6 shrink-0'
     }
   },
   defaultVariants: {
@@ -29,28 +29,35 @@ const loaderVariants = cva('animate-spin text-primary', {
   }
 });
 
-export type SpinnerProps = VariantProps<typeof spinnerVariants> &
+export type SpinnerElement = React.ComponentRef<'span'>;
+export type SpinnerProps = React.ComponentPropsWithoutRef<'span'> &
+  VariantProps<typeof spinnerVariants> &
   VariantProps<typeof loaderVariants> & {
-    className?: string;
     children?: React.ReactNode;
   };
 function Spinner({
   size,
   show,
   children,
-  className
+  className,
+  ...props
 }: SpinnerProps): React.JSX.Element {
   return (
-    <span className={spinnerVariants({ show })}>
-      <Loader2Icon className={cn(loaderVariants({ size }), className)} />
+    <span
+      className={cn(spinnerVariants({ show }), className)}
+      {...props}
+    >
+      <Loader2Icon className={cn(loaderVariants({ size }))} />
       {children}
     </span>
   );
 }
 
-export type CenteredSpinnerProps = SpinnerProps & {
-  containerClassName?: React.HTMLAttributes<HTMLDivElement>['className'];
-};
+export type CenteredSpinnerElement = React.ComponentRef<'div'>;
+export type CenteredSpinnerProps = React.ComponentPropsWithoutRef<'div'> &
+  SpinnerProps & {
+    containerClassName?: React.HTMLAttributes<HTMLDivElement>['className'];
+  };
 function CenteredSpinner({
   containerClassName,
   ...props
@@ -66,6 +73,5 @@ function CenteredSpinner({
     </div>
   );
 }
-CenteredSpinner.displayName = 'CenteredSpinner';
 
 export { CenteredSpinner, Spinner };

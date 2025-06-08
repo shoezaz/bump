@@ -32,7 +32,7 @@ function centerAspectCrop(
   );
 }
 
-export async function getCroppedPngImage(
+async function getCroppedPngImage(
   imageSrc: HTMLImageElement,
   scaleFactor: number,
   pixelCrop: PixelCrop,
@@ -87,90 +87,82 @@ export type CropperProps = {
   aspectRatio?: number;
   circularCrop: boolean;
   maxImageSize: number;
+  ref?: React.Ref<CropperElement>;
 };
 
-const Cropper = React.forwardRef<CropperElement, CropperProps>(
-  ({ file, aspectRatio, circularCrop, maxImageSize }, ref) => {
-    const imgRef = React.useRef<HTMLImageElement | null>(null);
-    const [imgSrc, setImgSrc] = React.useState<string>('');
-    const [crop, setCrop] = React.useState<PercentCrop>();
-    const [completedCrop, setCompletedCrop] = React.useState<PixelCrop | null>(
-      null
+export const Cropper = ({
+  file,
+  aspectRatio,
+  circularCrop,
+  maxImageSize,
+  ref
+}: CropperProps) => {
+  const imgRef = React.useRef<HTMLImageElement | null>(null);
+  const [imgSrc, setImgSrc] = React.useState<string>('');
+  const [crop, setCrop] = React.useState<PercentCrop>();
+  const [completedCrop, setCompletedCrop] = React.useState<PixelCrop | null>(
+    null
+  );
+
+  React.useEffect(() => {
+    const reader = new FileReader();
+    reader.addEventListener('load', () =>
+      setImgSrc(reader.result?.toString() || '')
     );
+    reader.readAsDataURL(file);
+  }, [file]);
 
-    React.useEffect(() => {
-      const reader = new FileReader();
-      reader.addEventListener('load', () =>
-        setImgSrc(reader.result?.toString() || '')
-      );
-      reader.readAsDataURL(file);
-    }, [file]);
+  const onImageLoad = React.useCallback(
+    (e: React.SyntheticEvent<HTMLImageElement>) => {
+      const { width, height } = e.currentTarget;
+      setCrop(centerAspectCrop(width, height, aspectRatio));
+    },
+    [aspectRatio]
+  );
 
-    const onImageLoad = React.useCallback(
-      (e: React.SyntheticEvent<HTMLImageElement>) => {
-        const { width, height } = e.currentTarget;
-        setCrop(centerAspectCrop(width, height, aspectRatio));
-      },
-      [aspectRatio]
-    );
-
-    React.useImperativeHandle(
-      ref,
-      () => ({
-        getCroppedImage: async () => {
-          if (completedCrop && imgRef.current) {
-            try {
-              const croppedImage = await getCroppedPngImage(
-                imgRef.current,
-                1,
-                completedCrop,
-                maxImageSize
-              );
-              return croppedImage;
-            } catch (error) {
-              console.error('Error cropping image:', error);
-              return null;
-            }
+  React.useImperativeHandle(
+    ref,
+    () => ({
+      getCroppedImage: async () => {
+        if (completedCrop && imgRef.current) {
+          try {
+            const croppedImage = await getCroppedPngImage(
+              imgRef.current,
+              1,
+              completedCrop,
+              maxImageSize
+            );
+            return croppedImage;
+          } catch (error) {
+            console.error('Error cropping image:', error);
+            return null;
           }
-          return null;
         }
-      }),
-      [completedCrop, maxImageSize]
-    );
+        return null;
+      }
+    }),
+    [completedCrop, maxImageSize]
+  );
 
-    return (
-      <div
-        className="flex max-h-full max-w-full items-center justify-center overflow-hidden rounded p-4"
-        style={{
-          backgroundImage: `linear-gradient(45deg, #b0b0b0 25%, transparent 25%),
-                            linear-gradient(-45deg, #b0b0b0 25%, transparent 25%),
-                            linear-gradient(45deg, transparent 75%, #b0b0b0 75%),
-                            linear-gradient(-45deg, transparent 75%, #b0b0b0 75%)`,
-          backgroundSize: '20px 20px',
-          backgroundPosition: '0 0, 0 10px, 10px -10px, -10px 0px'
-        }}
+  return (
+    <div className="flex max-h-full max-w-full items-center justify-center overflow-hidden rounded-sm p-4 bg-[repeating-conic-gradient(#b0b0b0_0%_25%,transparent_0%_50%)] bg-size-[20px_20px]">
+      <ReactCrop
+        crop={crop}
+        onChange={(_, percentCrop) => setCrop(percentCrop)}
+        onComplete={(c) => setCompletedCrop(c)}
+        aspect={aspectRatio}
+        circularCrop={circularCrop}
       >
-        <ReactCrop
-          crop={crop}
-          onChange={(_, percentCrop) => setCrop(percentCrop)}
-          onComplete={(c) => setCompletedCrop(c)}
-          aspect={aspectRatio}
-          circularCrop={circularCrop}
-        >
-          {imgSrc && (
-            <img
-              ref={imgRef}
-              alt="crop"
-              src={imgSrc}
-              className="!max-h-[277px] max-w-full"
-              onLoad={onImageLoad}
-            />
-          )}
-        </ReactCrop>
-      </div>
-    );
-  }
-);
-Cropper.displayName = 'Cropper';
-
-export { Cropper };
+        {imgSrc && (
+          <img
+            ref={imgRef}
+            alt="crop"
+            src={imgSrc}
+            className="max-h-[277px]! max-w-full"
+            onLoad={onImageLoad}
+          />
+        )}
+      </ReactCrop>
+    </div>
+  );
+};

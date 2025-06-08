@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { CheckIcon } from 'lucide-react';
 
 import type { Theme } from '@workspace/ui/hooks/use-theme';
 
@@ -40,9 +39,6 @@ export function ThemeOption({ theme }: ThemeOptionProps): React.JSX.Element {
             </div>
           </>
         )}
-        <span className="absolute bottom-2 right-2 hidden size-5 items-center justify-center rounded-full bg-blue-500 p-0.5 text-white">
-          <CheckIcon className="size-4 shrink-0" />
-        </span>
       </div>
       <div className="block w-full p-2 pb-0 text-center text-xs font-normal">
         {capitalize(theme)}

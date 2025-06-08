@@ -15,7 +15,7 @@ export function OrganizationLogoSkeletonCard(
 ): React.JSX.Element {
   return (
     <Card {...props}>
-      <CardContent className="pt-6">
+      <CardContent>
         <div className="flex items-center space-x-4">
           <Skeleton className="flex size-20 items-center justify-center rounded-xl border border-dashed bg-background p-0.5">
             <Avatar className="size-[72px] rounded-md">

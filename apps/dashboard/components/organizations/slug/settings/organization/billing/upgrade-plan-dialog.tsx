@@ -19,7 +19,7 @@ export const UpgradePlanDialog = NiceModal.create(() => {
   return (
     <Dialog open={modal.visible}>
       <DialogContent
-        className="max-w-full flex flex-col h-full !rounded-none"
+        className="max-w-full flex flex-col h-full rounded-none!"
         onClose={modal.handleClose}
         onAnimationEndCapture={modal.handleAnimationEndCapture}
       >

@@ -10,7 +10,7 @@ import {
 
 import { cn } from '../lib/utils';
 
-export type ScrollAreaElement = React.ElementRef<
+export type ScrollAreaElement = React.ComponentRef<
   typeof ScrollAreaPrimitive.Root
 >;
 export type ScrollAreaProps = React.ComponentPropsWithoutRef<
@@ -19,70 +19,64 @@ export type ScrollAreaProps = React.ComponentPropsWithoutRef<
   verticalScrollBar?: boolean;
   horizontalScrollBar?: boolean;
 };
-const ScrollArea = React.forwardRef<ScrollAreaElement, ScrollAreaProps>(
-  (
-    {
-      verticalScrollBar = true,
-      horizontalScrollBar = false,
-      className,
-      children,
-      ...props
-    },
-    ref
-  ) => (
+function ScrollArea({
+  verticalScrollBar = true,
+  horizontalScrollBar = false,
+  className,
+  children,
+  ...props
+}: ScrollAreaProps): React.JSX.Element {
+  return (
     <ScrollAreaPrimitive.Root
-      ref={ref}
+      data-slot="scroll-area"
       className={cn('relative', className)}
       {...props}
     >
-      <ScrollAreaPrimitive.Viewport className="size-full rounded-[inherit]">
+      <ScrollAreaPrimitive.Viewport
+        data-slot="scroll-area-viewport"
+        className="focus-visible:ring-ring/50 size-full rounded-[inherit] transition-[color,box-shadow] outline-none focus-visible:ring-[3px] focus-visible:outline-1"
+      >
         {children}
       </ScrollAreaPrimitive.Viewport>
-      {verticalScrollBar && (
-        <ScrollBar
-          forceMount
-          orientation="vertical"
-        />
-      )}
-      {horizontalScrollBar && (
-        <ScrollBar
-          forceMount
-          orientation="horizontal"
-        />
-      )}
+      {verticalScrollBar && <ScrollBar orientation="vertical" />}
+      {horizontalScrollBar && <ScrollBar orientation="horizontal" />}
       <ScrollAreaPrimitive.Corner />
     </ScrollAreaPrimitive.Root>
-  )
-);
+  );
+}
 
-ScrollArea.displayName = ScrollAreaPrimitive.Root.displayName;
-
-export type ScrollBarElement = React.ElementRef<
+export type ScrollBarElement = React.ComponentRef<
   typeof ScrollAreaPrimitive.ScrollAreaScrollbar
 >;
 export type ScrollBarProps = React.ComponentPropsWithoutRef<
   typeof ScrollAreaPrimitive.ScrollAreaScrollbar
 >;
-const ScrollBar = React.forwardRef<ScrollBarElement, ScrollBarProps>(
-  ({ className, orientation = 'vertical', ...props }, ref) => (
+function ScrollBar({
+  className,
+  orientation = 'vertical',
+  ...props
+}: ScrollBarProps): React.JSX.Element {
+  return (
     <ScrollAreaPrimitive.ScrollAreaScrollbar
-      ref={ref}
+      data-slot="scroll-area-scrollbar"
       orientation={orientation}
       className={cn(
-        'relative z-20 flex touch-none select-none transition-colors',
+        'flex touch-none p-px transition-colors select-none',
         orientation === 'vertical' &&
-          'h-full w-2.5 border-l border-l-transparent p-px',
+          'h-full w-2.5 border-l border-l-transparent',
         orientation === 'horizontal' &&
-          'h-2.5 flex-col border-t border-t-transparent p-px',
+          'h-2.5 flex-col border-t border-t-transparent',
         className
       )}
       {...props}
     >
-      <ScrollAreaPrimitive.ScrollAreaThumb className="relative flex-1 rounded-full bg-border" />
+      <ScrollAreaPrimitive.ScrollAreaThumb
+        data-slot="scroll-area-thumb"
+        className="bg-border relative flex-1 rounded-full"
+      />
     </ScrollAreaPrimitive.ScrollAreaScrollbar>
-  )
-);
-ScrollBar.displayName = ScrollAreaPrimitive.ScrollAreaScrollbar.displayName;
+  );
+}
 
 export type ResponsiveScrollAreaElement = HTMLDivElement;
 export type ResponsiveScrollAreaProps = ScrollAreaProps & {
@@ -90,43 +84,37 @@ export type ResponsiveScrollAreaProps = ScrollAreaProps & {
   mediaQueryOptions?: UseMediaQueryOptions;
   fallbackProps?: React.HTMLAttributes<HTMLDivElement>;
 };
-const ResponsiveScrollArea = React.forwardRef<
-  ResponsiveScrollAreaElement,
-  ResponsiveScrollAreaProps
->(
-  (
-    {
-      breakpoint,
-      mediaQueryOptions,
-      children,
-      fallbackProps,
-      ...scrollAreaProps
-    },
-    ref
-  ) => {
-    const isBreakpointMatched = useMediaQuery(breakpoint, mediaQueryOptions);
-
-    if (isBreakpointMatched) {
-      return (
-        <ScrollArea
-          ref={ref}
-          {...scrollAreaProps}
-        >
-          {children}
-        </ScrollArea>
-      );
-    }
-
+function ResponsiveScrollArea({
+  breakpoint,
+  mediaQueryOptions,
+  fallbackProps,
+  verticalScrollBar,
+  horizontalScrollBar,
+  className,
+  children,
+  ...scrollAreaProps
+}: ResponsiveScrollAreaProps): React.JSX.Element {
+  const isMatched = useMediaQuery(breakpoint, mediaQueryOptions);
+  if (isMatched) {
     return (
-      <div
-        ref={ref}
-        {...fallbackProps}
+      <ScrollArea
+        verticalScrollBar={verticalScrollBar}
+        horizontalScrollBar={horizontalScrollBar}
+        className={className}
+        {...scrollAreaProps}
       >
         {children}
-      </div>
+      </ScrollArea>
     );
   }
-);
-ResponsiveScrollArea.displayName = 'ResponsiveScrollArea';
+  return (
+    <div
+      className={className}
+      {...fallbackProps}
+    >
+      {children}
+    </div>
+  );
+}
 
 export { ResponsiveScrollArea, ScrollArea, ScrollBar };

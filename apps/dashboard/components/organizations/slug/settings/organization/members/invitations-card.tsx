@@ -46,30 +46,24 @@ export function InvitationsCard({
   };
   return (
     <Card
-      className={cn('flex h-full flex-col', className)}
+      className={cn('flex h-full flex-col gap-0 pb-0', className)}
       {...other}
     >
-      <CardHeader className="pb-0">
-        <div className="flex flex-row items-center gap-2">
-          <InputSearch
-            placeholder="Filter by email"
-            value={searchQuery}
-            onChange={handleSearchQueryChange}
-          />
-          <Tabs
-            value={status}
-            onValueChange={setStatus}
-          >
-            <TabsList>
-              <TabsTrigger value={InvitationStatus.PENDING}>
-                Pending
-              </TabsTrigger>
-              <TabsTrigger value={InvitationStatus.REVOKED}>
-                Revoked
-              </TabsTrigger>
-            </TabsList>
-          </Tabs>
-        </div>
+      <CardHeader className="pb-0 flex flex-row items-center gap-2">
+        <InputSearch
+          placeholder="Filter by email"
+          value={searchQuery}
+          onChange={handleSearchQueryChange}
+        />
+        <Tabs
+          value={status}
+          onValueChange={setStatus}
+        >
+          <TabsList>
+            <TabsTrigger value={InvitationStatus.PENDING}>Pending</TabsTrigger>
+            <TabsTrigger value={InvitationStatus.REVOKED}>Revoked</TabsTrigger>
+          </TabsList>
+        </Tabs>
       </CardHeader>
       <CardContent className="max-h-72 flex-1 overflow-hidden p-0">
         {filteredInvitations.length > 0 ? (

@@ -68,7 +68,7 @@ export function ResetPasswordCard({
     <FormProvider {...methods}>
       <Card
         className={cn(
-          'w-full px-4 py-2 border-transparent dark:border-border',
+          'w-full px-4 py-8 border-transparent dark:border-border',
           className
         )}
         {...other}
@@ -114,10 +114,10 @@ export function ResetPasswordCard({
             />
             {errorMessage && (
               <Alert variant="destructive">
-                <div className="flex flex-row items-center gap-2">
-                  <AlertCircleIcon className="size-[18px] shrink-0" />
-                  <AlertDescription>{errorMessage}</AlertDescription>
-                </div>
+                <AlertCircleIcon className="size-[18px] shrink-0" />
+                <AlertDescription className="inline">
+                  {errorMessage}
+                </AlertDescription>
               </Alert>
             )}
             <Button

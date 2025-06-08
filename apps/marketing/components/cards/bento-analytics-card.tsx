@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
 import { Area, AreaChart } from 'recharts';
 
 import {
@@ -35,7 +35,7 @@ export function BentoAnalyticsCard({
   return (
     <MotionCard
       className={cn(
-        'relative h-[300px] max-h-[300px] overflow-hidden',
+        'relative h-[300px] max-h-[300px] overflow-hidden pb-0',
         className
       )}
       {...other}
@@ -43,7 +43,7 @@ export function BentoAnalyticsCard({
       <CardHeader>
         <CardTitle className="text-xl font-semibold">Analytics</CardTitle>
       </CardHeader>
-      <CardContent className="overflow-hidden p-0">
+      <CardContent className="overflow-hidden p-0 pb-6">
         <p className="mb-6 line-clamp-2 px-6 text-sm text-muted-foreground">
           Get instant insights into your business performance.
         </p>
@@ -66,12 +66,12 @@ export function BentoAnalyticsCard({
                 >
                   <stop
                     offset="0%"
-                    stopColor="hsl(var(--primary))"
+                    stopColor="var(--primary)"
                     stopOpacity={0.2}
                   />
                   <stop
                     offset="100%"
-                    stopColor="hsl(var(--primary))"
+                    stopColor="var(--primary)"
                     stopOpacity={0}
                   />
                 </linearGradient>
@@ -80,7 +80,7 @@ export function BentoAnalyticsCard({
                 type="monotone"
                 dataKey="value"
                 label="Leads"
-                stroke="hsl(var(--primary))"
+                stroke="var(--primary)"
                 fill="url(#gradient)"
                 strokeWidth={2}
                 isAnimationActive={false}

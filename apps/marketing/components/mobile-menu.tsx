@@ -3,8 +3,8 @@
 import * as React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { motion } from 'framer-motion';
 import { ChevronDownIcon, ChevronUpIcon } from 'lucide-react';
+import { motion } from 'motion/react';
 
 import { baseUrl, getPathname, routes } from '@workspace/routes';
 import { Button, buttonVariants } from '@workspace/ui/components/button';
@@ -79,22 +79,18 @@ export function MobileMenu({
         >
           <motion.div
             className="w-5 origin-center border-t-2 border-primary"
-            initial={{ translateY: '-3px' }}
             animate={
-              open
-                ? { rotate: '45deg', translateY: '1px' }
-                : { translateY: '-3px', rotate: '0deg' }
+              open ? { rotate: '45deg', translateY: '5px' } : { rotate: '0deg' }
             }
             transition={{ bounce: 0, duration: 0.1 }}
           />
           <motion.div
             className="w-5 origin-center border-t-2 border-primary"
             transition={{ bounce: 0, duration: 0.1 }}
-            initial={{ translateY: '3px' }}
             animate={
               open
-                ? { rotate: '-45deg', translateY: '-1px' }
-                : { translateY: '3px', rotate: '0deg', scaleX: 1 }
+                ? { rotate: '-45deg', translateY: '-5px' }
+                : { rotate: '0deg', scaleX: 1 }
             }
           />
         </Button>
@@ -213,7 +209,7 @@ function MainMobileMenu({
                               <span className="text-sm font-medium">
                                 {subItem.title}
                                 {subItem.external && (
-                                  <ExternalLink className="-mt-2 ml-1 inline text-muted-foreground" />
+                                  <ExternalLink className="-mt-2 ml-1 inline size-2 text-muted-foreground" />
                                 )}
                               </span>
                               {subItem.description && (

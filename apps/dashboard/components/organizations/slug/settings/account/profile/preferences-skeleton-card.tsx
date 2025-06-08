@@ -12,16 +12,16 @@ import { Skeleton } from '@workspace/ui/components/skeleton';
 export function PreferencesSkeletonCard(props: CardProps): React.JSX.Element {
   return (
     <Card {...props}>
-      <CardContent className="pt-6">
-        <div className="space-y-8">
+      <CardContent>
+        <div className="flex flex-col gap-8">
           <div className="mb-2 flex flex-col space-y-2">
             <Skeleton className="h-[14px] w-20 my-[3.5px]" />
-            <Skeleton className="h-[19px] w-[330px]" />
+            <Skeleton className="h-5 w-[330px]" />
             <Skeleton className="h-9 w-full" />
           </div>
           <div className="mb-2 flex flex-col space-y-2">
             <Skeleton className="h-[14px] w-20 my-[3.5px]" />
-            <Skeleton className="h-[19px] w-[330px]" />
+            <Skeleton className="h-5 w-[330px]" />
             <div className="flex flex-row flex-wrap gap-2">
               {Array.from({ length: 3 }).map((_, i) => (
                 <div
@@ -39,7 +39,7 @@ export function PreferencesSkeletonCard(props: CardProps): React.JSX.Element {
         </div>
       </CardContent>
       <Separator />
-      <CardFooter className="flex w-full justify-end pt-6">
+      <CardFooter className="flex w-full justify-end">
         <Skeleton className="h-9 w-16" />
       </CardFooter>
     </Card>

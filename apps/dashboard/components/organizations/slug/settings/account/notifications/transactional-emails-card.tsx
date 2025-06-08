@@ -60,7 +60,7 @@ export function TransactionalEmailsCard({
   return (
     <FormProvider {...methods}>
       <Card {...other}>
-        <CardContent className="pt-6">
+        <CardContent>
           <form
             className="space-y-4"
             onSubmit={methods.handleSubmit(onSubmit)}
@@ -143,7 +143,7 @@ export function TransactionalEmailsCard({
           </form>
         </CardContent>
         <Separator />
-        <CardFooter className="flex w-full justify-end pt-6">
+        <CardFooter className="flex w-full justify-end">
           <Button
             type="button"
             variant="default"

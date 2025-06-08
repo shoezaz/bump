@@ -75,7 +75,7 @@ export function PreferencesCard({
   return (
     <FormProvider {...methods}>
       <Card {...other}>
-        <CardContent className="pt-6">
+        <CardContent>
           <form
             className="space-y-8"
             onSubmit={methods.handleSubmit(onSubmit)}
@@ -145,7 +145,7 @@ export function PreferencesCard({
                           key={theme}
                           value={theme}
                           className="border-none p-0 hover:bg-transparent data-[state=checked]:bg-transparent"
-                          checkClassName="bottom-8 group-data-[state=checked]:bg-blue-500 group-data-[state=checked]:!border-blue-500"
+                          checkClassName="bottom-8 group-data-[state=checked]:text-primary-foreground group-data-[state=checked]:bg-blue-500 group-data-[state=checked]:border-blue-500!"
                         >
                           <ThemeOption theme={theme} />{' '}
                         </RadioCardItem>
@@ -159,7 +159,7 @@ export function PreferencesCard({
           </form>
         </CardContent>
         <Separator />
-        <CardFooter className="flex w-full justify-end pt-6">
+        <CardFooter className="flex w-full justify-end">
           <Button
             type="button"
             variant="default"

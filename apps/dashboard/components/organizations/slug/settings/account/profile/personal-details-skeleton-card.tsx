@@ -14,9 +14,9 @@ export function PersonalDetailsSkeletonCard(
 ): React.JSX.Element {
   return (
     <Card {...props}>
-      <CardContent className="pt-6">
+      <CardContent>
         <div className="flex items-center justify-center pb-6">
-          <Skeleton className="size-[120px] rounded-full p-0.5" />
+          <Skeleton className="size-[114px] rounded-full p-0.5" />
         </div>
         <div className="grid gap-x-8 gap-y-4">
           <div className="flex flex-col space-y-2">
@@ -34,7 +34,7 @@ export function PersonalDetailsSkeletonCard(
         </div>
       </CardContent>
       <Separator />
-      <CardFooter className="flex w-full justify-end pt-6">
+      <CardFooter className="flex w-full justify-end">
         <Skeleton className="h-9 w-16" />
       </CardFooter>
     </Card>

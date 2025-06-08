@@ -7,22 +7,27 @@ import {
   type CardProps
 } from '@workspace/ui/components/card';
 import { Skeleton } from '@workspace/ui/components/skeleton';
+import { cn } from '@workspace/ui/lib/utils';
 
-export function InvitationsSkeletonCard(props: CardProps): React.JSX.Element {
+export function InvitationsSkeletonCard({
+  className,
+  ...props
+}: CardProps): React.JSX.Element {
   return (
-    <Card {...props}>
-      <CardHeader className="pb-0">
-        <div className="flex flex-row items-center gap-2">
-          <div className="relative inline-block h-9 w-full">
-            <span className="absolute left-3 top-1/2 flex -translate-y-1/2">
-              <Skeleton className="size-6 shrink-0" />
-            </span>
-            <div className="flex h-9 w-full rounded-md border border-input py-1 pl-10 pr-3 shadow-sm">
-              <Skeleton className="w-full max-w-full" />
-            </div>
+    <Card
+      className={cn('gap-0 pb-0', className)}
+      {...props}
+    >
+      <CardHeader className="pb-0 flex flex-row items-center gap-2">
+        <div className="relative inline-block h-9 w-full">
+          <span className="absolute left-3 top-1/2 flex -translate-y-1/2">
+            <Skeleton className="size-6 shrink-0" />
+          </span>
+          <div className="flex h-9 w-full rounded-md border border-input py-1 pl-10 pr-3 shadow-xs">
+            <Skeleton className="w-full max-w-full" />
           </div>
-          <Skeleton className="inline-block h-9 w-[168px]" />
         </div>
+        <Skeleton className="inline-block h-9 w-[168px]" />
       </CardHeader>
       <CardContent className="p-0">
         <ul className="list-none">

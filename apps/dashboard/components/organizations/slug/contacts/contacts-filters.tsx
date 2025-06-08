@@ -181,7 +181,7 @@ export function ContactsFilters({
                   autoFocus
                   alwaysShowClearButton
                   placeholder="Search by name or email..."
-                  className="h-12 w-full border-none !ring-0"
+                  className="h-12 w-full border-none ring-0!"
                   containerClassName="h-12"
                   value={searchQuery}
                   onChange={handleSearchQueryChange}

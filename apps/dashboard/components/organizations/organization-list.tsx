@@ -51,7 +51,9 @@ export function OrganizationList({
   return (
     <Card className="border-none shadow-none">
       <CardHeader className="text-center">
-        <CardTitle>Organizations</CardTitle>
+        <CardTitle className="text-xl font-semibold leading-none tracking-tight">
+          Organizations
+        </CardTitle>
         <CardDescription className="hidden sm:block">
           Jump into an existing organization or add a new one.
         </CardDescription>
@@ -70,7 +72,7 @@ export function OrganizationList({
               className: 'whitespace-nowrap'
             })}
           >
-            <PlusIcon className="mr-2 size-4 shrink-0" />
+            <PlusIcon className="size-4 shrink-0" />
             <span className="hidden sm:inline">Add organization</span>
             <span className="inline sm:hidden">Add</span>
           </Link>
@@ -90,7 +92,7 @@ export function OrganizationList({
             }
           />
         ) : (
-          <ScrollArea className="[&>[data-radix-scroll-area-viewport]]:max-h-[calc(100svh-18rem)]">
+          <ScrollArea className="*:data-radix-scroll-area-viewport:max-h-[calc(100svh-18rem)]">
             <div className="flex flex-col items-stretch justify-start gap-3">
               {filteredOrganizations.map((organization) => (
                 <Link

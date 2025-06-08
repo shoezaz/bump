@@ -258,7 +258,7 @@ function Properties(contact: ContactDto): React.JSX.Element {
                           onValueChange={field.onChange}
                           disabled={methods.formState.isSubmitting}
                         >
-                          <SelectTrigger className="h-7 w-full">
+                          <SelectTrigger className="h-7! w-full">
                             <SelectValue />
                           </SelectTrigger>
                           <SelectContent>

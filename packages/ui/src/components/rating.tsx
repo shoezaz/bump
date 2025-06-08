@@ -3,7 +3,6 @@
 import * as React from 'react';
 import { StarIcon } from 'lucide-react';
 
-import { mergeRefs } from '../lib/merge-refs';
 import { cn } from '../lib/utils';
 
 const ratingVariants = {
@@ -42,147 +41,140 @@ export type RatingProps = Omit<
   readOnly?: boolean;
   name?: string;
 };
-const Rating = React.forwardRef<RatingElement, RatingProps>(
-  (
-    {
-      value,
-      totalStars = 5,
-      size = 20,
-      fill = true,
-      Icon = <StarIcon />,
-      variant = 'default',
-      onChange,
-      onValueChange,
-      readOnly = false,
-      className,
-      name,
-      ...props
-    },
-    ref
-  ) => {
-    const [hoverValue, setHoverValue] = React.useState<number | null>(null);
-    const [focusedStar, setFocusedStar] = React.useState<number | null>(null);
-    const containerRef = React.useRef<HTMLDivElement>(null);
+function Rating({
+  value,
+  totalStars = 5,
+  size = 20,
+  fill = true,
+  Icon = <StarIcon />,
+  variant = 'default',
+  onChange,
+  onValueChange,
+  readOnly = false,
+  className,
+  name,
+  ...props
+}: RatingProps) {
+  const [hoverValue, setHoverValue] = React.useState<number | null>(null);
+  const [focusedStar, setFocusedStar] = React.useState<number | null>(null);
+  const containerRef = React.useRef<HTMLDivElement>(null);
 
-    const handleValueChange = React.useCallback(
-      (
-        event:
-          | React.MouseEvent<HTMLButtonElement>
-          | React.KeyboardEvent<HTMLButtonElement>,
-        newValue: number
-      ) => {
-        if (!readOnly) {
-          onChange?.(event, newValue);
-          onValueChange?.(newValue);
-        }
-      },
-      [readOnly, onChange, onValueChange]
-    );
-
-    const handleKeyDown = React.useCallback(
-      (event: React.KeyboardEvent<HTMLButtonElement>) => {
-        if (readOnly) return;
-
-        let newValue = focusedStar !== null ? focusedStar : value;
-
-        switch (event.key) {
-          case 'ArrowRight':
-          case 'ArrowUp':
-            newValue = Math.min(totalStars, newValue + 1);
-            break;
-          case 'ArrowLeft':
-          case 'ArrowDown':
-            newValue = Math.max(1, newValue - 1);
-            break;
-          case 'Home':
-            newValue = 1;
-            break;
-          case 'End':
-            newValue = totalStars;
-            break;
-          default:
-            return;
-        }
-
-        event.preventDefault();
-        setFocusedStar(newValue);
-        handleValueChange(event, newValue);
-      },
-      [focusedStar, value, totalStars, readOnly, handleValueChange]
-    );
-
-    const renderStar = React.useCallback(
-      (index: number) => {
-        const isActive = index < (hoverValue ?? focusedStar ?? value);
-        return React.cloneElement(Icon, {
-          key: index,
-          size,
-          className: cn(
-            'transition-colors duration-200',
-            isActive && fill ? 'fill-current' : 'fill-transparent',
-            isActive
-              ? ratingVariants[variant].star
-              : ratingVariants[variant].emptyStar,
-            !readOnly && 'cursor-pointer'
-          ),
-          'aria-hidden': 'true'
-        });
-      },
-      [Icon, size, fill, hoverValue, focusedStar, value, variant, readOnly]
-    );
-
-    React.useEffect(() => {
-      if (focusedStar !== null && containerRef.current) {
-        const buttons = containerRef.current.querySelectorAll('button');
-        buttons[focusedStar - 1]?.focus();
+  const handleValueChange = React.useCallback(
+    (
+      event:
+        | React.MouseEvent<HTMLButtonElement>
+        | React.KeyboardEvent<HTMLButtonElement>,
+      newValue: number
+    ) => {
+      if (!readOnly) {
+        onChange?.(event, newValue);
+        onValueChange?.(newValue);
       }
-    }, [focusedStar]);
+    },
+    [readOnly, onChange, onValueChange]
+  );
 
-    return (
-      <div
-        ref={mergeRefs(ref, containerRef)}
-        className={cn('inline-flex items-center gap-0.5', className)}
-        role="radiogroup"
-        aria-label="Rating"
-        onMouseLeave={() => setHoverValue(null)}
-        {...props}
-      >
-        {[...Array(totalStars)].map((_, index) => (
-          <button
-            type="button"
-            key={index}
-            onClick={(event) => handleValueChange(event, index + 1)}
-            onMouseEnter={() => !readOnly && setHoverValue(index + 1)}
-            onKeyDown={handleKeyDown}
-            onFocus={() => setFocusedStar(index + 1)}
-            onBlur={() => setFocusedStar(null)}
-            disabled={readOnly}
-            className={cn(
-              'rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
-              'p-0.5',
-              readOnly && 'cursor-default'
-            )}
-            role="radio"
-            aria-checked={value === index + 1}
-            aria-posinset={index + 1}
-            aria-setsize={totalStars}
-            tabIndex={readOnly ? -1 : value === index + 1 ? 0 : -1}
-          >
-            {renderStar(index)}
-          </button>
-        ))}
-        {name && (
-          <input
-            type="hidden"
-            name={name}
-            value={value}
-          />
-        )}
-      </div>
-    );
-  }
-);
+  const handleKeyDown = React.useCallback(
+    (event: React.KeyboardEvent<HTMLButtonElement>) => {
+      if (readOnly) return;
 
-Rating.displayName = 'Rating';
+      let newValue = focusedStar !== null ? focusedStar : value;
+
+      switch (event.key) {
+        case 'ArrowRight':
+        case 'ArrowUp':
+          newValue = Math.min(totalStars, newValue + 1);
+          break;
+        case 'ArrowLeft':
+        case 'ArrowDown':
+          newValue = Math.max(1, newValue - 1);
+          break;
+        case 'Home':
+          newValue = 1;
+          break;
+        case 'End':
+          newValue = totalStars;
+          break;
+        default:
+          return;
+      }
+
+      event.preventDefault();
+      setFocusedStar(newValue);
+      handleValueChange(event, newValue);
+    },
+    [focusedStar, value, totalStars, readOnly, handleValueChange]
+  );
+
+  const renderStar = React.useCallback(
+    (index: number) => {
+      const isActive = index < (hoverValue ?? focusedStar ?? value);
+      return React.cloneElement(Icon, {
+        key: index,
+        size,
+        className: cn(
+          'transition-colors duration-200',
+          isActive && fill ? 'fill-current' : 'fill-transparent',
+          isActive
+            ? ratingVariants[variant].star
+            : ratingVariants[variant].emptyStar,
+          !readOnly && 'cursor-pointer'
+        ),
+        'aria-hidden': 'true'
+      } as never);
+    },
+    [Icon, size, fill, hoverValue, focusedStar, value, variant, readOnly]
+  );
+
+  React.useEffect(() => {
+    if (focusedStar !== null && containerRef.current) {
+      const buttons = containerRef.current.querySelectorAll('button');
+      buttons[focusedStar - 1]?.focus();
+    }
+  }, [focusedStar]);
+
+  return (
+    <div
+      ref={containerRef}
+      className={cn('inline-flex items-center gap-0.5', className)}
+      role="radiogroup"
+      aria-label="Rating"
+      onMouseLeave={() => setHoverValue(null)}
+      {...props}
+    >
+      {[...Array(totalStars)].map((_, index) => (
+        <button
+          type="button"
+          key={index}
+          onClick={(event) => handleValueChange(event, index + 1)}
+          onMouseEnter={() => !readOnly && setHoverValue(index + 1)}
+          onKeyDown={handleKeyDown}
+          onFocus={() => setFocusedStar(index + 1)}
+          onBlur={() => setFocusedStar(null)}
+          disabled={readOnly}
+          className={cn(
+            'rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
+            'p-0.5',
+            readOnly && 'cursor-default'
+          )}
+          role="radio"
+          aria-checked={value === index + 1}
+          aria-posinset={index + 1}
+          aria-setsize={totalStars}
+          tabIndex={readOnly ? -1 : value === index + 1 ? 0 : -1}
+        >
+          {renderStar(index)}
+        </button>
+      ))}
+      {name && (
+        <input
+          type="hidden"
+          name={name}
+          value={value}
+        />
+      )}
+    </div>
+  );
+}
 
 export { Rating, ratingVariants };

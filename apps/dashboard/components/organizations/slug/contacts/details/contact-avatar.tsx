@@ -28,7 +28,7 @@ export function ContactAvatar({
       className={cn(
         'size-4 flex-none shrink-0',
         record === ContactRecord.PERSON && 'rounded-full',
-        record === ContactRecord.COMPANY && 'rounded-md',
+        record === ContactRecord.COMPANY && 'rounded-sm',
         className
       )}
       {...other}

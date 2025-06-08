@@ -8,10 +8,17 @@ import {
 } from '@workspace/ui/components/card';
 import { Separator } from '@workspace/ui/components/separator';
 import { Skeleton } from '@workspace/ui/components/skeleton';
+import { cn } from '@workspace/ui/lib/utils';
 
-export function BusinessHoursSkeletonCard(props: CardProps): React.JSX.Element {
+export function BusinessHoursSkeletonCard({
+  className,
+  ...props
+}: CardProps): React.JSX.Element {
   return (
-    <Card {...props}>
+    <Card
+      className={cn('pt-0 gap-0', className)}
+      {...props}
+    >
       <CardContent className="p-0">
         <div className="mb-2 mt-4 space-y-4">
           {Array.from({ length: 7 }).map((_, i) => (

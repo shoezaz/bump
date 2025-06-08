@@ -7,6 +7,7 @@ import rehypeSlug from 'rehype-slug';
 import { codeImport } from 'remark-code-import';
 import remarkGfm from 'remark-gfm';
 import { createHighlighter } from 'shiki';
+import { z } from 'zod';
 
 const prettyCodeOptions: Options = {
   theme: 'github-dark',
@@ -15,8 +16,6 @@ const prettyCodeOptions: Options = {
       ...options
     }),
   onVisitLine(node) {
-    // Prevent lines from collapsing in `display: grid` mode, and allow empty
-    // lines to be copy/pasted
     if (node.children.length === 0) {
       node.children = [{ type: 'text', value: ' ' }];
     }
@@ -39,7 +38,7 @@ export const authors = defineCollection({
   name: 'author',
   directory: 'content',
   include: '**/authors/*.mdx',
-  schema: (z) => ({
+  schema: z.object({
     ref: z.string(),
     name: z.string().default('Anonymous'),
     avatar: z.string().url().default('')
@@ -50,7 +49,7 @@ export const posts = defineCollection({
   name: 'post',
   directory: 'content',
   include: '**/blog/*.mdx',
-  schema: (z) => ({
+  schema: z.object({
     title: z.string(),
     description: z.string(),
     published: z.string().datetime(),
@@ -59,13 +58,10 @@ export const posts = defineCollection({
   }),
   transform: async (data, context) => {
     const body = await compileMDX(context, data, {
-      remarkPlugins: [
-        remarkGfm, // GitHub Flavored Markdown support
-        codeImport // Enables code imports in markdown
-      ],
+      remarkPlugins: [remarkGfm, codeImport],
       rehypePlugins: [
-        rehypeSlug, // Automatically add slugs to headings
-        rehypeAutolinkHeadings, // Auto-link headings for easy navigation
+        rehypeSlug,
+        rehypeAutolinkHeadings,
         [rehypePrettyCode, prettyCodeOptions]
       ]
     });
@@ -89,19 +85,16 @@ export const docs = defineCollection({
   name: 'doc',
   directory: 'content',
   include: '**/docs/*.mdx',
-  schema: (z) => ({
+  schema: z.object({
     title: z.string(),
     description: z.string()
   }),
   transform: async (data, context) => {
     const body = await compileMDX(context, data, {
-      remarkPlugins: [
-        remarkGfm, // GitHub Flavored Markdown support
-        codeImport // Enables code imports in markdown
-      ],
+      remarkPlugins: [remarkGfm, codeImport],
       rehypePlugins: [
-        rehypeSlug, // Automatically add slugs to headings
-        rehypeAutolinkHeadings, // Auto-link headings for easy navigation
+        rehypeSlug,
+        rehypeAutolinkHeadings,
         [rehypePrettyCode, prettyCodeOptions]
       ]
     });

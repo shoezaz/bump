@@ -145,7 +145,7 @@ function MemberListItem({
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem
-              className="!text-destructive cursor-pointer"
+              className="text-destructive! cursor-pointer"
               onClick={handleShowRemoveMemberModal}
             >
               {profile.id === member.id

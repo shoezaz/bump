@@ -1,3 +1,5 @@
+'use client';
+
 import * as React from 'react';
 import EmojiPicker, {
   EmojiStyle,
@@ -38,10 +40,10 @@ export function EmojiPopover({
       <PopoverContent className="w-fit border-0 p-0">
         <style>
           {`
-              .EmojiPickerReact {
-                --epr-emoji-size: 20px !important;
-              }
-            `}
+            .EmojiPickerReact {
+              --epr-emoji-size: 20px !important;
+            }
+          `}
         </style>
         <EmojiPicker
           onEmojiClick={(data: EmojiClickData) => {

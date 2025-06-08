@@ -17,6 +17,7 @@ import {
   CardFooter,
   type CardProps
 } from '@workspace/ui/components/card';
+import { cn } from '@workspace/ui/lib/utils';
 
 function VercelLogo(): React.JSX.Element {
   return (
@@ -60,10 +61,16 @@ function VercelLogo(): React.JSX.Element {
   );
 }
 
-export function AiAdvisorCard(props: CardProps): React.JSX.Element {
+export function AiAdvisorCard({
+  className,
+  ...props
+}: CardProps): React.JSX.Element {
   return (
-    <Card {...props}>
-      <CardContent className="pt-6">
+    <Card
+      className={cn('pb-0', className)}
+      {...props}
+    >
+      <CardContent>
         <div className="mb-3 flex items-center gap-2">
           <VercelLogo />
           <h2 className="text-xl font-semibold">Vercel</h2>
@@ -126,7 +133,7 @@ export function AiAdvisorCard(props: CardProps): React.JSX.Element {
           </div>
         </div>
       </CardContent>
-      <CardFooter className="flex-col items-start space-y-4 rounded-b-xl bg-neutral-50 pt-6 dark:bg-neutral-900">
+      <CardFooter className="flex-col items-start space-y-4 rounded-b-xl bg-neutral-50 py-6 dark:bg-neutral-900">
         <h3 className="text-base font-semibold sm:text-lg">AI Advisor</h3>
         <div className="min-h-10 max-w-md text-sm text-muted-foreground">
           Vercel has been contacted 4 times in the past year. Suggested next

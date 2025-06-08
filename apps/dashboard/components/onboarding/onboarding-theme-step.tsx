@@ -7,7 +7,6 @@ import {
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage
 } from '@workspace/ui/components/form';
 import { RadioCardItem, RadioCards } from '@workspace/ui/components/radio-card';
@@ -66,11 +65,9 @@ export function OnboardingThemeStep({
                     key={theme}
                     value={theme}
                     className="border-none p-0 hover:bg-transparent data-[state=checked]:bg-transparent"
-                    checkClassName="bottom-8 group-data-[state=checked]:bg-blue-500 group-data-[state=checked]:!border-blue-500"
+                    checkClassName="bottom-8 group-data-[state=checked]:text-primary-foreground group-data-[state=checked]:bg-blue-500 group-data-[state=checked]:border-blue-500!"
                   >
-                    <FormLabel className="cursor-pointer">
-                      <ThemeOption theme={theme} />
-                    </FormLabel>
+                    <ThemeOption theme={theme} />{' '}
                   </RadioCardItem>
                 ))}
               </RadioCards>

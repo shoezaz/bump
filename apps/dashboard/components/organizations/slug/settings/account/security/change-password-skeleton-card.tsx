@@ -7,7 +7,7 @@ import { Skeleton } from '@workspace/ui/components/skeleton';
 export function ChangePasswordSkeletonCard(): React.JSX.Element {
   return (
     <Card>
-      <CardContent className="pt-6">
+      <CardContent>
         <div className="space-y-4">
           <div className="flex flex-col space-y-2">
             <Skeleton className="h-[14px] w-20" />
@@ -25,7 +25,7 @@ export function ChangePasswordSkeletonCard(): React.JSX.Element {
         </div>
       </CardContent>
       <Separator />
-      <CardFooter className="flex w-full justify-end pt-6">
+      <CardFooter className="flex w-full justify-end">
         <Skeleton className="h-9 w-16" />
       </CardFooter>
     </Card>

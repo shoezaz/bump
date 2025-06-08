@@ -33,7 +33,7 @@ export function WebhooksCard({
   };
   return (
     <Card
-      className={cn('flex h-full flex-col', className)}
+      className={cn('flex h-full flex-col pt-0 gap-0', className)}
       {...other}
     >
       <CardContent className="max-h-72 flex-1 overflow-hidden p-0">

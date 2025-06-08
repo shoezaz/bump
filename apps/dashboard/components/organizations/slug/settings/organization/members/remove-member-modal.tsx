@@ -95,14 +95,12 @@ export const RemoveMemberModal = NiceModal.create<RemoveMemberModalProps>(
         />
         {member.isOwner && (
           <Alert variant="warning">
-            <div className="flex flex-row items-center gap-2">
-              <AlertCircleIcon className="size-[18px] shrink-0" />
-              <AlertDescription>
-                {isLeaving
-                  ? 'Please assign another owner before leaving the organization.'
-                  : 'Please inform the member to assign another owner.'}
-              </AlertDescription>
-            </div>
+            <AlertCircleIcon className="size-[18px] shrink-0" />
+            <AlertDescription className="inline">
+              {isLeaving
+                ? 'Please assign another owner before leaving the organization.'
+                : 'Please inform the member to assign another owner.'}
+            </AlertDescription>
           </Alert>
         )}
       </form>

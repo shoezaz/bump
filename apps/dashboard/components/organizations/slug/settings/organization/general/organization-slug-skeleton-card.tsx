@@ -14,7 +14,7 @@ export function OrgnanizationSlugSkeletonCard(
 ): React.JSX.Element {
   return (
     <Card {...props}>
-      <CardContent className="pt-6">
+      <CardContent>
         <div className="space-y-2">
           <Skeleton className="h-3.5 w-20" />
           <Skeleton className="h-9 w-full" />
@@ -22,7 +22,7 @@ export function OrgnanizationSlugSkeletonCard(
         </div>
       </CardContent>
       <Separator />
-      <CardFooter className="flex w-full justify-end pt-6">
+      <CardFooter className="flex w-full justify-end">
         <Skeleton className="h-9 w-16" />
       </CardFooter>
     </Card>

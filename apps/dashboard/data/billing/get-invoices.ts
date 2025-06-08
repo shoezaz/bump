@@ -11,9 +11,9 @@ export async function getInvoices(): Promise<InvoiceDto[]> {
     return [];
   }
 
-  const invoices = await BillingProvider.getInvoices(
-    { customerId: ctx.organization.billingCustomerId }
-  );
+  const invoices = await BillingProvider.getInvoices({
+    customerId: ctx.organization.billingCustomerId
+  });
 
   const response: InvoiceDto[] = invoices.map((invoice) => ({
     id: invoice.id ?? crypto.randomUUID(),

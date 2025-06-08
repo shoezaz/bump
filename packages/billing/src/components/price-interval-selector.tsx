@@ -49,7 +49,7 @@ export function PriceIntervalSelector({
           {billingConfigDisplayIntervals.map((displayInterval) => (
             <div
               key={displayInterval}
-              className='h-full rounded-md transition-all has-[button[data-state="checked"]]:bg-background has-[button[data-state="checked"]]:shadow-sm'
+              className='h-full rounded-md transition-all has-[button[data-state="checked"]]:bg-background has-[button[data-state="checked"]]:shadow-xs'
             >
               <RadioGroupItem
                 value={displayInterval}

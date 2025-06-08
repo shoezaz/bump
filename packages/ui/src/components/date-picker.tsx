@@ -80,7 +80,6 @@ function DatePicker({
     </Popover>
   );
 }
-DatePicker.displayName = 'DatePicker';
 
 export type DateRangePickerElement = HTMLDivElement;
 export type DateRangePickerProps = React.HTMLAttributes<HTMLDivElement> & {
@@ -111,7 +110,7 @@ function DateRangePicker({
             )}
             disabled={disabled}
           >
-            <CalendarIcon className="mr-2 size-4 shrink-0" />
+            <CalendarIcon className="size-4 shrink-0" />
             {dateRange?.from ? (
               dateRange.to ? (
                 <>
@@ -145,6 +144,5 @@ function DateRangePicker({
     </div>
   );
 }
-DateRangePicker.displayName = 'DateRangePicker';
 
 export { DatePicker, DateRangePicker, DateRange };

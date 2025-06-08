@@ -112,7 +112,7 @@ export function ContactActionsDropdown({
         )}
         <DropdownMenuSeparator />
         <DropdownMenuItem
-          className="!text-destructive cursor-pointer"
+          className="text-destructive! cursor-pointer"
           onClick={handleShowDeleteContactModal}
         >
           Delete

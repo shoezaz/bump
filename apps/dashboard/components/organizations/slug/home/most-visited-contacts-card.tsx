@@ -23,7 +23,7 @@ export function MostVisitedContactsCard({
   const hasContacts = contacts.length > 0;
   return (
     <Card {...props}>
-      <CardHeader>
+      <CardHeader className="gap-0">
         <CardTitle className="text-sm">Most visited contacts</CardTitle>
       </CardHeader>
       <CardContent>

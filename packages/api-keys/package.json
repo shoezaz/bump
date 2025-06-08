@@ -14,10 +14,10 @@
   "dependencies": {
     "@workspace/common": "workspace:*",
     "@workspace/database": "workspace:*",
-    "date-fns": "3.6.0"
+    "date-fns": "4.1.0"
   },
   "devDependencies": {
-    "@types/node": "22.13.9",
+    "@types/node": "22.15.30",
     "@workspace/eslint-config": "workspace:*",
     "@workspace/prettier-config": "workspace:*",
     "@workspace/typescript-config": "workspace:*"

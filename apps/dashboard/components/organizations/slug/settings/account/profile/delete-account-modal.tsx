@@ -114,39 +114,34 @@ export const DeleteAccountModal = NiceModal.create<DeleteAccountModalProps>(
           )}
         />
         {ownedOrganizations.length > 0 && (
-          <Alert
-            variant="warning"
-            className="mt-"
-          >
-            <div className="items-base flex flex-row gap-2">
-              <AlertCircleIcon className="mt-0.5 size-[18px] shrink-0" />
-              <AlertDescription>
-                Please assign another owner before deleting your account for the
-                following organizations:
-                <div className="max-h-40 overflow-y-auto overflow-x-hidden">
-                  <ul className="list-disc">
-                    {ownedOrganizations.map((organization) => (
-                      <li
-                        key={organization.slug}
-                        className="ml-4"
+          <Alert variant="warning">
+            <AlertCircleIcon className="size-[18px] shrink-0" />
+            <AlertDescription className="inline">
+              Please assign another owner before deleting your account for the
+              following organizations:
+              <div className="max-h-40 overflow-y-auto overflow-x-hidden">
+                <ul className="list-disc">
+                  {ownedOrganizations.map((organization) => (
+                    <li
+                      key={organization.slug}
+                      className="ml-4"
+                    >
+                      <Link
+                        href={replaceOrgSlug(
+                          routes.dashboard.organizations.slug.settings
+                            .organization.Members,
+                          organization.slug
+                        )}
+                        className="underline"
+                        onClick={modal.handleClose}
                       >
-                        <Link
-                          href={replaceOrgSlug(
-                            routes.dashboard.organizations.slug.settings
-                              .organization.Members,
-                            organization.slug
-                          )}
-                          className="underline"
-                          onClick={modal.handleClose}
-                        >
-                          {organization.name}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </AlertDescription>
-            </div>
+                        {organization.name}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </AlertDescription>
           </Alert>
         )}
       </form>

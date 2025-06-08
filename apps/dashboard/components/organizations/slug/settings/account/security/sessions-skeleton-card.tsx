@@ -6,10 +6,17 @@ import {
   type CardProps
 } from '@workspace/ui/components/card';
 import { Skeleton } from '@workspace/ui/components/skeleton';
+import { cn } from '@workspace/ui/lib/utils';
 
-export function SessionsSkeletonCard(props: CardProps): React.JSX.Element {
+export function SessionsSkeletonCard({
+  className,
+  ...props
+}: CardProps): React.JSX.Element {
   return (
-    <Card {...props}>
+    <Card
+      className={cn('p-0', className)}
+      {...props}
+    >
       <CardContent className="max-h-72 flex-1 overflow-hidden p-0">
         <div className="divide-y">
           <div className="flex flex-row items-center justify-between p-6">

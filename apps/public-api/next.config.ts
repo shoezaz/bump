@@ -8,14 +8,11 @@ const INTERNAL_PACKAGES = [
 ];
 
 const nextConfig: NextConfig = {
-  /** Enables hot reloading for local packages without a build step */
-  transpilePackages: INTERNAL_PACKAGES,
-  serverExternalPackages: [],
   experimental: {
-    optimizePackageImports: INTERNAL_PACKAGES,
-    turbo: {
-      treeShaking: true
-    }
+    optimizePackageImports: INTERNAL_PACKAGES
+  },
+  turbopack: {
+    //
   },
   reactStrictMode: false,
   poweredByHeader: false

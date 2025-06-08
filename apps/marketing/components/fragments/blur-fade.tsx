@@ -7,7 +7,7 @@ import {
   useInView,
   Variants,
   type HTMLMotionProps
-} from 'framer-motion';
+} from 'motion/react';
 
 export type BlurFadeProps = HTMLMotionProps<'div'> & {
   variant?: {

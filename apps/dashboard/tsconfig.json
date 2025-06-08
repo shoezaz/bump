@@ -18,8 +18,7 @@
     "**/*.ts",
     "**/*.tsx",
     "*.mjs",
-    ".next/types/**/*.ts",
-    "../../packages/billing/src/seats.ts"
+    ".next/types/**/*.ts"
   ],
   "exclude": [
     ".cache",

@@ -201,15 +201,13 @@ export const EnableAuthenticatorAppModal =
             )}
           />
           <Alert variant="info">
-            <div className="flex flex-row items-start gap-2">
-              <InfoIcon className="mt-0.5 size-[18px] shrink-0" />
-              <AlertDescription>
-                If your app asks for an issuer use "
-                <strong className="text-foreground">{issuer}</strong>" and for
-                an account name use "
-                <strong className="text-foreground">{accountName}</strong>".
-              </AlertDescription>
-            </div>
+            <InfoIcon className="size-[18px] shrink-0" />
+            <AlertDescription className="inline">
+              If your app asks for an issuer use "
+              <strong className="text-foreground">{issuer}</strong>" and for an
+              account name use "
+              <strong className="text-foreground">{accountName}</strong>".
+            </AlertDescription>
           </Alert>
         </form>
       );

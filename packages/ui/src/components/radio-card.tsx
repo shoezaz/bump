@@ -4,25 +4,25 @@ import { CheckIcon } from 'lucide-react';
 
 import { cn } from '../lib/utils';
 
-export type RadioCardsElement = React.ElementRef<
+export type RadioCardsElement = React.ComponentRef<
   typeof RadioGroupPrimitive.Root
 >;
 export type RadioCardsProps = React.ComponentPropsWithoutRef<
   typeof RadioGroupPrimitive.Root
 >;
-const RadioCards = React.forwardRef<RadioCardsElement, RadioCardsProps>(
-  ({ value, onValueChange, ...props }, ref) => (
-    <RadioGroupPrimitive.Root
-      ref={ref}
-      value={value}
-      onValueChange={onValueChange}
-      {...props}
-    />
-  )
+const RadioCards = ({
+  value,
+  onValueChange,
+  ...props
+}: RadioCardsProps): React.JSX.Element => (
+  <RadioGroupPrimitive.Root
+    value={value}
+    onValueChange={onValueChange}
+    {...props}
+  />
 );
-RadioCards.displayName = 'RadioCards';
 
-export type RadioCardItemElement = React.ElementRef<
+export type RadioCardItemElement = React.ComponentRef<
   typeof RadioGroupPrimitive.Item
 >;
 export type RadioCardItemProps = React.ComponentPropsWithoutRef<
@@ -30,17 +30,18 @@ export type RadioCardItemProps = React.ComponentPropsWithoutRef<
 > & {
   checkClassName?: React.HTMLAttributes<HTMLDivElement>['className'];
 };
-const RadioCardItem = React.forwardRef<
-  RadioCardItemElement,
-  RadioCardItemProps
->(({ className, checkClassName, children, ...props }, ref) => (
+const RadioCardItem = ({
+  className,
+  checkClassName,
+  children,
+  ...props
+}: RadioCardItemProps): React.JSX.Element => (
   <RadioGroupPrimitive.Item
-    ref={ref}
     className={cn(
-      'group relative overflow-hidden rounded-md border border-input p-4',
-      'hover:border-primary focus:border-primary focus:outline-none',
+      'group relative overflow-hidden rounded-md border border-border p-4',
+      'hover:border-border-primary focus:border-border-primary focus:outline-none',
       'disabled:cursor-not-allowed disabled:opacity-50',
-      'data-[state=checked]:border-primary data-[state=checked]:bg-primary/5',
+      'data-[state=checked]:border-border-primary data-[state=checked]:bg-bg-primary/5',
       className
     )}
     {...props}
@@ -48,14 +49,13 @@ const RadioCardItem = React.forwardRef<
     {children}
     <div
       className={cn(
-        'absolute bottom-2 right-2 flex size-4 items-center justify-center rounded-full border border-input bg-background group-data-[state=checked]:border-primary group-data-[state=checked]:bg-primary',
+        'absolute cursor-pointer bottom-2 right-2 flex size-4 items-center justify-center rounded-full border border-border bg-bg group-data-[state=checked]:border-border-primary group-data-[state=checked]:bg-bg-primary',
         checkClassName
       )}
     >
-      <CheckIcon className="size-3 shrink-0 text-primary-foreground opacity-0 group-data-[state=checked]:opacity-100" />
+      <CheckIcon className="size-3 shrink-0 text-fg-on-primary opacity-0 group-data-[state=checked]:opacity-100" />
     </div>
   </RadioGroupPrimitive.Item>
-));
-RadioCardItem.displayName = 'RadioCardItem';
+);
 
 export { RadioCardItem, RadioCards };

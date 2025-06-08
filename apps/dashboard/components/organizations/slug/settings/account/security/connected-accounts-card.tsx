@@ -23,7 +23,7 @@ export function ConnectedAccountsCard({
 }: ConnectedAccountsCardProps): React.JSX.Element {
   return (
     <Card
-      className={cn('flex flex-col', className)}
+      className={cn('flex flex-col p-0', className)}
       {...other}
     >
       <CardContent className="max-h-72 flex-1 overflow-hidden p-0">

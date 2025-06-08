@@ -32,7 +32,7 @@ export function Contact(): React.JSX.Element {
         <div className="lg:container lg:max-w-6xl ">
           <div className="flex flex-col justify-between gap-10 lg:flex-row lg:gap-20">
             <div className="order-2 space-y-8 text-center lg:order-1 lg:w-1/2 lg:text-left">
-              <h3 className="m-0 hidden max-w-fit text-4xl font-semibold lg:block">
+              <h3 className="hidden max-w-fit text-4xl font-semibold lg:block">
                 Get in touch
               </h3>
               <p className="text-muted-foreground lg:max-w-[80%]">
@@ -59,8 +59,8 @@ export function Contact(): React.JSX.Element {
                 </div>
               </div>
             </div>
-            <Card className="order-1 mx-auto w-full max-w-lg shadow-lg lg:order-2 lg:w-1/2">
-              <CardContent className="flex flex-col gap-6 p-6 lg:p-10">
+            <Card className="order-1 mx-auto w-full py-6 lg:py-10 max-w-lg shadow-lg lg:order-2 lg:w-1/2">
+              <CardContent className="flex flex-col gap-6 px-6 lg:px-10">
                 <div className="grid grid-cols-2 gap-4">
                   <div className="col-span-2 grid w-full items-center gap-1.5 sm:col-span-1">
                     <Label htmlFor="firstname">First Name</Label>

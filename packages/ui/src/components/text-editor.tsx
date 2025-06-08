@@ -381,9 +381,9 @@ export function TextEditor(props: TextEditorProps): React.JSX.Element {
     []
   );
   return (
-    <div className="editor rounded border">
+    <div className="editor rounded-sm border">
       <LexicalComposer initialConfig={initialConfig}>
-        <div className="editor-container rounded bg-background">
+        <div className="editor-container rounded-sm bg-background">
           <ToolbarPlugin />
           <Separator className="opacity-40" />
           <div

@@ -50,12 +50,15 @@ export async function POST(req: Request): Promise<Response> {
     );
   }
 
-  return Response.json({
-    received: true,
-    message: 'Webhook received.',
-    headers: { 'Cache-Control': 'no-store' }
-  }, {
-    status: 200,
-    headers: { 'Cache-Control': 'no-store' }
-  });
+  return Response.json(
+    {
+      received: true,
+      message: 'Webhook received.',
+      headers: { 'Cache-Control': 'no-store' }
+    },
+    {
+      status: 200,
+      headers: { 'Cache-Control': 'no-store' }
+    }
+  );
 }

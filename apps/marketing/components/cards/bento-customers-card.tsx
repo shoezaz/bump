@@ -1,8 +1,8 @@
 'use client';
 
 import * as React from 'react';
-import { motion } from 'framer-motion';
 import { TrendingUpIcon, UsersIcon } from 'lucide-react';
+import { motion } from 'motion/react';
 
 import { AvatarGroup } from '@workspace/ui/components/avatar-group';
 import {
@@ -65,7 +65,7 @@ export function BentoCustomersCard({
         <p className="line-clamp-2 text-sm text-muted-foreground">
           Organize your contact and resource data in one place.
         </p>
-        <div className="space-y-2.5 rounded-lg border p-4 shadow-sm">
+        <div className="space-y-2.5 rounded-lg border p-4 shadow-xs">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
               <UsersIcon className="size-4 text-muted-foreground" />

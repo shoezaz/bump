@@ -131,7 +131,7 @@ export function ContactTimelineComment({
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem
-                className="!text-destructive cursor-pointer"
+                className="text-destructive! cursor-pointer"
                 onClick={handleDelete}
               >
                 Delete

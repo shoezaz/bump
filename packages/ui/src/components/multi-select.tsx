@@ -1,3 +1,5 @@
+'use client';
+
 import * as React from 'react';
 import { CheckIcon, ChevronsUpDownIcon, XIcon } from 'lucide-react';
 
@@ -18,22 +20,22 @@ export type OptionType = {
   value: string;
 };
 
-type MultiSelectProps = {
+export type MultiSelectElement = React.ComponentRef<typeof Popover>;
+export type MultiSelectProps = React.ComponentProps<typeof Popover> & {
   options: OptionType[];
   selected: string[];
   onChange: React.Dispatch<React.SetStateAction<string[]>>;
   className?: string;
   placeholder?: string;
 };
-
-const MultiSelect: React.FC<MultiSelectProps> = ({
+function MultiSelect({
   options,
   selected,
   onChange,
   className,
   placeholder = 'Select items...',
   ...props
-}) => {
+}: MultiSelectProps): React.JSX.Element {
   const [open, setOpen] = React.useState(false);
 
   const handleUnselect = React.useCallback(
@@ -58,6 +60,7 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
     <Popover
       open={open}
       onOpenChange={setOpen}
+      {...props}
     >
       <PopoverTrigger asChild>
         <Button
@@ -69,7 +72,6 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
             selected.length > 0 && 'h-auto',
             className
           )}
-          {...props}
         >
           <div className="flex flex-wrap items-center gap-1">
             {selected.length > 0 ? (
@@ -123,6 +125,6 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
       </PopoverContent>
     </Popover>
   );
-};
+}
 
 export { MultiSelect };

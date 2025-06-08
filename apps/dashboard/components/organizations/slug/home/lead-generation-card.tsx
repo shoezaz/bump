@@ -17,6 +17,7 @@ import {
   ChartTooltipContent,
   type ChartConfig
 } from '@workspace/ui/components/chart';
+import { cn } from '@workspace/ui/lib/utils';
 
 import type { LeadGenerationDataPointDto } from '~/types/dtos/lead-generation-data-point-dto';
 
@@ -26,11 +27,11 @@ const chartConfig = {
   },
   people: {
     label: 'People',
-    color: 'hsl(var(--chart-1))'
+    color: 'var(--chart-1)'
   },
   companies: {
     label: 'Companies',
-    color: 'hsl(var(--chart-2))'
+    color: 'var(--chart-2)'
   }
 } satisfies ChartConfig;
 
@@ -40,6 +41,7 @@ export type LeadGenerationCardProps = CardProps & {
 
 export function LeadGenerationCard({
   data,
+  className,
   ...other
 }: LeadGenerationCardProps): React.JSX.Element {
   const [activeChart, setActiveChart] =
@@ -54,8 +56,11 @@ export function LeadGenerationCard({
   );
 
   return (
-    <Card {...other}>
-      <CardHeader className="flex flex-col items-stretch space-y-0 border-b p-0 sm:flex-row">
+    <Card
+      className={cn('pt-0', className)}
+      {...other}
+    >
+      <CardHeader className="flex flex-col items-stretch space-y-0 border-b p-0! sm:flex-row">
         <div className="flex flex-1 flex-col justify-center gap-1 px-6 py-5 sm:py-6">
           <CardTitle className="text-sm">Lead generation</CardTitle>
           <CardDescription>New contacts added to the pool.</CardDescription>
@@ -67,7 +72,7 @@ export function LeadGenerationCard({
               <button
                 key={chart}
                 data-active={activeChart === chart}
-                className="relative z-10 flex flex-1 flex-col justify-center gap-1 border-t px-6 py-4 text-left even:border-l data-[active=true]:bg-muted/50 sm:border-l sm:border-t-0 sm:px-8 sm:py-6"
+                className="cursor-pointer relative z-10 flex flex-1 flex-col justify-center gap-1 border-t px-6 py-4 text-left even:border-l data-[active=true]:bg-muted/50 sm:border-l sm:border-t-0 sm:px-8 sm:py-6"
                 onClick={() => setActiveChart(chart)}
               >
                 <span
@@ -87,7 +92,7 @@ export function LeadGenerationCard({
           })}
         </div>
       </CardHeader>
-      <CardContent className="px-2 pt-6">
+      <CardContent className="px-6 pt-6">
         <ChartContainer
           config={chartConfig}
           className="aspect-auto h-[250px] w-full"

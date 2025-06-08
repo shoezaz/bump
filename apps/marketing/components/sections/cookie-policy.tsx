@@ -71,11 +71,8 @@ export function CookiePolicy(): React.JSX.Element {
           title="Cookie Policy"
           description="Learn how we use cookies and similar technologies to improve your experience on our platform."
         />
-        <Alert
-          variant="warning"
-          className="rounded-lg border border-yellow-500 dark:border-yellow-900"
-        >
-          <AlertDescription className="ml-3 text-base">
+        <Alert variant="warning">
+          <AlertDescription className="ml-3 text-base inline">
             This policy provides a general framework. It should be reviewed and
             customized by a legal professional to suit your jurisdiction and use
             case.

@@ -14,7 +14,7 @@ export function BillingAddressSkeletonCard(
 ): React.JSX.Element {
   return (
     <Card {...props}>
-      <CardContent className="pt-6">
+      <CardContent>
         <div className="grid grid-cols-12 gap-4">
           {Array.from({ length: 2 }).map((_, i) => (
             <div
@@ -41,7 +41,7 @@ export function BillingAddressSkeletonCard(
         </div>
       </CardContent>
       <Separator />
-      <CardFooter className="flex w-full justify-end pt-6">
+      <CardFooter className="flex w-full justify-end">
         <Skeleton className="h-9 w-16" />
       </CardFooter>
     </Card>

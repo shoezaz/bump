@@ -72,7 +72,7 @@ export function OrganizationSwitcher({
       <SidebarMenuItem>
         <DropdownMenu onOpenChange={handleOpenChange}>
           <DropdownMenuTrigger asChild>
-            <SidebarMenuButton className="w-full px-1.5 data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground group-data-[collapsible=icon]:!p-1.5">
+            <SidebarMenuButton className="w-full px-1.5 data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground group-data-[collapsible=icon]:p-1.5!">
               <Avatar className="aspect-square size-6 rounded-md">
                 <AvatarImage
                   className="rounded-md"
@@ -91,7 +91,7 @@ export function OrganizationSwitcher({
             </SidebarMenuButton>
           </DropdownMenuTrigger>
           <DropdownMenuContent
-            className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg"
+            className="w-56 min-w-56 rounded-lg"
             align="center"
             side="bottom"
             sideOffset={4}
@@ -102,14 +102,14 @@ export function OrganizationSwitcher({
                 placeholder="Search..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full !border-none pl-8 shadow-none !outline-none"
+                className="w-full border-none! pl-8 shadow-none outline-none!"
               />
             </div>
             <DropdownMenuSeparator />
             {filteredOrganizations.length === 0 ? (
               <EmptyText className="p-2">No organization found</EmptyText>
             ) : (
-              <ScrollArea className="-mr-1 pr-1 [&>[data-radix-scroll-area-viewport]]:max-h-[200px]">
+              <ScrollArea className="-mr-1 pr-1 *:data-radix-scroll-area-viewport:max-h-[200px]">
                 {filteredOrganizations.map((organization) => (
                   <DropdownMenuItem
                     key={organization.id}
@@ -123,19 +123,19 @@ export function OrganizationSwitcher({
                       )}
                       onClick={handleCloseSidebar}
                     >
-                      <Avatar className="aspect-square size-4 rounded-sm">
+                      <Avatar className="aspect-square size-4 rounded-xs">
                         <AvatarImage
-                          className="rounded-sm"
+                          className="rounded-xs"
                           src={organization.logo}
                         />
-                        <AvatarFallback className="flex size-4 items-center justify-center rounded-sm border border-neutral-200 bg-neutral-100 text-xs font-medium text-neutral-500 dark:border-neutral-700 dark:bg-neutral-900">
+                        <AvatarFallback className="flex size-4 items-center justify-center rounded-xs border border-neutral-200 bg-neutral-100 text-xs font-medium text-neutral-500 dark:border-neutral-700 dark:bg-neutral-900">
                           {organization.name.charAt(0).toUpperCase()}
                         </AvatarFallback>
                       </Avatar>
                       {organization.name}
                       {activeOrganization.id === organization.id && (
                         <div className="ml-auto flex size-4 items-center justify-center rounded-full bg-blue-500 text-primary-foreground">
-                          <CheckIcon className="size-3 shrink-0" />
+                          <CheckIcon className="text-current size-3 shrink-0" />
                         </div>
                       )}
                     </Link>

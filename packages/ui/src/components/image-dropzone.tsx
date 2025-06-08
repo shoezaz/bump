@@ -1,3 +1,5 @@
+'use client';
+
 import * as React from 'react';
 import { UploadIcon } from 'lucide-react';
 import {
@@ -26,7 +28,7 @@ export interface ImageDropzoneProps
   children?: React.ReactNode;
 }
 
-export const ImageDropzone: React.FC<ImageDropzoneProps> = ({
+export const ImageDropzone = ({
   accept,
   maxFiles = 1,
   maxSize,
@@ -41,7 +43,7 @@ export const ImageDropzone: React.FC<ImageDropzoneProps> = ({
   className,
   children,
   ...dropzoneProps
-}) => {
+}: ImageDropzoneProps): React.JSX.Element => {
   const dropzoneOptions: DropzoneOptions = React.useMemo(
     () => ({
       accept,
@@ -86,7 +88,7 @@ export const ImageDropzone: React.FC<ImageDropzoneProps> = ({
     full: 'rounded-full'
   }[borderRadius];
 
-  const renderContent = () => {
+  const renderContent = (): React.ReactNode => {
     if (!src) {
       return (
         children || (

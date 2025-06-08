@@ -1,8 +1,8 @@
 'use client';
 
 import * as React from 'react';
-import { motion } from 'framer-motion';
 import { MailIcon, MessageSquareIcon } from 'lucide-react';
+import { motion } from 'motion/react';
 
 import {
   Card,
@@ -111,7 +111,7 @@ export function BentoCampaignsCard({
                 key={index}
                 className="pointer-events-none basis-1/4 select-none pt-1 will-change-transform"
               >
-                <Card className="m-1">
+                <Card className="m-1 p-0">
                   <CardContent className="flex w-full flex-row items-center justify-start gap-4 p-6">
                     <div className="rounded-full bg-primary p-2 text-primary-foreground">
                       <Icon className="size-5 shrink-0" />

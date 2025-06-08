@@ -2,96 +2,120 @@ import * as React from 'react';
 
 import { cn } from '../lib/utils';
 
-export type CardElement = HTMLDivElement;
-export type CardProps = React.HTMLAttributes<HTMLDivElement>;
-const Card = React.forwardRef<CardElement, CardProps>(
-  ({ className, ...props }, ref) => (
+export type CardElement = React.ComponentRef<'div'>;
+export type CardProps = React.ComponentPropsWithoutRef<'div'>;
+function Card({ className, ...props }: CardProps): React.JSX.Element {
+  return (
     <div
-      ref={ref}
+      data-slot="card"
       className={cn(
-        'rounded-xl border bg-card text-card-foreground shadow',
+        'bg-card text-card-foreground flex flex-col gap-6 rounded-xl border py-6 shadow-sm',
         className
       )}
       {...props}
     />
-  )
-);
-Card.displayName = 'Card';
+  );
+}
 
-export type CardHeaderElement = HTMLDivElement;
-export type CardHeaderProps = React.HTMLAttributes<HTMLDivElement>;
-const CardHeader = React.forwardRef<CardHeaderElement, CardHeaderProps>(
-  ({ className, ...props }, ref) => (
+export type CardHeaderElement = React.ComponentRef<'div'>;
+export type CardHeaderProps = React.ComponentPropsWithoutRef<'div'>;
+function CardHeader({
+  className,
+  ...props
+}: CardHeaderProps): React.JSX.Element {
+  return (
     <div
-      ref={ref}
-      className={cn('flex flex-col space-y-1.5 p-6', className)}
-      {...props}
-    />
-  )
-);
-CardHeader.displayName = 'CardHeader';
-
-export type CardTitleElement = HTMLHeadingElement;
-export type CardTitleProps = React.HTMLAttributes<HTMLHeadingElement>;
-const CardTitle = React.forwardRef<CardTitleElement, CardTitleProps>(
-  ({ className, ...props }, ref) => (
-    <h3
-      ref={ref}
+      data-slot="card-header"
       className={cn(
-        'text-xl font-semibold leading-none tracking-tight',
+        '@container/card-header grid auto-rows-min grid-rows-[auto_auto] items-start gap-1.5 px-6 has-data-[slot=card-action]:grid-cols-[1fr_auto] [.border-b]:pb-6',
         className
       )}
       {...props}
     />
-  )
-);
-CardTitle.displayName = 'CardTitle';
+  );
+}
 
-export type CardDescriptionElement = HTMLParagraphElement;
-export type CardDescriptionProps = React.HTMLAttributes<HTMLParagraphElement>;
-const CardDescription = React.forwardRef<
-  CardDescriptionElement,
-  CardDescriptionProps
->(({ className, ...props }, ref) => (
-  <p
-    ref={ref}
-    className={cn('text-sm text-muted-foreground', className)}
-    {...props}
-  />
-));
-CardDescription.displayName = 'CardDescription';
-
-export type CardContentElement = HTMLDivElement;
-export type CardContentProps = React.HTMLAttributes<HTMLDivElement>;
-const CardContent = React.forwardRef<CardContentElement, CardContentProps>(
-  ({ className, ...props }, ref) => (
+export type CardTitleElement = React.ComponentRef<'div'>;
+export type CardTitleProps = React.ComponentPropsWithoutRef<'div'>;
+function CardTitle({ className, ...props }: CardTitleProps): React.JSX.Element {
+  return (
     <div
-      ref={ref}
-      className={cn('p-6 pt-0', className)}
+      data-slot="card-title"
+      className={cn('leading-none font-semibold', className)}
       {...props}
     />
-  )
-);
-CardContent.displayName = 'CardContent';
+  );
+}
 
-export type CardFooterElement = HTMLDivElement;
-export type CardFooterProps = React.HTMLAttributes<HTMLDivElement>;
-const CardFooter = React.forwardRef<CardFooterElement, CardFooterProps>(
-  ({ className, ...props }, ref) => (
+export type CardDescriptionElement = React.ComponentRef<'div'>;
+export type CardDescriptionProps = React.ComponentPropsWithoutRef<'div'>;
+function CardDescription({
+  className,
+  ...props
+}: CardDescriptionProps): React.JSX.Element {
+  return (
     <div
-      ref={ref}
-      className={cn('flex items-center p-6 pt-0', className)}
+      data-slot="card-description"
+      className={cn('text-muted-foreground text-sm', className)}
       {...props}
     />
-  )
-);
-CardFooter.displayName = 'CardFooter';
+  );
+}
+
+export type CardActionElement = React.ComponentRef<'div'>;
+export type CardActionProps = React.ComponentPropsWithoutRef<'div'>;
+function CardAction({
+  className,
+  ...props
+}: CardActionProps): React.JSX.Element {
+  return (
+    <div
+      data-slot="card-action"
+      className={cn(
+        'col-start-2 row-span-2 row-start-1 self-start justify-self-end',
+        className
+      )}
+      {...props}
+    />
+  );
+}
+
+export type CardContentElement = React.ComponentRef<'div'>;
+export type CardContentProps = React.ComponentPropsWithoutRef<'div'>;
+function CardContent({
+  className,
+  ...props
+}: CardContentProps): React.JSX.Element {
+  return (
+    <div
+      data-slot="card-content"
+      className={cn('px-6', className)}
+      {...props}
+    />
+  );
+}
+
+export type CardFooterElement = React.ComponentRef<'div'>;
+export type CardFooterProps = React.ComponentPropsWithoutRef<'div'>;
+function CardFooter({
+  className,
+  ...props
+}: CardFooterProps): React.JSX.Element {
+  return (
+    <div
+      data-slot="card-footer"
+      className={cn('flex items-center px-6 [.border-t]:pt-6', className)}
+      {...props}
+    />
+  );
+}
 
 export {
   Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
   CardHeader,
-  CardTitle
+  CardFooter,
+  CardTitle,
+  CardAction,
+  CardDescription,
+  CardContent
 };

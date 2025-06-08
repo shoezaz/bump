@@ -233,7 +233,7 @@ type FeatureDisplayItemProps = {
 function FeatureDisplayItem({ feature }: FeatureDisplayItemProps) {
   return (
     <li className="flex items-start">
-      <div className="bg-muted rounded-full w-5 h-5 flex items-center justify-center shadow-sm">
+      <div className="bg-muted rounded-full w-5 h-5 flex items-center justify-center shadow-xs">
         <CheckIcon className="w-3 h-3 text-muted-foreground" />
       </div>
       <div className="ml-3 text-sm">{feature}</div>
@@ -270,7 +270,7 @@ function MeteredTierItem({
 
   return (
     <li className="flex items-start">
-      <div className="bg-muted rounded-full w-5 h-5 flex items-center justify-center shadow-sm">
+      <div className="bg-muted rounded-full w-5 h-5 flex items-center justify-center shadow-xs">
         <CheckIcon className="w-3 h-3 text-muted-foreground" />
       </div>
       <div className="ml-3 text-sm">

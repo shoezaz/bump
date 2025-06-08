@@ -98,7 +98,7 @@ export function ContactTimelineAddComment({
         <FormProvider {...methods}>
           <form onSubmit={methods.handleSubmit(onSubmit)}>
             <Card
-              className={cn('rounded-lg', className)}
+              className={cn('rounded-lg p-0 gap-0', className)}
               {...other}
             >
               <input

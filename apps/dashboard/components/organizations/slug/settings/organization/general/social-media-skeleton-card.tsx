@@ -12,7 +12,7 @@ import { Skeleton } from '@workspace/ui/components/skeleton';
 export function SocialMediaSkeletonCard(props: CardProps): React.JSX.Element {
   return (
     <Card {...props}>
-      <CardContent className="pt-6">
+      <CardContent>
         <div className="space-y-4">
           {Array.from({ length: 3 }).map((_, i) => (
             <div
@@ -26,7 +26,7 @@ export function SocialMediaSkeletonCard(props: CardProps): React.JSX.Element {
         </div>
       </CardContent>
       <Separator />
-      <CardFooter className="flex w-full justify-end pt-6">
+      <CardFooter className="flex w-full justify-end">
         <Skeleton className="h-9 w-16" />
       </CardFooter>
     </Card>

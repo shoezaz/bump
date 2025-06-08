@@ -116,7 +116,7 @@ function SubscriptionInfo({
       {subscription.cancelAtPeriodEnd && (
         <Alert variant="warning">
           <AlertTitle>Subscription canceled</AlertTitle>
-          <AlertDescription>
+          <AlertDescription className="inline">
             Your subscription will be canceled at the end of the billing cycle.
           </AlertDescription>
         </Alert>
@@ -128,9 +128,9 @@ function SubscriptionInfo({
           </p>
           <p className="text-xs text-muted-foreground">{`${daysToCycleEnd} days remaining`}</p>
         </div>
-        <div className="relative h-1 w-full overflow-hidden rounded bg-muted p-0">
+        <div className="relative h-1 w-full overflow-hidden rounded-sm bg-muted p-0">
           <div
-            className="absolute inset-x-0 bottom-0 h-1 rounded bg-foreground transition-all"
+            className="absolute inset-x-0 bottom-0 h-1 rounded-sm bg-foreground transition-all"
             style={{
               width: `${Number(((daysWithinCycle - daysToCycleEnd) / daysWithinCycle) * 100)}%`
             }}

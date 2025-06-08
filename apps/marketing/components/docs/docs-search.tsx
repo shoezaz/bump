@@ -51,13 +51,13 @@ export function DocsSearch(props: DialogProps): React.JSX.Element {
     <>
       <Button
         variant="outline"
-        className="relative size-8 w-full justify-start rounded-md pl-2 pr-12 text-sm font-normal text-muted-foreground shadow-none"
+        className="relative size-8 w-full justify-start rounded-md pl-2! pr-12! text-sm font-normal text-muted-foreground shadow-none"
         onClick={() => setOpen(true)}
         {...props}
       >
-        <SearchIcon className="mr-2 size-3 shrink-0" />
+        <SearchIcon className="size-3 shrink-0" />
         <span>Search docs</span>
-        <kbd className="pointer-events-none absolute right-[0.3rem] top-[0.3rem] flex h-5 select-none items-center gap-1 rounded border bg-background px-1.5 font-mono text-[10px] font-medium opacity-100">
+        <kbd className="pointer-events-none absolute right-[0.3rem] top-[0.3rem] flex h-5 select-none items-center gap-1 rounded-sm border bg-background px-1.5 font-mono text-xs font-medium opacity-100">
           <span className="text-xs">⌘</span>K
         </kbd>
       </Button>
@@ -67,7 +67,7 @@ export function DocsSearch(props: DialogProps): React.JSX.Element {
       >
         <CommandInput
           placeholder="Search docs (i.e. integrations, importing or billing)..."
-          className="!p-0"
+          className="p-0!"
         />
         <CommandList>
           <CommandEmpty>No results found.</CommandEmpty>

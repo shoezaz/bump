@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import Link from 'next/link';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'motion/react';
 
 import { Button } from '@workspace/ui/components/button';
 
@@ -60,11 +60,11 @@ export function CookieBanner(): React.JSX.Element {
                 Learn more
               </Link>
             </p>
-            <div className="flex gap-2">
+            <div className="flex flex-row gap-2">
               <Button
                 type="button"
                 variant="outline"
-                className="w-full"
+                className="w-1/2"
                 onClick={handleDenyCookies}
               >
                 Deny
@@ -72,7 +72,7 @@ export function CookieBanner(): React.JSX.Element {
               <Button
                 type="button"
                 variant="default"
-                className="w-full"
+                className="w-1/2"
                 onClick={handleAcceptCookies}
               >
                 Accept

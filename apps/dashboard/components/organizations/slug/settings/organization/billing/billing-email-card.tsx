@@ -59,7 +59,7 @@ export function BillingEmailCard({
   return (
     <FormProvider {...methods}>
       <Card {...other}>
-        <CardContent className="pt-6">
+        <CardContent>
           <form onSubmit={methods.handleSubmit(onSubmit)}>
             <FormField
               control={methods.control}
@@ -82,7 +82,7 @@ export function BillingEmailCard({
           </form>
         </CardContent>
         <Separator />
-        <CardFooter className="flex w-full justify-end pt-6">
+        <CardFooter className="flex w-full justify-end">
           <Button
             type="button"
             variant="default"

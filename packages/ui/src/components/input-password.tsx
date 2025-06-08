@@ -12,20 +12,19 @@ import {
 
 export type InputPasswordElement = InputWithAdornmentsElement;
 export type InputPasswordProps = Omit<InputWithAdornmentsProps, 'endAdornment'>;
-const InputPassword = React.forwardRef<
-  InputPasswordElement,
-  InputPasswordProps
->((props, ref) => {
+const InputPassword = (props: InputPasswordProps): React.JSX.Element => {
   const [showPassword, setShowPassword] = React.useState<boolean>(false);
+
   const handleClickShowPassword = (): void => {
     setShowPassword((prev) => !prev);
   };
+
   const handleMouseDownPassword = (event: React.SyntheticEvent): void => {
     event.preventDefault();
   };
+
   return (
     <InputWithAdornments
-      ref={ref}
       type={showPassword ? 'text' : 'password'}
       endAdornment={
         <Button
@@ -48,7 +47,6 @@ const InputPassword = React.forwardRef<
       {...props}
     />
   );
-});
-InputPassword.displayName = 'InputPassword';
+};
 
 export { InputPassword };

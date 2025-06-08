@@ -8,10 +8,17 @@ import {
 } from '@workspace/ui/components/card';
 import { Separator } from '@workspace/ui/components/separator';
 import { Skeleton } from '@workspace/ui/components/skeleton';
+import { cn } from '@workspace/ui/lib/utils';
 
-export function ApiKeysSkeletonCard(props: CardProps): React.JSX.Element {
+export function ApiKeysSkeletonCard({
+  className,
+  ...props
+}: CardProps): React.JSX.Element {
   return (
-    <Card {...props}>
+    <Card
+      className={cn('pt-0 gap-0', className)}
+      {...props}
+    >
       <CardContent className="p-0">
         <div className="flex h-[88px] flex-row justify-between p-6">
           <div className="flex flex-col gap-1">

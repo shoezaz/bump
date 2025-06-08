@@ -51,7 +51,7 @@ export function ContactTasks({
             size="default"
             onClick={handleShowAddTaskModal}
           >
-            <CheckSquare2Icon className="mr-2 size-4 shrink-0" />
+            <CheckSquare2Icon className="size-4 shrink-0" />
             Add task
           </Button>
         </div>

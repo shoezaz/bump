@@ -4,19 +4,19 @@ import { GridSection } from '~/components/fragments/grid-section';
 
 const DATA = [
   {
-    date: '2022',
+    date: '2023',
     title: 'The journey begins',
     description:
       'Started building an AI-powered CRM to transform sales workflows and boost productivity.'
   },
   {
-    date: '2023',
+    date: '2024',
     title: 'First milestones',
     description:
       'Launched our platform, earning early customers and recognition for real-time insights and deal predictions.'
   },
   {
-    date: '2024',
+    date: '2025',
     title: 'Scaling and innovation',
     description:
       'Expanded features with advanced AI analytics, onboarding more customers, and preparing for rapid growth.'

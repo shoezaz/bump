@@ -1,4 +1,3 @@
-/* eslint-disable react/no-unknown-property */
 'use client';
 
 import * as React from 'react';
@@ -10,190 +9,217 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogTitle,
-  type DialogProps
+  DialogHeader,
+  DialogTitle
 } from './dialog';
 
-export type CommandElement = React.ElementRef<typeof CommandPrimitive>;
+export type CommandElement = React.ComponentRef<typeof CommandPrimitive>;
 export type CommandProps = React.ComponentPropsWithoutRef<
   typeof CommandPrimitive
 >;
-const Command = React.forwardRef<CommandElement, CommandProps>(
-  ({ className, ...props }, ref) => (
+function Command({ className, ...props }: CommandProps): React.JSX.Element {
+  return (
     <CommandPrimitive
-      ref={ref}
+      data-slot="command"
       className={cn(
-        'flex size-full flex-col overflow-hidden rounded-md bg-popover text-popover-foreground',
+        'bg-popover text-popover-foreground flex h-full w-full flex-col overflow-hidden rounded-md',
         className
       )}
       {...props}
     />
-  )
-);
-Command.displayName = CommandPrimitive.displayName;
+  );
+}
 
-export type CommandDialogProps = DialogProps;
-const CommandDialog = ({ children, ...props }: CommandDialogProps) => {
+export type CommandDialogElement = React.ComponentRef<typeof Dialog>;
+export type CommandDialogProps = React.ComponentPropsWithoutRef<
+  typeof Dialog
+> & {
+  title?: string;
+  description?: string;
+  className?: string;
+  showCloseButton?: boolean;
+};
+function CommandDialog({
+  title = 'Command Palette',
+  description = 'Search for a command to run...',
+  children,
+  className,
+  showCloseButton = true,
+  ...props
+}: CommandDialogProps): React.JSX.Element {
   return (
     <Dialog {...props}>
-      <DialogTitle className="sr-only">Command menu</DialogTitle>
-      <DialogDescription className="sr-only">
-        Quickly navigate through the dashboard with your keyboard using the
-        command menu.
-      </DialogDescription>
-      <DialogContent className="overflow-hidden p-0">
-        <Command className="[&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-muted-foreground [&_[cmdk-group]:not([hidden])_~[cmdk-group]]:pt-0 [&_[cmdk-group]]:px-2 [&_[cmdk-input-wrapper]_svg]:size-5 [&_[cmdk-input]]:h-12 [&_[cmdk-item]]:px-2 [&_[cmdk-item]]:py-3 [&_[cmdk-item]_svg]:size-5">
+      <DialogHeader className="sr-only">
+        <DialogTitle>{title}</DialogTitle>
+        <DialogDescription>{description}</DialogDescription>
+      </DialogHeader>
+      <DialogContent
+        className={cn('overflow-hidden p-0', className)}
+        showCloseButton={showCloseButton}
+      >
+        <Command className="[&_[cmdk-group-heading]]:text-muted-foreground **:data-[slot=command-input-wrapper]:h-12 [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group]]:px-2 [&_[cmdk-group]:not([hidden])_~[cmdk-group]]:pt-0 [&_[cmdk-input-wrapper]_svg]:h-5 [&_[cmdk-input-wrapper]_svg]:w-5 [&_[cmdk-input]]:h-12 [&_[cmdk-item]]:px-2 [&_[cmdk-item]]:py-3 [&_[cmdk-item]_svg]:h-5 [&_[cmdk-item]_svg]:w-5">
           {children}
         </Command>
       </DialogContent>
     </Dialog>
   );
-};
+}
 
-export type CommandInputElement = React.ElementRef<
+export type CommandInputElement = React.ComponentRef<
   typeof CommandPrimitive.Input
 >;
 export type CommandInputProps = React.ComponentPropsWithoutRef<
   typeof CommandPrimitive.Input
 >;
-const CommandInput = React.forwardRef<CommandInputElement, CommandInputProps>(
-  ({ className, ...props }, ref) => (
+function CommandInput({
+  className,
+  ...props
+}: CommandInputProps): React.JSX.Element {
+  return (
     <div
-      className="flex items-center border-b px-3"
-      cmdk-input-wrapper=""
+      data-slot="command-input-wrapper"
+      className="flex h-9 items-center gap-2 border-b px-3"
     >
-      <SearchIcon className="mr-2 size-4 shrink-0 opacity-50" />
+      <SearchIcon className="size-4 shrink-0 opacity-50" />
       <CommandPrimitive.Input
-        ref={ref}
+        data-slot="command-input"
         className={cn(
-          'flex h-10 w-full rounded-md bg-transparent py-3 text-sm outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50',
+          'placeholder:text-muted-foreground flex h-10 w-full rounded-md bg-transparent py-3 text-sm outline-hidden disabled:cursor-not-allowed disabled:opacity-50',
           className
         )}
         {...props}
       />
     </div>
-  )
-);
+  );
+}
 
-CommandInput.displayName = CommandPrimitive.Input.displayName;
-
-export type CommandListElement = React.ElementRef<typeof CommandPrimitive.List>;
+export type CommandListElement = React.ComponentRef<
+  typeof CommandPrimitive.List
+>;
 export type CommandListProps = React.ComponentPropsWithoutRef<
   typeof CommandPrimitive.List
 >;
-const CommandList = React.forwardRef<CommandListElement, CommandListProps>(
-  ({ className, ...props }, ref) => (
-    <CommandPrimitive.List
-      ref={ref}
-      className={cn(
-        'max-h-[300px] overflow-y-auto overflow-x-hidden',
-        className
-      )}
-      {...props}
-    />
-  )
-);
-
-CommandList.displayName = CommandPrimitive.List.displayName;
-
-export type CommandEmptyElement = React.ElementRef<
-  typeof CommandPrimitive.Empty
->;
-export type CommandEmptyProps = React.ComponentPropsWithoutRef<
-  typeof CommandPrimitive.Empty
->;
-const CommandEmpty = React.forwardRef<CommandEmptyElement, CommandEmptyProps>(
-  (props, ref) => (
-    <CommandPrimitive.Empty
-      ref={ref}
-      className="py-6 text-center text-sm"
-      {...props}
-    />
-  )
-);
-
-CommandEmpty.displayName = CommandPrimitive.Empty.displayName;
-
-export type CommandGroupElement = React.ElementRef<
-  typeof CommandPrimitive.Group
->;
-export type CommandGroupProps = React.ComponentPropsWithoutRef<
-  typeof CommandPrimitive.Group
->;
-const CommandGroup = React.forwardRef<CommandGroupElement, CommandGroupProps>(
-  ({ className, ...props }, ref) => (
-    <CommandPrimitive.Group
-      ref={ref}
-      className={cn(
-        'overflow-hidden p-1 text-foreground [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:py-1.5 [&_[cmdk-group-heading]]:text-xs [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-muted-foreground',
-        className
-      )}
-      {...props}
-    />
-  )
-);
-
-CommandGroup.displayName = CommandPrimitive.Group.displayName;
-
-export type CommandSeparatorElement = React.ElementRef<
-  typeof CommandPrimitive.Separator
->;
-export type CommandSeparatorProps = React.ComponentPropsWithoutRef<
-  typeof CommandPrimitive.Separator
->;
-const CommandSeparator = React.forwardRef<
-  CommandSeparatorElement,
-  CommandSeparatorProps
->(({ className, ...props }, ref) => (
-  <CommandPrimitive.Separator
-    ref={ref}
-    className={cn('-mx-1 h-px bg-border', className)}
-    {...props}
-  />
-));
-CommandSeparator.displayName = CommandPrimitive.Separator.displayName;
-
-export type CommandItemElement = React.ElementRef<typeof CommandPrimitive.Item>;
-export type CommandItemProps = React.ComponentPropsWithoutRef<
-  typeof CommandPrimitive.Item
->;
-const CommandItem = React.forwardRef<CommandItemElement, CommandItemProps>(
-  ({ className, ...props }, ref) => (
-    <CommandPrimitive.Item
-      ref={ref}
-      className={cn(
-        "relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none aria-selected:bg-accent aria-selected:text-accent-foreground data-[disabled='true']:pointer-events-none data-[disabled='true']:opacity-50",
-        className
-      )}
-      {...props}
-    />
-  )
-);
-
-CommandItem.displayName = CommandPrimitive.Item.displayName;
-
-export type CommandShortcutProps = React.HTMLAttributes<HTMLSpanElement>;
-const CommandShortcut = ({ className, ...props }: CommandShortcutProps) => {
+function CommandList({
+  className,
+  ...props
+}: CommandListProps): React.JSX.Element {
   return (
-    <span
+    <CommandPrimitive.List
+      data-slot="command-list"
       className={cn(
-        'ml-auto text-xs tracking-widest text-muted-foreground',
+        'max-h-[300px] scroll-py-1 overflow-x-hidden overflow-y-auto',
         className
       )}
       {...props}
     />
   );
-};
-CommandShortcut.displayName = 'CommandShortcut';
+}
+
+export type CommandEmptyElement = React.ComponentRef<
+  typeof CommandPrimitive.Empty
+>;
+export type CommandEmptyProps = React.ComponentPropsWithoutRef<
+  typeof CommandPrimitive.Empty
+>;
+function CommandEmpty(props: CommandEmptyProps): React.JSX.Element {
+  return (
+    <CommandPrimitive.Empty
+      data-slot="command-empty"
+      className="py-6 text-center text-sm"
+      {...props}
+    />
+  );
+}
+
+export type CommandGroupElement = React.ComponentRef<
+  typeof CommandPrimitive.Group
+>;
+export type CommandGroupProps = React.ComponentPropsWithoutRef<
+  typeof CommandPrimitive.Group
+>;
+function CommandGroup({
+  className,
+  ...props
+}: CommandGroupProps): React.JSX.Element {
+  return (
+    <CommandPrimitive.Group
+      data-slot="command-group"
+      className={cn(
+        'text-foreground [&_[cmdk-group-heading]]:text-muted-foreground overflow-hidden p-1 [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:py-1.5 [&_[cmdk-group-heading]]:text-xs [&_[cmdk-group-heading]]:font-medium',
+        className
+      )}
+      {...props}
+    />
+  );
+}
+
+export type CommandSeparatorElement = React.ComponentRef<
+  typeof CommandPrimitive.Separator
+>;
+export type CommandSeparatorProps = React.ComponentPropsWithoutRef<
+  typeof CommandPrimitive.Separator
+>;
+function CommandSeparator({
+  className,
+  ...props
+}: CommandSeparatorProps): React.JSX.Element {
+  return (
+    <CommandPrimitive.Separator
+      data-slot="command-separator"
+      className={cn('bg-border -mx-1 h-px', className)}
+      {...props}
+    />
+  );
+}
+
+export type CommandItemElement = React.ComponentRef<
+  typeof CommandPrimitive.Item
+>;
+export type CommandItemProps = React.ComponentPropsWithoutRef<
+  typeof CommandPrimitive.Item
+>;
+function CommandItem({
+  className,
+  ...props
+}: CommandItemProps): React.JSX.Element {
+  return (
+    <CommandPrimitive.Item
+      data-slot="command-item"
+      className={cn(
+        "data-[selected=true]:bg-accent data-[selected=true]:text-accent-foreground [&_svg:not([class*='text-'])]:text-muted-foreground relative flex cursor-default items-center gap-2 rounded-xs px-2 py-1.5 text-sm outline-hidden select-none data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+        className
+      )}
+      {...props}
+    />
+  );
+}
+
+export type CommandShortcutElement = React.ComponentRef<'span'>;
+export type CommandShortcutProps = React.ComponentPropsWithoutRef<'span'>;
+function CommandShortcut({
+  className,
+  ...props
+}: CommandShortcutProps): React.JSX.Element {
+  return (
+    <span
+      data-slot="command-shortcut"
+      className={cn(
+        'text-muted-foreground ml-auto text-xs tracking-widest',
+        className
+      )}
+      {...props}
+    />
+  );
+}
 
 export {
   Command,
   CommandDialog,
+  CommandInput,
+  CommandList,
   CommandEmpty,
   CommandGroup,
-  CommandInput,
   CommandItem,
-  CommandList,
-  CommandSeparator,
-  CommandShortcut
+  CommandShortcut,
+  CommandSeparator
 };

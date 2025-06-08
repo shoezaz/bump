@@ -116,7 +116,7 @@ export function PersonalDetailsCard({
   return (
     <FormProvider {...methods}>
       <Card {...other}>
-        <CardContent className="pt-6">
+        <CardContent>
           <form
             className="space-y-6"
             onSubmit={methods.handleSubmit(onSubmit)}
@@ -149,7 +149,7 @@ export function PersonalDetailsCard({
                         type="button"
                         variant="outline"
                         size="icon"
-                        className="absolute -bottom-1 -right-1 z-10 size-8 rounded-full bg-background !opacity-100"
+                        className="absolute -bottom-1 -right-1 z-10 size-8 rounded-full bg-background opacity-100!"
                         disabled={methods.formState.isSubmitting}
                         onClick={handleRemoveImage}
                       >
@@ -225,7 +225,7 @@ export function PersonalDetailsCard({
           </form>
         </CardContent>
         <Separator />
-        <CardFooter className="flex w-full justify-end pt-6">
+        <CardFooter className="flex w-full justify-end">
           <Button
             type="button"
             variant="default"

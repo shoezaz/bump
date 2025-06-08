@@ -1,3 +1,5 @@
+'use client';
+
 import * as React from 'react';
 import Link from 'next/link';
 import { allPosts } from 'content-collections';
@@ -18,13 +20,14 @@ import { getInitials } from '~/lib/formatters';
 export function BlogPosts(): React.JSX.Element {
   return (
     <GridSection>
-      <div className="container space-y-20 py-20">
+      <div className="container py-20 space-y-16">
         <SiteHeading
           badge="Blog Posts"
           title="Insights & News"
           description="Learn more from members of our team and industry-leading experts."
         />
-        <div className="grid gap-x-12 gap-y-6 divide-y md:grid-cols-2 md:gap-x-6 md:divide-none xl:grid-cols-3">
+
+        <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
           {allPosts
             .slice()
             .sort((a, b) => (isBefore(a.published, b.published) ? 1 : -1))
@@ -32,43 +35,39 @@ export function BlogPosts(): React.JSX.Element {
               <Link
                 key={index}
                 href={`${baseUrl.Marketing}${post.slug}`}
-                className="md:duration-2000 flex h-full flex-col space-y-4 text-clip border-dashed py-6 md:rounded-2xl md:px-6 md:shadow md:transition-shadow md:hover:shadow-xl dark:md:bg-accent/40 dark:md:hover:bg-accent"
+                className="flex h-full flex-col justify-between rounded-2xl bg-background p-6 shadow-xs transition-shadow hover:shadow-md dark:bg-accent/30 dark:hover:bg-accent/50"
               >
-                <div className="flex flex-row items-center justify-between text-muted-foreground">
-                  <span className="text-sm">{post.category}</span>
-                  <time
-                    className="text-sm"
-                    dateTime={post.published}
-                  >
+                <div className="mb-4 flex items-center justify-between text-muted-foreground text-sm">
+                  <span>{post.category}</span>
+                  <time dateTime={post.published}>
                     {format(post.published, 'dd MMM yyyy')}
                   </time>
                 </div>
-                <h2 className="text-lg font-semibold md:mb-4 md:text-xl lg:mb-6">
+
+                <h2 className="mb-3 text-lg font-semibold md:text-xl">
                   {post.title}
                 </h2>
-                <p className="line-clamp-3 text-muted-foreground md:mb-4 lg:mb-6">
+
+                <p className="mb-4 text-muted-foreground line-clamp-3">
                   {post.description}
                 </p>
-                <div
-                  aria-hidden="true"
-                  className="flex-1 shrink"
-                />
-                <div className="flex flex-1 shrink flex-row items-center justify-between">
-                  <div className="flex flex-row items-center gap-2">
-                    <Avatar className="relative size-7 flex-none rounded-full">
+
+                <div className="mt-auto flex items-center justify-between pt-4">
+                  <div className="flex items-center gap-2">
+                    <Avatar className="size-7">
                       <AvatarImage
                         src={post.author?.avatar}
                         alt="avatar"
                       />
-                      <AvatarFallback className="size-7 text-[10px]">
+                      <AvatarFallback className="text-[10px]">
                         {getInitials(post.author?.name ?? '')}
                       </AvatarFallback>
                     </Avatar>
                     <span className="text-sm">{post.author?.name ?? ''}</span>
                   </div>
-                  <div className="group flex items-center gap-2 text-sm duration-200  hover:underline">
+                  <div className="group flex items-center gap-2 text-sm hover:underline">
                     Read more
-                    <ArrowRightIcon className="size-4 shrink-0 transition-transform group-hover:translate-x-0.5" />
+                    <ArrowRightIcon className="size-4 transition-transform group-hover:translate-x-1" />
                   </div>
                 </div>
               </Link>

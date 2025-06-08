@@ -11,7 +11,7 @@ export function StoryValues(): React.JSX.Element {
           "We believe AI should enhance human relationships, not replace them."
         </p>
         <FlickeringGrid
-          className="pointer-events-none absolute inset-0 z-0 [mask-image:radial-gradient(450px_circle_at_center,hsl(var(--background)),transparent)]"
+          className="pointer-events-none absolute inset-0 z-0 mask-[radial-gradient(450px_circle_at_center,var(--background),transparent)]"
           squareSize={4}
           gridGap={6}
           color="gray"

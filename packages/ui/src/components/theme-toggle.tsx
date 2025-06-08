@@ -1,17 +1,17 @@
 'use client';
 
+import * as React from 'react';
 import { MoonIcon, SunIcon } from 'lucide-react';
 
 import { useTheme } from '../hooks/use-theme';
 import { cn } from '../lib/utils';
 import { Button, type ButtonProps } from './button';
 
-export type ThemeToggleProps = Omit<
-  ButtonProps,
-  'variant' | 'size' | 'onClick'
->;
+export type ThemeToggleElement = React.ComponentRef<typeof Button>;
+export type ThemeToggleProps = React.ComponentPropsWithoutRef<typeof Button> &
+  Omit<ButtonProps, 'variant' | 'size' | 'onClick'>;
 
-export function ThemeToggle({
+function ThemeToggle({
   className,
   ...props
 }: ThemeToggleProps): React.JSX.Element {
@@ -39,3 +39,4 @@ export function ThemeToggle({
     </Button>
   );
 }
+export { ThemeToggle };

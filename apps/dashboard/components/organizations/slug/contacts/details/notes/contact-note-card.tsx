@@ -26,6 +26,7 @@ import {
 } from '@workspace/ui/components/dropdown-menu';
 import { EmptyText } from '@workspace/ui/components/empty-text';
 import { Separator } from '@workspace/ui/components/separator';
+import { cn } from '@workspace/ui/lib/utils';
 
 import { DeleteContactNoteModal } from '~/components/organizations/slug/contacts/details/notes/delete-contact-note-modal';
 import { EditContactNoteModal } from '~/components/organizations/slug/contacts/details/notes/edit-contact-note-modal';
@@ -39,6 +40,7 @@ type ContactNoteCardProps = CardProps & {
 
 export function ContactNoteCard({
   note,
+  className,
   ...others
 }: ContactNoteCardProps): React.JSX.Element {
   const handleShowEditContactNoteModal = (): void => {
@@ -48,8 +50,11 @@ export function ContactNoteCard({
     NiceModal.show(DeleteContactNoteModal, { note });
   };
   return (
-    <Card {...others}>
-      <CardHeader className="flex flex-row justify-between space-y-0 py-3">
+    <Card
+      className={cn('gap-0 p-0', className)}
+      {...others}
+    >
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 py-3">
         <div className="flex flex-row items-center gap-2">
           <Avatar className="relative size-6 flex-none rounded-full">
             <AvatarImage
@@ -83,7 +88,7 @@ export function ContactNoteCard({
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem
-              className="!text-destructive cursor-pointer"
+              className="text-destructive! cursor-pointer"
               onClick={handleShowDeleteContactNoteModal}
             >
               Delete
@@ -94,7 +99,7 @@ export function ContactNoteCard({
       <Separator />
       <Button
         type="button"
-        className="h-[calc(100%-60px-48px)] w-full items-start justify-start overflow-y-auto overflow-x-hidden !bg-transparent p-6 text-left text-sm font-normal"
+        className="h-[calc(100%-60px-48px)] w-full items-start justify-start overflow-y-auto overflow-x-hidden bg-transparent! p-6 text-left text-sm font-normal"
         variant="ghost"
         onClick={handleShowEditContactNoteModal}
       >

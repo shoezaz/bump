@@ -35,7 +35,7 @@ class StripeBillingProvider implements BillingProvider {
       }
     }
     this.stripe = new Stripe(keys().BILLING_STRIPE_SECRET_KEY!, {
-      apiVersion: '2025-03-31.basil'
+      apiVersion: '2025-05-28.basil'
     });
   }
 
@@ -91,12 +91,12 @@ class StripeBillingProvider implements BillingProvider {
       client_reference_id: params.organizationId,
       subscription_data: isSubscription
         ? {
-          trial_period_days: trialDays,
-          metadata: {
-            organizationId: params.organizationId,
-            ...(params.metadata ?? {})
+            trial_period_days: trialDays,
+            metadata: {
+              organizationId: params.organizationId,
+              ...(params.metadata ?? {})
+            }
           }
-        }
         : {},
       success_url: `${params.returnUrl}?sessionId={CHECKOUT_SESSION_ID}`,
       cancel_url: `${params.returnUrl}?sessionId={CHECKOUT_SESSION_ID}`,

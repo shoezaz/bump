@@ -6,24 +6,6 @@ import { LaptopIcon, MoonIcon, SunIcon } from 'lucide-react';
 import { useTheme } from '../hooks/use-theme';
 import { Tooltip, TooltipContent, TooltipTrigger } from './tooltip';
 
-const DATA = [
-  {
-    value: 'system',
-    icon: LaptopIcon,
-    label: 'System'
-  },
-  {
-    value: 'light',
-    icon: SunIcon,
-    label: 'Light'
-  },
-  {
-    value: 'dark',
-    icon: MoonIcon,
-    label: 'Dark'
-  }
-];
-
 export function ThemeSwitcher(): React.JSX.Element {
   const { setTheme, theme } = useTheme();
   const themeValue = theme || 'system';
@@ -32,7 +14,23 @@ export function ThemeSwitcher(): React.JSX.Element {
   };
   return (
     <div className="flex w-fit rounded-full border bg-background p-0.5">
-      {DATA.map(({ value, icon: Icon, label }) => (
+      {[
+        {
+          value: 'system',
+          icon: LaptopIcon,
+          label: 'System'
+        },
+        {
+          value: 'light',
+          icon: SunIcon,
+          label: 'Light'
+        },
+        {
+          value: 'dark',
+          icon: MoonIcon,
+          label: 'Dark'
+        }
+      ].map(({ value, icon: Icon, label }) => (
         <span
           key={value}
           className="h-full"

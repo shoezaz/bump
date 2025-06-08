@@ -18,7 +18,7 @@ export function SiteHeading({
       {badge && (
         <Badge
           variant="outline"
-          className="h-8 rounded-full px-3 text-sm font-medium shadow-sm"
+          className="h-8 rounded-full px-3 text-sm font-medium shadow-xs"
         >
           {badge}
         </Badge>

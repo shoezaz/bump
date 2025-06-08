@@ -79,7 +79,7 @@ export function SignUpCard({
   return (
     <Card
       className={cn(
-        'w-full px-4 py-2 border-transparent dark:border-border',
+        'w-full px-4 py-8 border-transparent dark:border-border',
         className
       )}
       {...other}
@@ -164,10 +164,10 @@ export function SignUpCard({
             </div>
             {errorMessage && (
               <Alert variant="destructive">
-                <div className="flex flex-row items-center gap-2 text-sm">
-                  <AlertCircleIcon className="size-[18px] shrink-0" />
-                  <AlertDescription>{errorMessage}</AlertDescription>
-                </div>
+                <AlertCircleIcon className="size-[18px] shrink-0" />
+                <AlertDescription className="inline">
+                  {errorMessage}
+                </AlertDescription>
               </Alert>
             )}
             <Button
@@ -181,11 +181,11 @@ export function SignUpCard({
           </form>
         </FormProvider>
         <OrContinueWith />
-        <div className="flex flex-row gap-4">
+        <div className="flex gap-4">
           <Button
             type="button"
             variant="outline"
-            className="flex w-full flex-row items-center gap-2"
+            className="flex flex-1 items-center gap-2"
             disabled={methods.formState.isSubmitting}
             onClick={handleSignInWithGoogle}
           >
@@ -198,7 +198,7 @@ export function SignUpCard({
           <Button
             type="button"
             variant="outline"
-            className="flex w-full flex-row items-center gap-2"
+            className="flex flex-1 items-center gap-2"
             disabled={methods.formState.isSubmitting}
             onClick={handleSignInWithMicrosoft}
           >

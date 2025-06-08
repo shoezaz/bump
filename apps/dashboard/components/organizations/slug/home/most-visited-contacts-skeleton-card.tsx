@@ -16,7 +16,7 @@ export function MostVisitedContactsSkeletonCard(
 ): React.JSX.Element {
   return (
     <Card {...props}>
-      <CardHeader>
+      <CardHeader className="gap-0">
         <CardTitle className="text-sm">Most visited contacts</CardTitle>
       </CardHeader>
       <CardContent>

@@ -152,7 +152,7 @@ export function NavUser({
         <SidebarMenuItem>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <SidebarMenuButton className="group/navuser -ml-1.5 transition-none data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground group-data-[collapsible=icon]:ml-0 group-data-[collapsible=icon]:rounded-full group-data-[collapsible=icon]:!p-1">
+              <SidebarMenuButton className="group/navuser -ml-1.5 transition-none data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground group-data-[collapsible=icon]:ml-0 group-data-[collapsible=icon]:rounded-full group-data-[collapsible=icon]:p-1!">
                 <Avatar className="size-7 rounded-full">
                   <AvatarImage
                     src={profile.image}
@@ -210,7 +210,7 @@ export function NavUser({
                   <DropdownMenuShortcut>⌘K</DropdownMenuShortcut>
                 </DropdownMenuItem>
                 <DropdownMenuItem
-                  className="flex cursor-default flex-row justify-between !bg-transparent"
+                  className="flex cursor-default flex-row justify-between bg-transparent!"
                   onClick={(e) => e.stopPropagation()}
                 >
                   <p>Theme</p>

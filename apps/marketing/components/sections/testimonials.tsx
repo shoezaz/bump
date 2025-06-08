@@ -2,8 +2,8 @@
 
 import * as React from 'react';
 import Image from 'next/image';
-import { motion } from 'framer-motion';
 import { Star } from 'lucide-react';
+import { motion } from 'motion/react';
 
 import { APP_NAME } from '@workspace/common/app';
 import { cn } from '@workspace/ui/lib/utils';
@@ -261,8 +261,8 @@ export function Testimonials(): React.JSX.Element {
                 </Marquee>
               ))}
           </div>
-          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/4 w-full bg-gradient-to-t from-background from-20%" />
-          <div className="pointer-events-none absolute inset-x-0 top-0 h-1/4 w-full bg-gradient-to-b from-background from-20%" />
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/4 w-full bg-linear-to-t from-background from-20%" />
+          <div className="pointer-events-none absolute inset-x-0 top-0 h-1/4 w-full bg-linear-to-b from-background from-20%" />
         </div>
       </div>
     </GridSection>

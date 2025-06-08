@@ -1,8 +1,8 @@
 'use client';
 
 import * as React from 'react';
-import { motion } from 'framer-motion';
 import { ArrowLeftRightIcon } from 'lucide-react';
+import { motion } from 'motion/react';
 
 import {
   Card,
@@ -83,7 +83,7 @@ export function BentoMagicInboxCard({
                 </div>
               ))}
             </div>
-            <div className="relative aspect-[128/55] w-32">
+            <div className="relative aspect-128/55 w-32">
               {/* Connector */}
               <svg
                 viewBox="0 0 128 55"

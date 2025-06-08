@@ -3,42 +3,49 @@
 import * as React from 'react';
 import * as CollapsiblePrimitive from '@radix-ui/react-collapsible';
 
-import { cn } from '../lib/utils';
-
-export type CollapsibleElement = React.ElementRef<
+export type CollapsibleElement = React.ComponentRef<
   typeof CollapsiblePrimitive.Root
 >;
-export type CollapsibleProps = React.ComponentProps<
+export type CollapsibleProps = React.ComponentPropsWithoutRef<
   typeof CollapsiblePrimitive.Root
 >;
-const Collapsible = CollapsiblePrimitive.Root;
+function Collapsible(props: CollapsibleProps): React.JSX.Element {
+  return (
+    <CollapsiblePrimitive.Root
+      data-slot="collapsible"
+      {...props}
+    />
+  );
+}
 
-export type CollapsibleTriggerElement = React.ElementRef<
+export type CollapsibleTriggerElement = React.ComponentRef<
   typeof CollapsiblePrimitive.CollapsibleTrigger
 >;
-export type CollapsibleTriggerProps = React.ComponentProps<
+export type CollapsibleTriggerProps = React.ComponentPropsWithoutRef<
   typeof CollapsiblePrimitive.CollapsibleTrigger
 >;
-const CollapsibleTrigger = CollapsiblePrimitive.CollapsibleTrigger;
+function CollapsibleTrigger(props: CollapsibleTriggerProps): React.JSX.Element {
+  return (
+    <CollapsiblePrimitive.CollapsibleTrigger
+      data-slot="collapsible-trigger"
+      {...props}
+    />
+  );
+}
 
-export type CollapsibleContentElement = React.ElementRef<
+export type CollapsibleContentElement = React.ComponentRef<
   typeof CollapsiblePrimitive.CollapsibleContent
 >;
 export type CollapsibleContentProps = React.ComponentPropsWithoutRef<
   typeof CollapsiblePrimitive.CollapsibleContent
 >;
-const CollapsibleContent = React.forwardRef<
-  CollapsibleContentElement,
-  CollapsibleContentProps
->(({ className, ...props }, ref) => (
-  <CollapsiblePrimitive.CollapsibleContent
-    ref={ref}
-    className={cn(
-      'overflow-hidden data-[state=closed]:animate-collapsible-up data-[state=open]:animate-collapsible-down',
-      className
-    )}
-    {...props}
-  />
-));
+function CollapsibleContent(props: CollapsibleContentProps): React.JSX.Element {
+  return (
+    <CollapsiblePrimitive.CollapsibleContent
+      data-slot="collapsible-content"
+      {...props}
+    />
+  );
+}
 
-export { Collapsible, CollapsibleContent, CollapsibleTrigger };
+export { Collapsible, CollapsibleTrigger, CollapsibleContent };

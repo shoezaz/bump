@@ -23,7 +23,7 @@ export function DefaultError({
   return (
     <Card className="border-dashed shadow-none">
       <CardContent className="flex flex-col items-center justify-center gap-4 pt-6">
-        <div className="flex items-center justify-center rounded-md border bg-background p-2 shadow-sm">
+        <div className="flex items-center justify-center rounded-md border bg-background p-2 shadow-xs">
           <TriangleAlertIcon className="size-4 shrink-0" />
         </div>
         <p className="text-sm text-muted-foreground">

@@ -6,7 +6,7 @@ import {
   stagger,
   useAnimate,
   type HTMLMotionProps
-} from 'framer-motion';
+} from 'motion/react';
 
 export type TextGenerateEffectProps = HTMLMotionProps<'div'> & {
   words: string;

@@ -22,7 +22,7 @@ export function Callout({
     <Alert {...props}>
       {icon && <span className="mr-4 text-2xl">{icon}</span>}
       {title && <AlertTitle>{title}</AlertTitle>}
-      <AlertDescription>{children}</AlertDescription>
+      <AlertDescription className="inline">{children}</AlertDescription>
     </Alert>
   );
 }

@@ -12,14 +12,14 @@ import { Skeleton } from '@workspace/ui/components/skeleton';
 export function BillingEmailSkeletonCard(props: CardProps): React.JSX.Element {
   return (
     <Card {...props}>
-      <CardContent className="pt-6">
+      <CardContent>
         <div className="mb-2 flex flex-col space-y-2">
           <Skeleton className="h-3.5 w-[200px]" />
           <Skeleton className="h-9 w-full" />
         </div>
       </CardContent>
       <Separator />
-      <CardFooter className="flex w-full justify-end pt-6">
+      <CardFooter className="flex w-full justify-end">
         <Skeleton className="h-9 w-16" />
       </CardFooter>
     </Card>

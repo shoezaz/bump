@@ -7,8 +7,6 @@ import { cn } from '../lib/utils';
 import { Button, type ButtonProps } from './button';
 import { Popover, PopoverContent, PopoverTrigger } from './popover';
 
-// Colors
-
 export const DEFAULT_COLOR = '~/888888';
 export const RGB_MAX = 255;
 export const SV_MAX = 100;
@@ -236,8 +234,6 @@ function omit<T extends object, K extends keyof T>(
   ) as Omit<T, K>;
 }
 
-// Pointer
-
 type PointerProps = React.HTMLAttributes<HTMLDivElement> & {
   left?: string;
   top?: string;
@@ -268,8 +264,6 @@ const Pointer = ({
     </div>
   );
 };
-
-// Interactive
 
 function useEventCallback<T, K>(
   handler?: (value: T, event: K) => void
@@ -333,96 +327,88 @@ type InteractiveProps = React.HTMLAttributes<HTMLDivElement> & {
   onMove?: (interaction: Interaction, event: MouseEvent | TouchEvent) => void;
   onDown?: (offset: Interaction, event: MouseEvent | TouchEvent) => void;
 };
-const Interactive = React.forwardRef<HTMLDivElement, InteractiveProps>(
-  ({ onMove, onDown, ...other }, _ref) => {
-    const container = React.useRef<HTMLDivElement>(null);
-    const hasTouched = React.useRef(false);
-    const [isDragging, setDragging] = React.useState(false);
+const Interactive = ({ onMove, onDown, ...other }: InteractiveProps) => {
+  const container = React.useRef<HTMLDivElement>(null);
+  const hasTouched = React.useRef(false);
+  const [isDragging, setDragging] = React.useState(false);
 
-    const onMoveCallback = useEventCallback<
-      Interaction,
-      MouseEvent | TouchEvent
-    >(onMove);
+  const onMoveCallback = useEventCallback<Interaction, MouseEvent | TouchEvent>(
+    onMove
+  );
 
-    const onKeyCallback = useEventCallback<
-      Interaction,
-      MouseEvent | TouchEvent
-    >(onDown);
+  const onKeyCallback = useEventCallback<Interaction, MouseEvent | TouchEvent>(
+    onDown
+  );
 
-    const isValid = (event: MouseEvent | TouchEvent): boolean => {
-      if (hasTouched.current && !isTouchEvent(event)) return false;
-      hasTouched.current = isTouchEvent(event);
-      return true;
-    };
+  const isValid = (event: MouseEvent | TouchEvent): boolean => {
+    if (hasTouched.current && !isTouchEvent(event)) return false;
+    hasTouched.current = isTouchEvent(event);
+    return true;
+  };
 
-    const handleMove = React.useCallback(
-      (event: MouseEvent | TouchEvent) => {
-        preventDefaultMove(event);
-        const isDown = isTouchEvent(event)
-          ? event.touches.length > 0
-          : event.buttons > 0;
-        if (isDown && container.current) {
-          onMoveCallback?.(
-            getRelativePosition(container.current!, event),
-            event
-          );
-        } else {
-          setDragging(false);
-        }
-      },
-      [onMoveCallback]
-    );
+  const handleMove = React.useCallback(
+    (event: MouseEvent | TouchEvent) => {
+      preventDefaultMove(event);
+      const isDown = isTouchEvent(event)
+        ? event.touches.length > 0
+        : event.buttons > 0;
+      if (isDown && container.current) {
+        onMoveCallback?.(getRelativePosition(container.current!, event), event);
+      } else {
+        setDragging(false);
+      }
+    },
+    [onMoveCallback]
+  );
 
-    const handleMoveEnd = React.useCallback(() => setDragging(false), []);
-    const toggleDocumentEvents = React.useCallback((state: boolean) => {
+  const handleMoveEnd = React.useCallback(() => setDragging(false), []);
+  const toggleDocumentEvents = React.useCallback(
+    (state: boolean) => {
       const toggleEvent = state
         ? window.addEventListener
         : window.removeEventListener;
       toggleEvent(hasTouched.current ? 'touchmove' : 'mousemove', handleMove);
       toggleEvent(hasTouched.current ? 'touchend' : 'mouseup', handleMoveEnd);
-      /* eslint-disable  react-hooks/exhaustive-deps */
-    }, []);
+    },
+    [handleMove, handleMoveEnd]
+  );
 
-    React.useEffect(() => {
-      toggleDocumentEvents(isDragging);
-      return () => {
-        if (isDragging) {
-          toggleDocumentEvents(false);
-        }
-      };
-    }, [isDragging, toggleDocumentEvents]);
+  React.useEffect(() => {
+    toggleDocumentEvents(isDragging);
+    return () => {
+      if (isDragging) {
+        toggleDocumentEvents(false);
+      }
+    };
+  }, [isDragging, toggleDocumentEvents]);
 
-    const handleMoveStart = React.useCallback(
-      (event: React.MouseEvent | React.TouchEvent) => {
-        preventDefaultMove(event.nativeEvent);
-        if (!isValid(event.nativeEvent)) return;
-        onKeyCallback?.(
-          getRelativePosition(container.current!, event.nativeEvent),
-          event.nativeEvent
-        );
-        setDragging(true);
-      },
-      [onKeyCallback]
-    );
+  const handleMoveStart = React.useCallback(
+    (event: React.MouseEvent | React.TouchEvent) => {
+      preventDefaultMove(event.nativeEvent);
+      if (!isValid(event.nativeEvent)) return;
+      onKeyCallback?.(
+        getRelativePosition(container.current!, event.nativeEvent),
+        event.nativeEvent
+      );
+      setDragging(true);
+    },
+    [onKeyCallback]
+  );
 
-    return (
-      <div
-        ref={container}
-        tabIndex={0}
-        style={{
-          ...other.style,
-          touchAction: 'none'
-        }}
-        onMouseDown={handleMoveStart}
-        onTouchStart={handleMoveStart}
-        {...other}
-      />
-    );
-  }
-);
-Interactive.displayName = 'Interactive';
-
-// Saturation
+  return (
+    <div
+      ref={container}
+      tabIndex={0}
+      style={{
+        ...other.style,
+        touchAction: 'none'
+      }}
+      onMouseDown={handleMoveStart}
+      onTouchStart={handleMoveStart}
+      {...other}
+    />
+  );
+};
 
 type SaturationProps = Omit<
   React.HTMLAttributes<HTMLDivElement>,
@@ -432,53 +418,53 @@ type SaturationProps = Omit<
   hue?: number;
   onChange?: (newColor: HSVA) => void;
 };
-const Saturation = React.forwardRef<HTMLDivElement, SaturationProps>(
-  ({ hue = 0, hsva, style, onChange, ...other }, ref) => {
-    const pointerElement = React.useMemo(() => {
-      if (!hsva) return null;
-      return (
-        <Pointer
-          top={`${100 - hsva.v}%`}
-          left={`${hsva.s}%`}
-          color={hsvaToHslaString(hsva)}
-          style={{ transform: 'translate(-1px, -8px)' }}
-        />
-      );
-    }, [hsva]);
-
-    const handleChange = (interaction: Interaction) => {
-      if (hsva && onChange) {
-        onChange({
-          h: hsva.h,
-          s: interaction.left * 100,
-          v: (1 - interaction.top) * 100,
-          a: hsva.a
-        });
-      }
-    };
-
+const Saturation = ({
+  hue = 0,
+  hsva,
+  style,
+  onChange,
+  ...other
+}: SaturationProps) => {
+  const pointerElement = React.useMemo(() => {
+    if (!hsva) return null;
     return (
-      <Interactive
-        ref={ref}
-        className="relative inset-0 h-[130px] w-full cursor-crosshair"
-        style={{
-          backgroundImage: `linear-gradient(0deg, #000, transparent), linear-gradient(90deg, #fff, hsl(${
-            hsva?.h ?? hue
-          }, 100%, 50%))`,
-          ...style
-        }}
-        onMove={handleChange}
-        onDown={handleChange}
-        {...other}
-      >
-        {pointerElement}
-      </Interactive>
+      <Pointer
+        top={`${100 - hsva.v}%`}
+        left={`${hsva.s}%`}
+        color={hsvaToHslaString(hsva)}
+        style={{ transform: 'translate(-1px, -8px)' }}
+      />
     );
-  }
-);
-Saturation.displayName = 'Saturation';
+  }, [hsva]);
 
-// Alpha
+  const handleChange = (interaction: Interaction) => {
+    if (hsva && onChange) {
+      onChange({
+        h: hsva.h,
+        s: interaction.left * 100,
+        v: (1 - interaction.top) * 100,
+        a: hsva.a
+      });
+    }
+  };
+
+  return (
+    <Interactive
+      className="relative inset-0 h-[130px] w-full cursor-crosshair"
+      style={{
+        backgroundImage: `linear-gradient(0deg, #000, transparent), linear-gradient(90deg, #fff, hsl(${
+          hsva?.h ?? hue
+        }, 100%, 50%))`,
+        ...style
+      }}
+      onMove={handleChange}
+      onDown={handleChange}
+      {...other}
+    >
+      {pointerElement}
+    </Interactive>
+  );
+};
 
 type AlphaProps = Omit<React.HTMLAttributes<HTMLDivElement>, 'onChange'> & {
   width?: React.CSSProperties['width'];
@@ -492,117 +478,107 @@ type AlphaProps = Omit<React.HTMLAttributes<HTMLDivElement>, 'onChange'> & {
   direction?: 'vertical' | 'horizontal';
   onChange?: (newAlpha: { a: number }, offset: Interaction) => void;
 };
-const Alpha = React.forwardRef<HTMLDivElement, AlphaProps>(
-  (
-    {
-      hsva,
-      background,
-      trackProps = {},
-      interactiveProps = {},
-      pointerProps,
-      showPointer = true,
-      width,
-      height = 16,
-      direction = 'horizontal',
-      className,
-      style,
-      onChange,
-      ...other
-    },
-    ref
-  ) => {
-    const handleChange = (offset: Interaction) => {
-      onChange?.(
-        { ...hsva, a: direction === 'horizontal' ? offset.left : offset.top },
-        offset
-      );
-    };
-
-    const colorTo = hsvaToHslaString(Object.assign({}, hsva, { a: 1 }));
-    const innerBackground = `linear-gradient(to ${
-      direction === 'horizontal' ? 'right' : 'bottom'
-    }, rgba(244, 67, 54, 0) 0%, ${colorTo} 100%)`;
-    const posProps: { left?: string; top?: string } = {};
-    if (direction === 'horizontal') {
-      posProps.left = `${hsva.a * 100}%`;
-    } else {
-      posProps.top = `${hsva.a * 100}%`;
-    }
-
-    return (
-      <div
-        ref={ref}
-        className={cn('relative bg-white', className)}
-        style={{
-          background:
-            'url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAMUlEQVQ4T2NkYGAQYcAP3uCTZhw1gGGYhAGBZIA/nYDCgBDAm9BGDWAAJyRCgLaBCAAgXwixzAS0pgAAAABJRU5ErkJggg==) left center',
-          ...{ width, height },
-          ...style
-        }}
-        {...other}
-      >
-        <div
-          className={cn('absolute inset-0', trackProps.className)}
-          style={{
-            background: background || innerBackground,
-            ...trackProps.style
-          }}
-          {...omit(trackProps, ['className', 'style'])}
-        />
-        <Interactive
-          className={cn(
-            'absolute inset-0 z-[1] cursor-crosshair',
-            interactiveProps.className
-          )}
-          onMove={handleChange}
-          onDown={handleChange}
-          {...omit(interactiveProps, ['className'])}
-        >
-          {showPointer && (
-            <Pointer
-              {...pointerProps}
-              {...posProps}
-            />
-          )}
-        </Interactive>
-      </div>
+const Alpha = ({
+  hsva,
+  background,
+  trackProps = {},
+  interactiveProps = {},
+  pointerProps,
+  showPointer = true,
+  width,
+  height = 16,
+  direction = 'horizontal',
+  className,
+  style,
+  onChange,
+  ...other
+}: AlphaProps) => {
+  const handleChange = (offset: Interaction) => {
+    onChange?.(
+      { ...hsva, a: direction === 'horizontal' ? offset.left : offset.top },
+      offset
     );
-  }
-);
-Alpha.displayName = 'Alpha';
+  };
 
-// Hue
+  const colorTo = hsvaToHslaString(Object.assign({}, hsva, { a: 1 }));
+  const innerBackground = `linear-gradient(to ${
+    direction === 'horizontal' ? 'right' : 'bottom'
+  }, rgba(244, 67, 54, 0) 0%, ${colorTo} 100%)`;
+  const posProps: { left?: string; top?: string } = {};
+  if (direction === 'horizontal') {
+    posProps.left = `${hsva.a * 100}%`;
+  } else {
+    posProps.top = `${hsva.a * 100}%`;
+  }
+
+  return (
+    <div
+      className={cn('relative bg-white', className)}
+      style={{
+        background:
+          'url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAMUlEQVQ4T2NkYGAQYcAP3uCTZhw1gGGYhAGBZIA/nYDCgBDAm9BGDWAAJyRCgLaBCAAgXwixzAS0pgAAAABJRU5ErkJggg==) left center',
+        ...{ width, height },
+        ...style
+      }}
+      {...other}
+    >
+      <div
+        className={cn('absolute inset-0', trackProps.className)}
+        style={{
+          background: background || innerBackground,
+          ...trackProps.style
+        }}
+        {...omit(trackProps, ['className', 'style'])}
+      />
+      <Interactive
+        className={cn(
+          'absolute inset-0 z-1 cursor-crosshair',
+          interactiveProps.className
+        )}
+        onMove={handleChange}
+        onDown={handleChange}
+        {...omit(interactiveProps, ['className'])}
+      >
+        {showPointer && (
+          <Pointer
+            {...pointerProps}
+            {...posProps}
+          />
+        )}
+      </Interactive>
+    </div>
+  );
+};
 
 type HueProps = Omit<AlphaProps, 'hsva' | 'onChange'> & {
   onChange?: (newHue: { h: number }) => void;
   hue?: number;
 };
-const Hue = React.forwardRef<HTMLDivElement, HueProps>(
-  ({ hue = 0, onChange, direction = 'horizontal', ...other }, ref) => {
-    return (
-      <Alpha
-        ref={ref}
-        direction={direction}
-        background={`linear-gradient(to ${
-          direction === 'horizontal' ? 'right' : 'bottom'
-        }, rgb(255, 0, 0) 0%, rgb(255, 255, 0) 17%, rgb(0, 255, 0) 33%, rgb(0, 255, 255) 50%, rgb(0, 0, 255) 67%, rgb(255, 0, 255) 83%, rgb(255, 0, 0) 100%)`}
-        hsva={{ h: hue, s: 100, v: 100, a: hue / 360 }}
-        onChange={(_, interaction) => {
-          onChange?.({
-            h:
-              direction === 'horizontal'
-                ? 360 * interaction.left
-                : 360 * interaction.top
-          });
-        }}
-        {...other}
-      />
-    );
-  }
-);
-Hue.displayName = 'Hue';
-
-// EyeDropper
+const Hue = ({
+  hue = 0,
+  onChange,
+  direction = 'horizontal',
+  ...other
+}: HueProps) => {
+  return (
+    <Alpha
+      direction={direction}
+      background={`linear-gradient(to ${
+        direction === 'horizontal' ? 'right' : 'bottom'
+      }, rgb(255, 0, 0) 0%, rgb(255, 255, 0) 17%, rgb(0, 255, 0) 33%, rgb(0, 255, 255) 50%, rgb(0, 0, 255) 67%, rgb(255, 0, 255) 83%, rgb(255, 0, 0) 100%)`}
+      hsva={{ h: hue, s: 100, v: 100, a: hue / 360 }}
+      onChange={(_, interaction) => {
+        onChange?.({
+          h:
+            direction === 'horizontal'
+              ? 360 * interaction.left
+              : 360 * interaction.top
+        });
+      }}
+      {...other}
+    />
+  );
+};
 
 const isEyeDropperSupported =
   typeof window !== 'undefined' && 'EyeDropper' in window;
@@ -625,7 +601,7 @@ function EyeDropper(props: EyeDropperProps): React.JSX.Element {
       type="button"
       variant="ghost"
       size="icon"
-      className="size-4 !bg-transparent text-muted-foreground hover:text-primary"
+      className="size-4 bg-transparent! text-muted-foreground hover:text-primary"
       onClick={handleClick}
     >
       <svg
@@ -641,8 +617,6 @@ function EyeDropper(props: EyeDropperProps): React.JSX.Element {
   );
 }
 
-// ChromeInput
-
 type ChromeInputProps = Omit<
   React.InputHTMLAttributes<HTMLInputElement>,
   'onChange'
@@ -654,63 +628,65 @@ type ChromeInputProps = Omit<
     value: string | number
   ) => void;
 };
-const ChromeInput = React.forwardRef<HTMLInputElement, ChromeInputProps>(
-  ({ label, value: initValue, onChange, onBlur, ...other }, ref) => {
-    const [value, setValue] = React.useState<string | number | undefined>(
-      initValue
-    );
-    const isFocus = React.useRef(false);
+const ChromeInput = ({
+  label,
+  value: initValue,
+  onChange,
+  onBlur,
+  ...other
+}: ChromeInputProps) => {
+  const [value, setValue] = React.useState<string | number | undefined>(
+    initValue
+  );
+  const isFocus = React.useRef(false);
 
-    React.useEffect(() => {
-      if (initValue !== value) {
-        if (!isFocus.current) {
-          setValue(initValue);
-        }
+  React.useEffect(() => {
+    if (initValue !== value) {
+      if (!isFocus.current) {
+        setValue(initValue);
       }
-      /* eslint-disable  react-hooks/exhaustive-deps */
-    }, [initValue]);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [initValue]);
 
-    const handleChange = (
-      e: React.FocusEvent<HTMLInputElement>,
-      valInit?: string
-    ) => {
-      const value = (valInit || e.target.value).trim().replace(/^#/, '');
-      if (isValidHex(value)) {
-        onChange?.(e, value);
-      }
-      const val = getNumberValue(value);
-      if (!isNaN(val)) {
-        onChange?.(e, val);
-      }
-      setValue(value);
-    };
+  const handleChange = (
+    e: React.FocusEvent<HTMLInputElement>,
+    valInit?: string
+  ) => {
+    const value = (valInit || e.target.value).trim().replace(/^#/, '');
+    if (isValidHex(value)) {
+      onChange?.(e, value);
+    }
+    const val = getNumberValue(value);
+    if (!isNaN(val)) {
+      onChange?.(e, val);
+    }
+    setValue(value);
+  };
 
-    const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
-      isFocus.current = false;
-      setValue(initValue);
-      onBlur?.(e);
-    };
+  const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    isFocus.current = false;
+    setValue(initValue);
+    onBlur?.(e);
+  };
 
-    return (
-      <div className="relative flex flex-col items-center gap-1.5 text-xs">
-        <input
-          ref={ref}
-          value={value}
-          onChange={handleChange}
-          onBlur={handleBlur}
-          autoComplete="off"
-          onFocus={() => (isFocus.current = true)}
-          className="w-full border p-1 text-center text-xs"
-          {...other}
-        />
-        {label && (
-          <span className="capitalize text-muted-foreground">{label}</span>
-        )}
-      </div>
-    );
-  }
-);
-ChromeInput.displayName = 'ChromeInput';
+  return (
+    <div className="relative flex flex-col items-center gap-1.5 text-xs">
+      <input
+        value={value}
+        onChange={handleChange}
+        onBlur={handleBlur}
+        autoComplete="off"
+        onFocus={() => (isFocus.current = true)}
+        className="w-full border p-1 text-center text-xs"
+        {...other}
+      />
+      {label && (
+        <span className="capitalize text-muted-foreground">{label}</span>
+      )}
+    </div>
+  );
+};
 
 type ChromeInputRGBAProps = Omit<
   React.HTMLAttributes<HTMLDivElement>,
@@ -723,87 +699,91 @@ type ChromeInputRGBAProps = Omit<
   aProps?: false | ChromeInputProps;
   onChange?: (color: ColorResult) => void;
 };
-const ChromeInputRGBA = React.forwardRef<HTMLDivElement, ChromeInputRGBAProps>(
-  ({ hsva, rProps, gProps, bProps, aProps, onChange, ...other }, ref) => {
-    const rgba = (hsva ? hsvaToRgba(hsva) : {}) as RGBA;
-    function handleBlur(e: React.FocusEvent<HTMLInputElement>) {
-      const value = Number(e.target.value);
-      if (value && value > 255) {
+const ChromeInputRGBA = ({
+  hsva,
+  rProps,
+  gProps,
+  bProps,
+  aProps,
+  onChange,
+  ...other
+}: ChromeInputRGBAProps) => {
+  const rgba = (hsva ? hsvaToRgba(hsva) : {}) as RGBA;
+  function handleBlur(e: React.FocusEvent<HTMLInputElement>) {
+    const value = Number(e.target.value);
+    if (value && value > 255) {
+      e.target.value = '255';
+    }
+    if (value && value < 0) {
+      e.target.value = '0';
+    }
+  }
+  const handleChange = (
+    value: string | number,
+    type: 'r' | 'g' | 'b' | 'a',
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    if (typeof value === 'number') {
+      if (type === 'a') {
+        if (value < 0) value = 0;
+        if (value > 100) value = 100;
+        onChange?.(parseColor(rgbaToHsva({ ...rgba, a: value / 100 })));
+      }
+      if (value > 255) {
+        value = 255;
         e.target.value = '255';
       }
-      if (value && value < 0) {
+      if (value < 0) {
+        value = 0;
         e.target.value = '0';
       }
-    }
-    const handleChange = (
-      value: string | number,
-      type: 'r' | 'g' | 'b' | 'a',
-      e: React.ChangeEvent<HTMLInputElement>
-    ) => {
-      if (typeof value === 'number') {
-        if (type === 'a') {
-          if (value < 0) value = 0;
-          if (value > 100) value = 100;
-          onChange?.(parseColor(rgbaToHsva({ ...rgba, a: value / 100 })));
-        }
-        if (value > 255) {
-          value = 255;
-          e.target.value = '255';
-        }
-        if (value < 0) {
-          value = 0;
-          e.target.value = '0';
-        }
-        if (type === 'r') {
-          onChange?.(parseColor(rgbaToHsva({ ...rgba, r: value })));
-        }
-        if (type === 'g') {
-          onChange?.(parseColor(rgbaToHsva({ ...rgba, g: value })));
-        }
-        if (type === 'b') {
-          onChange?.(parseColor(rgbaToHsva({ ...rgba, b: value })));
-        }
+      if (type === 'r') {
+        onChange?.(parseColor(rgbaToHsva({ ...rgba, r: value })));
       }
-    };
-    return (
-      <div
-        ref={ref}
-        className="flex flex-row items-center gap-1"
-        {...other}
-      >
-        <ChromeInput
-          label="R"
-          value={rgba.r || 0}
-          onBlur={handleBlur}
-          onChange={(e, val) => handleChange(val, 'r', e)}
-          {...rProps}
-        />
-        <ChromeInput
-          label="G"
-          value={rgba.g || 0}
-          onBlur={handleBlur}
-          onChange={(e, val) => handleChange(val, 'g', e)}
-          {...gProps}
-        />
-        <ChromeInput
-          label="B"
-          value={rgba.b || 0}
-          onBlur={handleBlur}
-          onChange={(e, val) => handleChange(val, 'b', e)}
-          {...bProps}
-        />
-        <ChromeInput
-          label="A"
-          value={rgba.a ? parseInt(String(rgba.a * 100), 10) : 0}
-          onBlur={handleBlur}
-          onChange={(e, val) => handleChange(val, 'a', e)}
-          {...aProps}
-        />
-      </div>
-    );
-  }
-);
-ChromeInputRGBA.displayName = 'ChromeInputRGBA';
+      if (type === 'g') {
+        onChange?.(parseColor(rgbaToHsva({ ...rgba, g: value })));
+      }
+      if (type === 'b') {
+        onChange?.(parseColor(rgbaToHsva({ ...rgba, b: value })));
+      }
+    }
+  };
+  return (
+    <div
+      className="flex flex-row items-center gap-1"
+      {...other}
+    >
+      <ChromeInput
+        label="R"
+        value={rgba.r || 0}
+        onBlur={handleBlur}
+        onChange={(e, val) => handleChange(val, 'r', e)}
+        {...rProps}
+      />
+      <ChromeInput
+        label="G"
+        value={rgba.g || 0}
+        onBlur={handleBlur}
+        onChange={(e, val) => handleChange(val, 'g', e)}
+        {...gProps}
+      />
+      <ChromeInput
+        label="B"
+        value={rgba.b || 0}
+        onBlur={handleBlur}
+        onChange={(e, val) => handleChange(val, 'b', e)}
+        {...bProps}
+      />
+      <ChromeInput
+        label="A"
+        value={rgba.a ? parseInt(String(rgba.a * 100), 10) : 0}
+        onBlur={handleBlur}
+        onChange={(e, val) => handleChange(val, 'a', e)}
+        {...aProps}
+      />
+    </div>
+  );
+};
 
 type ChromeInputHSLAProps = Omit<
   ChromeInputRGBAProps,
@@ -814,73 +794,75 @@ type ChromeInputHSLAProps = Omit<
   lProps?: ChromeInputRGBAProps['gProps'];
   aProps?: ChromeInputRGBAProps['aProps'];
 };
-const ChromeInputHSLA = React.forwardRef<HTMLDivElement, ChromeInputHSLAProps>(
-  ({ hsva, hProps, sProps, lProps, aProps, onChange, ...other }, ref) => {
-    const hsla = (hsva ? hsvaToHsla(hsva) : { h: 0, s: 0, l: 0, a: 0 }) as HSLA;
-    const handleChange = (
-      value: string | number,
-      type: 'h' | 's' | 'l' | 'a',
-      _e: React.ChangeEvent<HTMLInputElement>
-    ) => {
-      if (typeof value === 'number') {
-        if (type === 'h') {
-          if (value < 0) value = 0;
-          if (value > 360) value = 360;
-          onChange?.(parseColor(hslaToHsva({ ...hsla, h: value })));
-        }
-        if (type === 's') {
-          if (value < 0) value = 0;
-          if (value > 100) value = 100;
-          onChange?.(parseColor(hslaToHsva({ ...hsla, s: value })));
-        }
-        if (type === 'l') {
-          if (value < 0) value = 0;
-          if (value > 100) value = 100;
-          onChange?.(parseColor(hslaToHsva({ ...hsla, l: value })));
-        }
-        if (type === 'a') {
-          if (value < 0) value = 0;
-          if (value > 1) value = 1;
-          onChange?.(parseColor(hslaToHsva({ ...hsla, a: value })));
-        }
+const ChromeInputHSLA = ({
+  hsva,
+  hProps,
+  sProps,
+  lProps,
+  aProps,
+  onChange,
+  ...other
+}: ChromeInputHSLAProps) => {
+  const hsla = (hsva ? hsvaToHsla(hsva) : { h: 0, s: 0, l: 0, a: 0 }) as HSLA;
+  const handleChange = (
+    value: string | number,
+    type: 'h' | 's' | 'l' | 'a',
+    _e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    if (typeof value === 'number') {
+      if (type === 'h') {
+        if (value < 0) value = 0;
+        if (value > 360) value = 360;
+        onChange?.(parseColor(hslaToHsva({ ...hsla, h: value })));
       }
-    };
-    return (
-      <ChromeInputRGBA
-        ref={ref}
-        hsva={hsva}
-        rProps={{
-          label: 'H',
-          value: Math.round(hsla.h),
-          ...hProps,
-          onChange: (e, val) => handleChange(val, 'h', e)
-        }}
-        gProps={{
-          label: 'S',
-          value: `${Math.round(hsla.s)}%`,
-          ...sProps,
-          onChange: (e, val) => handleChange(val, 's', e)
-        }}
-        bProps={{
-          label: 'L',
-          value: `${Math.round(hsla.l)}%`,
-          ...lProps,
-          onChange: (e, val) => handleChange(val, 'l', e)
-        }}
-        aProps={{
-          label: 'A',
-          value: Math.round(hsla.a * 100) / 100,
-          ...aProps,
-          onChange: (e, val) => handleChange(val, 'a', e)
-        }}
-        {...other}
-      />
-    );
-  }
-);
-ChromeInputHSLA.displayName = 'ChromeInputInputHSLA';
-
-// Chrome
+      if (type === 's') {
+        if (value < 0) value = 0;
+        if (value > 100) value = 100;
+        onChange?.(parseColor(hslaToHsva({ ...hsla, s: value })));
+      }
+      if (type === 'l') {
+        if (value < 0) value = 0;
+        if (value > 100) value = 100;
+        onChange?.(parseColor(hslaToHsva({ ...hsla, l: value })));
+      }
+      if (type === 'a') {
+        if (value < 0) value = 0;
+        if (value > 1) value = 1;
+        onChange?.(parseColor(hslaToHsva({ ...hsla, a: value })));
+      }
+    }
+  };
+  return (
+    <ChromeInputRGBA
+      hsva={hsva}
+      rProps={{
+        label: 'H',
+        value: Math.round(hsla.h),
+        ...hProps,
+        onChange: (e, val) => handleChange(val, 'h', e)
+      }}
+      gProps={{
+        label: 'S',
+        value: `${Math.round(hsla.s)}%`,
+        ...sProps,
+        onChange: (e, val) => handleChange(val, 's', e)
+      }}
+      bProps={{
+        label: 'L',
+        value: `${Math.round(hsla.l)}%`,
+        ...lProps,
+        onChange: (e, val) => handleChange(val, 'l', e)
+      }}
+      aProps={{
+        label: 'A',
+        value: Math.round(hsla.a * 100) / 100,
+        ...aProps,
+        onChange: (e, val) => handleChange(val, 'a', e)
+      }}
+      {...other}
+    />
+  );
+};
 
 enum ChromeInputType {
   HEXA = 'hexa',
@@ -900,153 +882,143 @@ type ChromeProps = Omit<
   showHue?: boolean;
   showAlpha?: boolean;
 };
-const Chrome = React.forwardRef<HTMLDivElement, ChromeProps>(
-  (
-    {
-      color,
-      showInputs = true,
-      showEyeDropper = true,
-      showColorPreview = true,
-      showHue = true,
-      showAlpha = true,
-      inputType = ChromeInputType.HEXA,
-      onChange,
-      className,
-      ...other
-    },
-    ref
-  ) => {
-    const hsva = (
-      typeof color === 'string' && isValidHex(color)
-        ? hexToHsva(color)
-        : color || { h: 0, s: 0, l: 0, a: 0 }
-    ) as HSVA;
-    const handleChange = (hsv: HSVA) => onChange?.(parseColor(hsv));
-    const [type, setType] = React.useState(inputType);
-    const handleClick = () => {
-      switch (type) {
-        case ChromeInputType.RGBA:
-          setType(ChromeInputType.HSLA);
-          break;
-        case ChromeInputType.HSLA:
-          setType(ChromeInputType.HEXA);
-          break;
-        case ChromeInputType.HEXA:
-          setType(ChromeInputType.RGBA);
-          break;
-      }
-    };
-    const handleClickColor = (hex: string) => {
-      const result = hexToHsva(hex);
-      handleChange({ ...result });
-    };
-    return (
-      <div
-        ref={ref}
-        className={cn('flex w-60 flex-col', className)}
-        {...other}
-      >
-        <Saturation
-          hsva={hsva}
-          onChange={(newColor) => {
-            handleChange({ ...hsva, ...newColor, a: hsva.a });
-          }}
-        />
-        <div className="flex flex-row items-center gap-2.5 p-4">
-          {isEyeDropperSupported && showEyeDropper && (
-            <EyeDropper onPickColor={handleClickColor} />
-          )}
-          {showColorPreview && (
-            <Alpha
-              width={28}
-              height={28}
-              hsva={hsva}
-              className="rounded-full"
-              trackProps={{ style: { background: 'transparent' } }}
-              interactiveProps={{
-                className:
-                  'rounded-full shadow-[inset_0_0_1px_rgba(0,0,0,0.25)]',
-                style: { background: hsvaToRgbaString(hsva) }
+const Chrome = ({
+  color,
+  showInputs = true,
+  showEyeDropper = true,
+  showColorPreview = true,
+  showHue = true,
+  showAlpha = true,
+  inputType = ChromeInputType.HEXA,
+  onChange,
+  className,
+  ...other
+}: ChromeProps) => {
+  const hsva = (
+    typeof color === 'string' && isValidHex(color)
+      ? hexToHsva(color)
+      : color || { h: 0, s: 0, l: 0, a: 0 }
+  ) as HSVA;
+  const handleChange = (hsv: HSVA) => onChange?.(parseColor(hsv));
+  const [type, setType] = React.useState(inputType);
+  const handleClick = () => {
+    switch (type) {
+      case ChromeInputType.RGBA:
+        setType(ChromeInputType.HSLA);
+        break;
+      case ChromeInputType.HSLA:
+        setType(ChromeInputType.HEXA);
+        break;
+      case ChromeInputType.HEXA:
+        setType(ChromeInputType.RGBA);
+        break;
+    }
+  };
+  const handleClickColor = (hex: string) => {
+    const result = hexToHsva(hex);
+    handleChange({ ...result });
+  };
+  return (
+    <div
+      className={cn('flex w-60 flex-col', className)}
+      {...other}
+    >
+      <Saturation
+        hsva={hsva}
+        onChange={(newColor) => {
+          handleChange({ ...hsva, ...newColor, a: hsva.a });
+        }}
+      />
+      <div className="flex flex-row items-center gap-2.5 p-4">
+        {isEyeDropperSupported && showEyeDropper && (
+          <EyeDropper onPickColor={handleClickColor} />
+        )}
+        {showColorPreview && (
+          <Alpha
+            width={28}
+            height={28}
+            hsva={hsva}
+            className="rounded-full"
+            trackProps={{ style: { background: 'transparent' } }}
+            interactiveProps={{
+              className: 'rounded-full shadow-[inset_0_0_1px_rgba(0,0,0,0.25)]',
+              style: { background: hsvaToRgbaString(hsva) }
+            }}
+            showPointer={false}
+          />
+        )}
+        <div className="flex-1">
+          {showHue && (
+            <Hue
+              hue={hsva.h}
+              className="h-3 w-full"
+              pointerProps={{ className: 'cursor-ew-resize' }}
+              trackProps={{ className: 'rounded-xs' }}
+              onChange={(newHue) => {
+                handleChange({ ...hsva, ...newHue });
               }}
-              showPointer={false}
             />
           )}
-          <div className="flex-1">
-            {showHue && (
-              <Hue
-                hue={hsva.h}
-                className="h-3 w-full"
-                pointerProps={{ className: 'cursor-ew-resize' }}
-                trackProps={{ className: 'rounded-xs' }}
-                onChange={(newHue) => {
-                  handleChange({ ...hsva, ...newHue });
-                }}
-              />
-            )}
-            {showAlpha && (
-              <Alpha
-                hsva={hsva}
-                className="mt-1.5 h-3 w-full"
-                pointerProps={{ className: 'cursor-ew-resize' }}
-                trackProps={{ className: 'rounded-xs' }}
-                onChange={(newAlpha) => {
-                  handleChange({ ...hsva, ...newAlpha });
-                }}
-              />
-            )}
-          </div>
+          {showAlpha && (
+            <Alpha
+              hsva={hsva}
+              className="mt-1.5 h-3 w-full"
+              pointerProps={{ className: 'cursor-ew-resize' }}
+              trackProps={{ className: 'rounded-xs' }}
+              onChange={(newAlpha) => {
+                handleChange({ ...hsva, ...newAlpha });
+              }}
+            />
+          )}
         </div>
-        {showInputs && (
-          <div className="flex select-none flex-row items-start gap-1 px-4 pb-4">
-            <div className="flex-1">
-              {type == ChromeInputType.RGBA && (
-                <ChromeInputRGBA
-                  hsva={hsva}
-                  onChange={(result) => handleChange(result.hsva)}
-                />
-              )}
-              {type === ChromeInputType.HEXA && (
-                <ChromeInput
-                  label="HEX"
-                  value={
-                    hsva.a > 0 && hsva.a < 1
-                      ? hsvaToHexa(hsva).toLocaleUpperCase()
-                      : hsvaToHex(hsva).toLocaleUpperCase()
-                  }
-                  onChange={(_, value) => {
-                    if (typeof value === 'string') {
-                      handleChange(
-                        hexToHsva(/^#/.test(value) ? value : `#${value}`)
-                      );
-                    }
-                  }}
-                />
-              )}
-              {type === ChromeInputType.HSLA && (
-                <ChromeInputHSLA
-                  hsva={hsva}
-                  onChange={(result) => handleChange(result.hsva)}
-                />
-              )}
-            </div>
-            <Button
-              type="button"
-              variant="ghost"
-              size="icon"
-              className="size-6 cursor-pointer rounded transition-colors duration-300"
-              onClick={handleClick}
-            >
-              <ChevronsUpDownIcon className="size-4 shrink-0" />
-            </Button>
-          </div>
-        )}
       </div>
-    );
-  }
-);
-Chrome.displayName = 'Chrome';
-
-// ColorPicker
+      {showInputs && (
+        <div className="flex select-none flex-row items-start gap-1 px-4 pb-4">
+          <div className="flex-1">
+            {type == ChromeInputType.RGBA && (
+              <ChromeInputRGBA
+                hsva={hsva}
+                onChange={(result) => handleChange(result.hsva)}
+              />
+            )}
+            {type === ChromeInputType.HEXA && (
+              <ChromeInput
+                label="HEX"
+                value={
+                  hsva.a > 0 && hsva.a < 1
+                    ? hsvaToHexa(hsva).toLocaleUpperCase()
+                    : hsvaToHex(hsva).toLocaleUpperCase()
+                }
+                onChange={(_, value) => {
+                  if (typeof value === 'string') {
+                    handleChange(
+                      hexToHsva(/^#/.test(value) ? value : `#${value}`)
+                    );
+                  }
+                }}
+              />
+            )}
+            {type === ChromeInputType.HSLA && (
+              <ChromeInputHSLA
+                hsva={hsva}
+                onChange={(result) => handleChange(result.hsva)}
+              />
+            )}
+          </div>
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon"
+            className="size-6 cursor-pointer rounded-sm transition-colors duration-300"
+            onClick={handleClick}
+          >
+            <ChevronsUpDownIcon className="size-4 shrink-0" />
+          </Button>
+        </div>
+      )}
+    </div>
+  );
+};
 
 export type ColorPickerProps = Omit<ButtonProps, 'value' | 'onChange'> & {
   value?: string;
@@ -1078,7 +1050,7 @@ function ColorPicker({
           {...other}
         >
           <div
-            className="size-4 rounded border"
+            className="size-4 rounded-sm border"
             style={{
               backgroundColor: isValidHex(value) ? value : DEFAULT_COLOR
             }}
@@ -1102,6 +1074,5 @@ function ColorPicker({
     </Popover>
   );
 }
-ColorPicker.displayName = 'ColorPicker';
 
 export { ColorPicker };

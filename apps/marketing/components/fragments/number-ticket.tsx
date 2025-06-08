@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { useInView, useMotionValue, useSpring } from 'framer-motion';
+import { useInView, useMotionValue, useSpring } from 'motion/react';
 
 import { cn } from '@workspace/ui/lib/utils';
 

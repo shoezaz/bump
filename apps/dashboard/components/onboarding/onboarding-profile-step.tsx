@@ -111,7 +111,7 @@ export function OnboardingProfileStep({
                 <Button
                   variant="outline"
                   size="icon"
-                  className="absolute -bottom-1 -right-1 z-10 size-8 rounded-full bg-background !opacity-100"
+                  className="absolute -bottom-1 -right-1 z-10 size-8 rounded-full bg-background opacity-100!"
                   disabled={loading}
                   onClick={handleRemoveImage}
                 >

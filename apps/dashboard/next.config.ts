@@ -18,24 +18,6 @@ const INTERNAL_PACKAGES = [
   '@workspace/webhooks'
 ];
 
-const svgLoader = {
-  loader: '@svgr/webpack',
-  options: {
-    svgoConfig: {
-      plugins: [
-        {
-          name: 'preset-default',
-          params: {
-            overrides: {
-              removeViewBox: false // Preserve the viewBox attribute
-            }
-          }
-        }
-      ]
-    }
-  }
-};
-
 const nextConfig: NextConfig = {
   /** Enables hot reloading for local packages without a build step */
   transpilePackages: INTERNAL_PACKAGES,
@@ -49,13 +31,31 @@ const nextConfig: NextConfig = {
       '@radix-ui/react-select',
       'date-fns',
       ...INTERNAL_PACKAGES
-    ],
-    turbo: {
-      rules: {
-        '*.svg': {
-          loaders: [svgLoader],
-          as: '*.js'
-        }
+    ]
+  },
+  turbopack: {
+    rules: {
+      '*.svg': {
+        loaders: [
+          {
+            loader: '@svgr/webpack',
+            options: {
+              svgoConfig: {
+                plugins: [
+                  {
+                    name: 'preset-default',
+                    params: {
+                      overrides: {
+                        removeViewBox: false // Preserve the viewBox attribute
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        ],
+        as: '*.js'
       }
     }
   },
@@ -108,13 +108,6 @@ const nextConfig: NextConfig = {
         permanent: false
       }
     ];
-  },
-  webpack(config) {
-    config.module.rules.push({
-      test: /\.svg$/i,
-      use: [svgLoader]
-    });
-    return config;
   }
 };
 
