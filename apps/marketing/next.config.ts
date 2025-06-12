@@ -21,9 +21,6 @@ const nextConfig: NextConfig = {
     optimizePackageImports: [
       'recharts',
       'lucide-react',
-      '@radix-ui/react-icons',
-      '@radix-ui/react-avatar',
-      '@radix-ui/react-select',
       'date-fns',
       ...INTERNAL_PACKAGES
     ]

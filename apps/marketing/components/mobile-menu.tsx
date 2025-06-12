@@ -14,8 +14,8 @@ import {
   CollapsibleTrigger
 } from '@workspace/ui/components/collapsible';
 import { Logo } from '@workspace/ui/components/logo';
+import { Portal } from '@workspace/ui/components/portal';
 import { ThemeSwitcher } from '@workspace/ui/components/theme-switcher';
-import { Portal } from '@workspace/ui/lib/portal';
 import { RemoveScroll } from '@workspace/ui/lib/remove-scroll';
 import { cn } from '@workspace/ui/lib/utils';
 

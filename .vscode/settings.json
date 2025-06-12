@@ -9,7 +9,7 @@
     "**/.next": true
   },
   "typescript.preferences.autoImportSpecifierExcludeRegexes": [
-    "@radix-ui",
+    "radix-ui",
     "next/dist",
     "next/document",
     "next/head",

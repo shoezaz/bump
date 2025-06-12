@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import * as CollapsiblePrimitive from '@radix-ui/react-collapsible';
+import { Collapsible as CollapsiblePrimitive } from 'radix-ui';
 
 export type CollapsibleElement = React.ComponentRef<
   typeof CollapsiblePrimitive.Root

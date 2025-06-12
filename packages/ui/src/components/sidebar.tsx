@@ -2,8 +2,8 @@
 
 import * as React from 'react';
 import { usePathname } from 'next/navigation';
-import { Slot } from '@radix-ui/react-slot';
 import { cva, VariantProps } from 'class-variance-authority';
+import { Slot as SlotPrimitive } from 'radix-ui';
 
 import { useMediaQuery } from '../hooks/use-media-query';
 import { cn } from '../lib/utils';
@@ -695,7 +695,7 @@ function SidebarGroupLabel({
   asChild = false,
   ...props
 }: SidebarGroupLabelProps): React.JSX.Element {
-  const Comp = asChild ? Slot : 'div';
+  const Comp = asChild ? SlotPrimitive.Slot : 'div';
   return (
     <Comp
       data-slot="sidebar-group-label"
@@ -719,7 +719,7 @@ function SidebarGroupAction({
   asChild = false,
   ...props
 }: SidebarGroupActionProps): React.JSX.Element {
-  const Comp = asChild ? Slot : 'button';
+  const Comp = asChild ? SlotPrimitive.Slot : 'button';
   return (
     <Comp
       data-slot="sidebar-group-action"
@@ -821,7 +821,7 @@ function SidebarMenuButton({
   className,
   ...props
 }: SidebarMenuButtonProps): React.JSX.Element {
-  const Comp = asChild ? Slot : 'button';
+  const Comp = asChild ? SlotPrimitive.Slot : 'button';
   const { isMobile, state } = useSidebar();
 
   const button = (
@@ -869,7 +869,7 @@ function SidebarMenuAction({
   showOnHover = false,
   ...props
 }: SidebarMenuActionProps): React.JSX.Element {
-  const Comp = asChild ? Slot : 'button';
+  const Comp = asChild ? SlotPrimitive.Slot : 'button';
   return (
     <Comp
       data-slot="sidebar-menu-action"
@@ -1004,7 +1004,7 @@ function SidebarMenuSubButton({
   className,
   ...props
 }: SidebarMenuSubButtonProps): React.JSX.Element {
-  const Comp = asChild ? Slot : 'a';
+  const Comp = asChild ? SlotPrimitive.Slot : 'a';
   return (
     <Comp
       data-slot="sidebar-menu-sub-button"
