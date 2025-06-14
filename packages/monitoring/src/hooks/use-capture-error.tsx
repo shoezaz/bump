@@ -4,10 +4,7 @@ import * as React from 'react';
 
 import { useMonitoring } from './use-monitoring';
 
-export function useCaptureError<Extra extends object>(
-  error: unknown,
-  _extra?: Extra
-): void {
+export function useCaptureError(error: unknown): void {
   const provider = useMonitoring();
 
   React.useEffect(() => {

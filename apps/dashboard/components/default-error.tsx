@@ -13,10 +13,11 @@ export type DefaultErrorProps = {
 };
 
 export function DefaultError({
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   error: { digest, ...error },
   reset
 }: DefaultErrorProps): React.JSX.Element {
-  useCaptureError(error, { digest });
+  useCaptureError(error);
   const handleReset = (): void => {
     reset?.();
   };
