@@ -12,19 +12,32 @@ export const deleteContacts = authOrganizationActionClient
   .metadata({ actionName: 'deleteContacts' })
   .schema(deleteContactsSchema)
   .action(async ({ parsedInput, ctx }) => {
-    await prisma.contact.deleteMany({
-      where: {
-        id: {
-          in: parsedInput.ids
-        },
-        organizationId: ctx.organization.id
-      }
+    const contactIdsToDelete = parsedInput.ids;
+    const organizationId = ctx.organization.id;
+
+    await prisma.$transaction(async (tx) => {
+      await tx.contactImage.deleteMany({
+        where: {
+          contactId: {
+            in: contactIdsToDelete
+          }
+        }
+      });
+
+      await tx.contact.deleteMany({
+        where: {
+          id: {
+            in: contactIdsToDelete
+          },
+          organizationId: organizationId
+        }
+      });
     });
 
     revalidateTag(
       Caching.createOrganizationTag(
         OrganizationCacheKey.Contacts,
-        ctx.organization.id
+        organizationId
       )
     );
 
@@ -38,7 +51,7 @@ export const deleteContacts = authOrganizationActionClient
       revalidateTag(
         Caching.createOrganizationTag(
           OrganizationCacheKey.Favorites,
-          ctx.organization.id,
+          organizationId,
           membership.userId
         )
       );
