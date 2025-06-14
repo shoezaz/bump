@@ -67,7 +67,7 @@ class PostHogClientAnalyticsProvider implements AnalyticsProvider {
         persistence: 'localStorage+cookie',
         person_profiles: 'always',
         capture_pageview: false,
-        capture_pageleave: true,
+        capture_pageleave: true
       });
       this.clientPostHog = posthog;
     }

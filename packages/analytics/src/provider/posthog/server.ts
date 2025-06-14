@@ -18,7 +18,7 @@ class PostHogServerAnalyticsProvider implements AnalyticsProvider {
     server.capture({
       event: '$identify',
       distinctId: userIdentifier,
-      properties: traits,
+      properties: traits
     });
   }
 
@@ -33,7 +33,7 @@ class PostHogServerAnalyticsProvider implements AnalyticsProvider {
     server.capture({
       event: '$pageview',
       distinctId: this.userId,
-      properties: { $current_url: url },
+      properties: { $current_url: url }
     });
   }
 
@@ -51,7 +51,7 @@ class PostHogServerAnalyticsProvider implements AnalyticsProvider {
     server.capture({
       event: eventName,
       distinctId: this.userId,
-      properties: eventProperties,
+      properties: eventProperties
     });
   }
 
@@ -86,7 +86,7 @@ class PostHogServerAnalyticsProvider implements AnalyticsProvider {
       this.serverPostHog = new PostHog(posthogKey, {
         host: posthogHost,
         flushAt: 1,
-        flushInterval: 0,
+        flushInterval: 0
       });
     }
     return this.serverPostHog;

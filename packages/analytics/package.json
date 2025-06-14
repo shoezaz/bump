@@ -5,8 +5,8 @@
   "type": "module",
   "scripts": {
     "clean": "git clean -xdf .cache .turbo build dist node_modules",
-    "format": "prettier --check \"**/*.{js,cjs,mjs,ts,tsx,mdx}\"",
-    "format:fix": "prettier --write \"**/*.{js,cjs,mjs,ts,tsx,mdx}\"",
+    "format": "prettier --check \"**/*.{js,cjs,mjs,ts,tsx,mdx}\" --ignore-path=\"../../.prettierignore\"",
+    "format:fix": "prettier --write \"**/*.{js,cjs,mjs,ts,tsx,mdx}\" --ignore-path=\"../../.prettierignore\"",
     "lint": "eslint . --max-warnings 0",
     "lint:fix": "eslint --fix .",
     "typecheck": "tsc --noEmit"
