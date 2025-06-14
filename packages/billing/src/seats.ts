@@ -17,7 +17,7 @@ export async function adjustSeats(organizationId: string): Promise<void> {
       items: {
         select: {
           id: true,
-          type: true
+          model: true
         }
       }
     }
@@ -27,7 +27,7 @@ export async function adjustSeats(organizationId: string): Promise<void> {
   }
 
   const subscriptionItems = subscription.items.filter(
-    (item) => item.type === PriceModel.PerSeat
+    (item) => item.model === PriceModel.PerSeat
   );
   if (!subscriptionItems.length) {
     return;
