@@ -8,6 +8,7 @@
   "search.exclude": {
     "**/.next": true
   },
+  "tailwindCSS.experimental.configFile": "packages/ui/src/styles/globals.css",
   "typescript.preferences.autoImportSpecifierExcludeRegexes": [
     "radix-ui",
     "next/dist",
