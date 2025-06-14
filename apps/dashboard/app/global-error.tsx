@@ -11,9 +11,10 @@ export type GlobalErrorProps = {
 };
 
 export default function GlobalError({
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   error: { digest, ...error }
 }: GlobalErrorProps): React.JSX.Element {
-  useCaptureError(error, { digest });
+  useCaptureError(error);
   return (
     <html>
       <body>

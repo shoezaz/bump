@@ -15,7 +15,7 @@ export default function GlobalError({
   error: { digest, ...error }
 }: GlobalErrorProps): React.JSX.Element {
   // We don't monitor the marketing app, but you can enable it if users report errors.
-  // useCaptureError(error, { digest });
+  // useCaptureError(error);
   return (
     <html>
       <body>

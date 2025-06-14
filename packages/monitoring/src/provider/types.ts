@@ -23,7 +23,7 @@ export type MonitoringProvider = {
     errorRequest: Readonly<ErrorRequest>,
     errorContext: Readonly<ErrorContext>
   ): void | Promise<void>;
-  captureError<Extra extends object>(error: unknown, extra?: Extra): void;
+  captureError(error: unknown): void;
   captureEvent<Extra extends object>(event: string, extra?: Extra): void;
   setUser<Info extends { id: string }>(user: Info): void;
 };

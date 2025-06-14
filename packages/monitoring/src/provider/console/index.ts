@@ -20,10 +20,7 @@ class ConsoleMonitoringProvider implements MonitoringProvider {
     });
   }
 
-  public captureError<Extra extends object>(
-    error: unknown,
-    _extra?: Extra
-  ): void {
+  public captureError(error: unknown): void {
     const errorMessage = error instanceof Error ? error.message : '';
     console.info('[Console Monitoring] Error occurred.', {
       error: errorMessage

@@ -11,13 +11,18 @@ export const MonitoringContext =
 export function MonitoringProvider(
   props: React.PropsWithChildren
 ): React.JSX.Element {
+  const providerValue = React.useMemo(() => MonitoringProviderImpl, []);
   return (
-    <MonitoringContext.Provider value={MonitoringProviderImpl}>
+    <MonitoringContext.Provider value={providerValue}>
       {props.children}
     </MonitoringContext.Provider>
   );
 }
 
 export function useMonitoring(): MonitoringProviderInterface {
-  return React.useContext(MonitoringContext);
+  const context = React.useContext(MonitoringContext);
+  if (!context) {
+    throw new Error('useMonitoring must be used within a MonitoringProvider');
+  }
+  return context;
 }
