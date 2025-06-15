@@ -22,7 +22,7 @@ import type {
 
 class StripeBillingProvider implements BillingProvider {
   public readonly providerId: ProviderId = 'stripe';
-  public readonly stripe: Stripe;
+  private stripe: Stripe | undefined;
 
   constructor() {
     for (const product of billingConfig.products) {
@@ -34,9 +34,15 @@ class StripeBillingProvider implements BillingProvider {
         }
       }
     }
-    this.stripe = new Stripe(keys().BILLING_STRIPE_SECRET_KEY!, {
-      apiVersion: '2025-05-28.basil'
-    });
+  }
+
+  public getStripe(): Stripe {
+    if (!this.stripe) {
+      this.stripe = new Stripe(keys().BILLING_STRIPE_SECRET_KEY!, {
+        apiVersion: '2025-05-28.basil'
+      });
+    }
+    return this.stripe;
   }
 
   // -------------------------- Session -------------------------- //
@@ -70,7 +76,7 @@ class StripeBillingProvider implements BillingProvider {
       trialDays = undefined;
     }
 
-    const session = await this.stripe.checkout.sessions.create({
+    const session = await this.getStripe().checkout.sessions.create({
       payment_method_types: ['card'],
       mode,
       allow_promotion_codes: params.enableDiscounts,
@@ -118,7 +124,7 @@ class StripeBillingProvider implements BillingProvider {
     returnUrl: string;
     customerId: string;
   }): Promise<Session> {
-    const session = await this.stripe.billingPortal.sessions.create({
+    const session = await this.getStripe().billingPortal.sessions.create({
       customer: params.customerId,
       return_url: params.returnUrl
     });
@@ -143,7 +149,7 @@ class StripeBillingProvider implements BillingProvider {
 
     while (hasMore) {
       const response: Stripe.ApiList<Stripe.Subscription> =
-        await this.stripe.subscriptions.list({
+        await this.getStripe().subscriptions.list({
           limit: 100,
           starting_after: startingAfter,
           customer: params.customerId
@@ -186,7 +192,7 @@ class StripeBillingProvider implements BillingProvider {
     subscriptionId: string;
     invoiceNow?: boolean;
   }): Promise<void> {
-    await this.stripe.subscriptions.cancel(params.subscriptionId, {
+    await this.getStripe().subscriptions.cancel(params.subscriptionId, {
       invoice_now: params.invoiceNow ?? true
     });
   }
@@ -196,7 +202,7 @@ class StripeBillingProvider implements BillingProvider {
     subscriptionItemId: string;
     quantity: number;
   }): Promise<void> {
-    await this.stripe.subscriptions.update(params.subscriptionId, {
+    await this.getStripe().subscriptions.update(params.subscriptionId, {
       items: [
         {
           id: params.subscriptionItemId,
@@ -217,7 +223,7 @@ class StripeBillingProvider implements BillingProvider {
 
     while (hasMore) {
       const response: Stripe.ApiList<Stripe.Checkout.Session> =
-        await this.stripe.checkout.sessions.list({
+        await this.getStripe().checkout.sessions.list({
           limit: 100,
           starting_after: startingAfter,
           customer: params.customerId,
@@ -230,7 +236,7 @@ class StripeBillingProvider implements BillingProvider {
         if (!organizationId) continue;
 
         const sessionWithLineItems =
-          await this.stripe.checkout.sessions.retrieve(session.id, {
+          await this.getStripe().checkout.sessions.retrieve(session.id, {
             expand: ['line_items']
           });
 
@@ -265,7 +271,7 @@ class StripeBillingProvider implements BillingProvider {
     eventName: string;
     quantity: number;
   }): Promise<void> {
-    await this.stripe.billing.meterEvents.create({
+    await this.getStripe().billing.meterEvents.create({
       event_name: params.eventName,
       payload: {
         value: params.quantity.toString(),
@@ -280,7 +286,7 @@ class StripeBillingProvider implements BillingProvider {
     startsAt: Date;
     endsAt: Date;
   }): Promise<number> {
-    const summaries = await this.stripe.billing.meters.listEventSummaries(
+    const summaries = await this.getStripe().billing.meters.listEventSummaries(
       params.meterId,
       {
         customer: params.customerId,
@@ -303,7 +309,7 @@ class StripeBillingProvider implements BillingProvider {
 
     while (hasMore) {
       const response: Stripe.ApiList<Stripe.Customer> =
-        await this.stripe.customers.list({
+        await this.getStripe().customers.list({
           limit: 100,
           starting_after: startingAfter
         });
@@ -330,7 +336,7 @@ class StripeBillingProvider implements BillingProvider {
     name: string;
     email: string;
   }): Promise<string> {
-    const customer = await this.stripe.customers.create({
+    const customer = await this.getStripe().customers.create({
       name: params.name,
       email: params.email,
       metadata: {
@@ -345,7 +351,7 @@ class StripeBillingProvider implements BillingProvider {
     customerId: string;
     name: string;
   }): Promise<void> {
-    await this.stripe.customers.update(params.customerId, {
+    await this.getStripe().customers.update(params.customerId, {
       name: params.name
     });
   }
@@ -354,7 +360,7 @@ class StripeBillingProvider implements BillingProvider {
     customerId: string;
     email: string;
   }): Promise<void> {
-    await this.stripe.customers.update(params.customerId, {
+    await this.getStripe().customers.update(params.customerId, {
       email: params.email
     });
   }
@@ -370,7 +376,7 @@ class StripeBillingProvider implements BillingProvider {
       country?: string;
     };
   }): Promise<void> {
-    await this.stripe.customers.update(params.customerId, {
+    await this.getStripe().customers.update(params.customerId, {
       address: {
         line1: params.address.line1,
         line2: params.address.line2,
@@ -383,13 +389,13 @@ class StripeBillingProvider implements BillingProvider {
   }
 
   public async deleteCustomer(params: { customerId: string }): Promise<void> {
-    await this.stripe.customers.del(params.customerId);
+    await this.getStripe().customers.del(params.customerId);
   }
 
   // -------------------------- Invoice -------------------------- //
 
   public async getInvoices(params: { customerId: string }): Promise<Invoice[]> {
-    const response = await this.stripe.invoices.list({
+    const response = await this.getStripe().invoices.list({
       customer: params.customerId
     });
 
@@ -419,7 +425,7 @@ class StripeBillingProvider implements BillingProvider {
       throw new Error('Missing stripe webhook secret');
     }
 
-    const event = await this.stripe.webhooks.constructEventAsync(
+    const event = await this.getStripe().webhooks.constructEventAsync(
       body,
       signature,
       webhookSecret
@@ -506,7 +512,7 @@ class StripeBillingProvider implements BillingProvider {
     if (isSubscription) {
       const subscriptionId = session.subscription as string;
       const subscription =
-        await this.stripe.subscriptions.retrieve(subscriptionId);
+        await this.getStripe().subscriptions.retrieve(subscriptionId);
       const hasItems =
         Array.isArray(subscription.items?.data) &&
         subscription.items.data.length > 0;
@@ -531,12 +537,13 @@ class StripeBillingProvider implements BillingProvider {
       return onCheckoutCompletedCallback(payload);
     } else {
       const sessionId = event.data.object.id;
-      const sessionWithLineItems = await this.stripe.checkout.sessions.retrieve(
-        event.data.object.id,
-        {
-          expand: ['line_items']
-        }
-      );
+      const sessionWithLineItems =
+        await this.getStripe().checkout.sessions.retrieve(
+          event.data.object.id,
+          {
+            expand: ['line_items']
+          }
+        );
 
       const lineItems = sessionWithLineItems.line_items?.data ?? [];
       const paymentStatus = sessionWithLineItems.payment_status;
