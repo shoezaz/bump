@@ -12,7 +12,7 @@ import { reorderFavoritesSchema } from '~/schemas/favorites/reorder-favorites-sc
 
 export const reorderFavorites = authOrganizationActionClient
   .metadata({ actionName: 'reorderFavorites' })
-  .schema(reorderFavoritesSchema)
+  .inputSchema(reorderFavoritesSchema)
   .action(async ({ parsedInput, ctx }) => {
     const favorites = await prisma.favorite.findMany({
       where: {

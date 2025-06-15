@@ -12,7 +12,7 @@ import { resetPasswordSchema } from '~/schemas/auth/reset-password-schema';
 
 export const resetPassword = actionClient
   .metadata({ actionName: 'resetPassword' })
-  .schema(resetPasswordSchema)
+  .inputSchema(resetPasswordSchema)
   .action(async ({ parsedInput }) => {
     const maybeRequest = await prisma.resetPasswordRequest.findUnique({
       where: { id: parsedInput.requestId }

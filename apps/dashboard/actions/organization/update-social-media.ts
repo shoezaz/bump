@@ -10,7 +10,7 @@ import { updateSocialMediaSchema } from '~/schemas/organization/update-social-me
 
 export const updateSocialMedia = authOrganizationActionClient
   .metadata({ actionName: 'updateSocialMedia' })
-  .schema(updateSocialMediaSchema)
+  .inputSchema(updateSocialMediaSchema)
   .action(async ({ parsedInput, ctx }) => {
     await prisma.organization.update({
       where: { id: ctx.organization.id },

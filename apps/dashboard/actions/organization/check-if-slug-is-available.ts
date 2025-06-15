@@ -7,7 +7,7 @@ import { checkIfSlugIsAvailableSchema } from '~/schemas/organization/check-if-sl
 
 export const checkIfSlugIsAvailable = authActionClient
   .metadata({ actionName: 'checkIfSlugIsAvailable' })
-  .schema(checkIfSlugIsAvailableSchema)
+  .inputSchema(checkIfSlugIsAvailableSchema)
   .action(async ({ parsedInput }) => {
     const count = await prisma.organization.count({
       where: { slug: parsedInput.slug }

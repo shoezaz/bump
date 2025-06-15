@@ -10,7 +10,7 @@ import { addContactNoteSchema } from '~/schemas/contacts/add-contact-note-schema
 
 export const addContactNote = authOrganizationActionClient
   .metadata({ actionName: 'addContactNote' })
-  .schema(addContactNoteSchema)
+  .inputSchema(addContactNoteSchema)
   .action(async ({ parsedInput, ctx }) => {
     await prisma.contactNote.create({
       data: {

@@ -7,7 +7,7 @@ import { checkIfCanBeInvitedSchema } from '~/schemas/invitations/check-if-can-be
 
 export const checkIfCanBeInvited = authOrganizationActionClient
   .metadata({ actionName: 'checkIfCanBeInvited' })
-  .schema(checkIfCanBeInvitedSchema)
+  .inputSchema(checkIfCanBeInvitedSchema)
   .action(async ({ parsedInput, ctx }) => {
     const normalizedEmail = parsedInput.email.toLowerCase();
     const canInvite = await checkIfCanInvite(

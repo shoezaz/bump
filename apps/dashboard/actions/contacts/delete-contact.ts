@@ -11,7 +11,7 @@ import { deleteContactSchema } from '~/schemas/contacts/delete-contact-schema';
 
 export const deleteContact = authOrganizationActionClient
   .metadata({ actionName: 'deleteContact' })
-  .schema(deleteContactSchema)
+  .inputSchema(deleteContactSchema)
   .action(async ({ parsedInput, ctx }) => {
     const count = await prisma.contact.count({
       where: {

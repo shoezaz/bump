@@ -13,7 +13,7 @@ import { resendInvitationSchema } from '~/schemas/invitations/resend-invitation-
 
 export const resendInvitation = authOrganizationActionClient
   .metadata({ actionName: 'resendInvitation' })
-  .schema(resendInvitationSchema)
+  .inputSchema(resendInvitationSchema)
   .action(async ({ parsedInput, ctx }) => {
     const invitation = await prisma.invitation.findFirst({
       where: {

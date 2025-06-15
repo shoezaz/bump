@@ -12,7 +12,7 @@ import { submitTotpCodeSchema } from '~/schemas/auth/submit-totp-code-schema';
 
 export const submitTotpCode = actionClient
   .metadata({ actionName: 'submitTotpCode' })
-  .schema(submitTotpCodeSchema)
+  .inputSchema(submitTotpCodeSchema)
   .action(async ({ parsedInput }) => {
     const redirectTo = await getRedirectAfterSignIn();
 

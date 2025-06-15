@@ -10,7 +10,7 @@ import { updateTransactionalEmailsSchema } from '~/schemas/account/update-transa
 
 export const updateTransactionalEmails = authActionClient
   .metadata({ actionName: 'updateTransactionalEmails' })
-  .schema(updateTransactionalEmailsSchema)
+  .inputSchema(updateTransactionalEmailsSchema)
   .action(async ({ parsedInput, ctx }) => {
     await prisma.user.update({
       where: { id: ctx.session.user.id },

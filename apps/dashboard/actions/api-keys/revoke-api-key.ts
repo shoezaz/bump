@@ -11,7 +11,7 @@ import { revokeApiKeySchema } from '~/schemas/api-keys/revoke-api-key-schema';
 
 export const revokeApiKey = authOrganizationActionClient
   .metadata({ actionName: 'revokeApiKey' })
-  .schema(revokeApiKeySchema)
+  .inputSchema(revokeApiKeySchema)
   .action(async ({ parsedInput, ctx }) => {
     const count = await prisma.apiKey.count({
       where: {

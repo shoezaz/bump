@@ -15,7 +15,7 @@ import { verifyEmailWithTokenSchema } from '~/schemas/auth/verify-email-with-tok
 
 export const verifyEmailWithToken = actionClient
   .metadata({ actionName: 'verifyEmailWithToken' })
-  .schema(verifyEmailWithTokenSchema)
+  .inputSchema(verifyEmailWithTokenSchema)
   .action(async ({ parsedInput }) => {
     const verificationToken = await prisma.verificationToken.findFirst({
       where: { token: parsedInput.token },

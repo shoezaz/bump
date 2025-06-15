@@ -13,7 +13,7 @@ import { changePasswordSchema } from '~/schemas/account/change-password-schema';
 
 export const changePassword = authOrganizationActionClient
   .metadata({ actionName: 'changePassword' })
-  .schema(changePasswordSchema)
+  .inputSchema(changePasswordSchema)
   .action(async ({ parsedInput, ctx }) => {
     const userFromDb = await prisma.user.findFirst({
       where: { id: ctx.session.user.id },

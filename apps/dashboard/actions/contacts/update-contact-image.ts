@@ -17,7 +17,7 @@ import { updateContactImageSchema } from '~/schemas/contacts/update-contact-imag
 
 export const updateContactImage = authOrganizationActionClient
   .metadata({ actionName: 'updateContactImage' })
-  .schema(updateContactImageSchema)
+  .inputSchema(updateContactImageSchema)
   .action(async ({ parsedInput, ctx }) => {
     const count = await prisma.contact.count({
       where: {

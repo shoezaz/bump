@@ -11,7 +11,7 @@ import { changeRoleSchema } from '~/schemas/members/change-role-schema';
 
 export const changeRole = authOrganizationActionClient
   .metadata({ actionName: 'changeRole' })
-  .schema(changeRoleSchema)
+  .inputSchema(changeRoleSchema)
   .action(async ({ parsedInput, ctx }) => {
     const membership = await prisma.membership.findFirst({
       where: {

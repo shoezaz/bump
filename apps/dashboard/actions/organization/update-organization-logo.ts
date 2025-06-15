@@ -18,7 +18,7 @@ type Transaction = Prisma.PrismaPromise<unknown>;
 
 export const updateOrganizationLogo = authOrganizationActionClient
   .metadata({ actionName: 'updateOrganizationLogo' })
-  .schema(updateOrganizationLogoSchema)
+  .inputSchema(updateOrganizationLogoSchema)
   .action(async ({ parsedInput, ctx }) => {
     const transactions: Transaction[] = [];
     let logoUrl: Maybe<string> = undefined;

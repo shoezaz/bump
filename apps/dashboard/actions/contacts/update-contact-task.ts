@@ -10,7 +10,7 @@ import { updateContactTaskSchema } from '~/schemas/contacts/update-contact-task-
 
 export const updateContactTask = authOrganizationActionClient
   .metadata({ actionName: 'updateContactTask' })
-  .schema(updateContactTaskSchema)
+  .inputSchema(updateContactTaskSchema)
   .action(async ({ parsedInput, ctx }) => {
     const task = await prisma.contactTask.update({
       where: {

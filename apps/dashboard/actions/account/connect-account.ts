@@ -10,7 +10,7 @@ import { connectAccountSchema } from '~/schemas/account/connect-account-schema';
 
 export const connectAccount = authOrganizationActionClient
   .metadata({ actionName: 'connectAccount' })
-  .schema(connectAccountSchema)
+  .inputSchema(connectAccountSchema)
   .action(async ({ parsedInput, ctx }) => {
     await signIn(
       parsedInput.provider,

@@ -14,7 +14,7 @@ import { actionClient } from '~/actions/safe-action';
 
 export const submitRecoveryCode = actionClient
   .metadata({ actionName: 'submitRecoveryCode' })
-  .schema(submitRecoveryCodeSchema)
+  .inputSchema(submitRecoveryCodeSchema)
   .action(async ({ parsedInput }) => {
     const cookieStore = await cookies();
     const callbackUrl =

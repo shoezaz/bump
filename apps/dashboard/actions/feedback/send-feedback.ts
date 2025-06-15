@@ -11,7 +11,7 @@ import { sendFeedbackSchema } from '~/schemas/feedback/send-feedback-schema';
 
 export const sendFeedback = authOrganizationActionClient
   .metadata({ actionName: 'sendFeedback' })
-  .schema(sendFeedbackSchema)
+  .inputSchema(sendFeedbackSchema)
   .action(async ({ parsedInput, ctx }) => {
     await prisma.feedback.create({
       data: {

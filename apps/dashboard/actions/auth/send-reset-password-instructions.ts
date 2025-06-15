@@ -14,7 +14,7 @@ import { sendResetPasswordInstructionsSchema } from '~/schemas/auth/send-reset-p
 
 export const sendResetPasswordInstructions = actionClient
   .metadata({ actionName: 'sendResetPasswordInstructions' })
-  .schema(sendResetPasswordInstructionsSchema)
+  .inputSchema(sendResetPasswordInstructionsSchema)
   .action(async ({ parsedInput }) => {
     const normalizedEmail = parsedInput.email.toLowerCase();
     const maybeUser = await prisma.user.findUnique({

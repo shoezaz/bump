@@ -14,7 +14,7 @@ import { createBillingCustomer } from './_create-billing-customer';
 
 export const createCheckoutSessionUrl = authOrganizationActionClient
   .metadata({ actionName: 'createCheckoutSessionUrl' })
-  .schema(
+  .inputSchema(
     z.object({
       productId: z.string(),
       planId: z.string()

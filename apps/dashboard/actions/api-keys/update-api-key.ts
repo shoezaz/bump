@@ -12,7 +12,7 @@ import { updateApiKeySchema } from '~/schemas/api-keys/update-api-key-schema';
 
 export const updateApiKey = authOrganizationActionClient
   .metadata({ actionName: 'updateApiKey' })
-  .schema(updateApiKeySchema)
+  .inputSchema(updateApiKeySchema)
   .action(async ({ parsedInput, ctx }) => {
     const count = await prisma.apiKey.count({
       where: {

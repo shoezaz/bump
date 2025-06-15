@@ -17,7 +17,7 @@ import { sendInvitationSchema } from '~/schemas/invitations/send-invitation-sche
 
 export const sendInvitation = authOrganizationActionClient
   .metadata({ actionName: 'sendInvitation' })
-  .schema(sendInvitationSchema)
+  .inputSchema(sendInvitationSchema)
   .action(async ({ parsedInput, ctx }) => {
     if (parsedInput.role === Role.ADMIN) {
       const currentUserIsAdmin = await isOrganizationAdmin(

@@ -13,7 +13,7 @@ import { createApiKeySchema } from '~/schemas/api-keys/create-api-key-schema';
 
 export const createApiKey = authOrganizationActionClient
   .metadata({ actionName: 'createApiKey' })
-  .schema(createApiKeySchema)
+  .inputSchema(createApiKeySchema)
   .action(async ({ parsedInput, ctx }) => {
     const apiKey = generateApiKey();
     await prisma.apiKey.create({

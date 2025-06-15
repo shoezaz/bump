@@ -7,7 +7,7 @@ import { checkIfEmailIsAvailableSchema } from '~/schemas/account/check-if-email-
 
 export const checkIfEmailIsAvailable = authActionClient
   .metadata({ actionName: 'checkIfEmailIsAvailable' })
-  .schema(checkIfEmailIsAvailableSchema)
+  .inputSchema(checkIfEmailIsAvailableSchema)
   .action(async ({ parsedInput }) => {
     const normalizedEmail = parsedInput.email.toLowerCase();
     const countUsers = await prisma.user.count({

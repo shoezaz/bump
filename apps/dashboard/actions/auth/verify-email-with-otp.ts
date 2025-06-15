@@ -18,7 +18,7 @@ import { verifyEmailWithOtpSchema } from '~/schemas/auth/verify-email-with-otp-s
 
 export const verifyEmailWithOtp = actionClient
   .metadata({ actionName: 'verifyEmailWithOtp' })
-  .schema(verifyEmailWithOtpSchema)
+  .inputSchema(verifyEmailWithOtpSchema)
   .action(async ({ parsedInput }) => {
     const verificationToken = await findVerificationTokenFromOtp(
       parsedInput.otp

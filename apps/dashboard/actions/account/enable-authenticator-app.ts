@@ -16,7 +16,7 @@ import { enableAuthenticatorAppSchema } from '~/schemas/account/enable-authentic
 
 export const enableAuthenticatorApp = authActionClient
   .metadata({ actionName: 'enableAuthenticatorApp' })
-  .schema(enableAuthenticatorAppSchema)
+  .inputSchema(enableAuthenticatorAppSchema)
   .action(async ({ parsedInput, ctx }) => {
     const isValidToken = authenticator.check(
       parsedInput.totpCode,

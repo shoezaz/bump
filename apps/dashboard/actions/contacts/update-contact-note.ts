@@ -11,7 +11,7 @@ import { updateContactCommentSchema } from '~/schemas/contacts/update-contact-co
 
 export const updateContactNote = authOrganizationActionClient
   .metadata({ actionName: 'updateContactNote' })
-  .schema(updateContactCommentSchema)
+  .inputSchema(updateContactCommentSchema)
   .action(async ({ parsedInput, ctx }) => {
     const count = await prisma.contactNote.count({
       where: {

@@ -10,7 +10,7 @@ import { createWebhookSchema } from '~/schemas/webhooks/create-webhook-schema';
 
 export const createWebhook = authOrganizationActionClient
   .metadata({ actionName: 'createWebhook' })
-  .schema(createWebhookSchema)
+  .inputSchema(createWebhookSchema)
   .action(async ({ parsedInput, ctx }) => {
     await prisma.webhook.create({
       data: {

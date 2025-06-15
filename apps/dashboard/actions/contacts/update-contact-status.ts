@@ -12,7 +12,7 @@ import { updateContactStageSchema } from '~/schemas/contacts/update-contact-stag
 
 export const updateContactStage = authOrganizationActionClient
   .metadata({ actionName: 'updateContactStage' })
-  .schema(updateContactStageSchema)
+  .inputSchema(updateContactStageSchema)
   .action(async ({ parsedInput, ctx }) => {
     const count = await prisma.contact.count({
       where: {

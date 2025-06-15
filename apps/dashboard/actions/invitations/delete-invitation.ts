@@ -11,7 +11,7 @@ import { deleteInvitationSchema } from '~/schemas/invitations/delete-invitation-
 
 export const deleteInvitation = authOrganizationActionClient
   .metadata({ actionName: 'deleteInvitation' })
-  .schema(deleteInvitationSchema)
+  .inputSchema(deleteInvitationSchema)
   .action(async ({ parsedInput, ctx }) => {
     const count = await prisma.invitation.count({
       where: {

@@ -15,7 +15,7 @@ import { acceptInvitationSchema } from '~/schemas/invitations/accept-invitation-
 
 export const acceptInvitation = authActionClient
   .metadata({ actionName: 'acceptInvitation' })
-  .schema(acceptInvitationSchema)
+  .inputSchema(acceptInvitationSchema)
   .action(async ({ parsedInput, ctx }) => {
     const invitation = await prisma.invitation.findFirst({
       where: { id: parsedInput.invitationId },

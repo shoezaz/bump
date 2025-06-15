@@ -11,7 +11,7 @@ import { updateWebhookSchema } from '~/schemas/webhooks/update-webhook-schema';
 
 export const updateWebhook = authOrganizationActionClient
   .metadata({ actionName: 'updateWebhook' })
-  .schema(updateWebhookSchema)
+  .inputSchema(updateWebhookSchema)
   .action(async ({ parsedInput, ctx }) => {
     const count = await prisma.webhook.count({
       where: {

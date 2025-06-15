@@ -12,7 +12,7 @@ import { passThroughCredentialsSchema } from '~/schemas/auth/pass-through-creden
 
 export const signInWithCredentials = actionClient
   .metadata({ actionName: 'signInWithCredentials' })
-  .schema(passThroughCredentialsSchema)
+  .inputSchema(passThroughCredentialsSchema)
   .action(async ({ parsedInput }) => {
     const redirectTo = await getRedirectAfterSignIn();
 

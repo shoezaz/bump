@@ -11,7 +11,7 @@ import { addContactPageVisitSchema } from '~/schemas/contacts/add-contact-page-v
 
 export const addContactPageVisit = authOrganizationActionClient
   .metadata({ actionName: 'addContactPageVisit' })
-  .schema(addContactPageVisitSchema)
+  .inputSchema(addContactPageVisitSchema)
   .action(async ({ parsedInput, ctx }) => {
     const countContacts = await prisma.contact.count({
       where: {

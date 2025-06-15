@@ -14,7 +14,7 @@ import { revokeInvitationSchema } from '~/schemas/invitations/revoke-invitation-
 
 export const revokeInvitation = authOrganizationActionClient
   .metadata({ actionName: 'revokeInvitation' })
-  .schema(revokeInvitationSchema)
+  .inputSchema(revokeInvitationSchema)
   .action(async ({ parsedInput, ctx }) => {
     const invitation = await prisma.invitation.findFirst({
       where: {

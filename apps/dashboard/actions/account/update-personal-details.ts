@@ -18,7 +18,7 @@ type Transaction = Prisma.PrismaPromise<unknown>;
 
 export const updatePersonalDetails = authActionClient
   .metadata({ actionName: 'updatePersonalDetails' })
-  .schema(updatePersonalDetailsSchema)
+  .inputSchema(updatePersonalDetailsSchema)
   .action(async ({ parsedInput, ctx }) => {
     const transactions: Transaction[] = [];
     let imageUrl: Maybe<string> = undefined;

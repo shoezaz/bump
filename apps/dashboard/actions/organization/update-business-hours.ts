@@ -11,7 +11,7 @@ import { updateBusinessHoursSchema } from '~/schemas/organization/update-busines
 
 export const updateBusinessHours = authOrganizationActionClient
   .metadata({ actionName: 'updateBusinessHours' })
-  .schema(updateBusinessHoursSchema)
+  .inputSchema(updateBusinessHoursSchema)
   .action(async ({ parsedInput, ctx }) => {
     const organization = await prisma.organization.findFirst({
       where: { id: ctx.organization.id },

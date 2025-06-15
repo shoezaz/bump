@@ -11,7 +11,7 @@ import { updateOrganizationDetailsSchema } from '~/schemas/organization/update-o
 
 export const updateOrganizationDetails = authOrganizationActionClient
   .metadata({ actionName: 'updateOrganizationDetails' })
-  .schema(updateOrganizationDetailsSchema)
+  .inputSchema(updateOrganizationDetailsSchema)
   .action(async ({ parsedInput, ctx }) => {
     await prisma.organization.update({
       where: { id: ctx.organization.id },

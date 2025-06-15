@@ -9,7 +9,7 @@ import { addContactSchema } from '~/schemas/contacts/add-contact-schema';
 
 export const addContact = authOrganizationActionClient
   .metadata({ actionName: 'addContact' })
-  .schema(addContactSchema)
+  .inputSchema(addContactSchema)
   .action(async ({ parsedInput, ctx }) => {
     await createContactAndCaptureEvent(
       {

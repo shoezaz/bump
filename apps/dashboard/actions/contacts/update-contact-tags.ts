@@ -12,7 +12,7 @@ import { updateContactTagsSchema } from '~/schemas/contacts/update-contact-tags-
 
 export const updateContactTags = authOrganizationActionClient
   .metadata({ actionName: 'updateContactTags' })
-  .schema(updateContactTagsSchema)
+  .inputSchema(updateContactTagsSchema)
   .action(async ({ parsedInput, ctx }) => {
     const contact = await prisma.contact.findFirst({
       where: {

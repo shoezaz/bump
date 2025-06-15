@@ -15,7 +15,7 @@ import { disconnectAccountSchema } from '~/schemas/account/disconnect-account-sc
 
 export const disconnectAccount = authOrganizationActionClient
   .metadata({ actionName: 'disconnectAccount' })
-  .schema(disconnectAccountSchema)
+  .inputSchema(disconnectAccountSchema)
   .action(async ({ parsedInput, ctx }) => {
     const normalizedProvider = parsedInput.provider.toLowerCase();
     const account = await prisma.account.findFirst({

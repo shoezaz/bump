@@ -11,7 +11,7 @@ import { addFavoriteSchema } from '~/schemas/favorites/add-favorite-schema';
 
 export const addFavorite = authOrganizationActionClient
   .metadata({ actionName: 'addFavorite' })
-  .schema(addFavoriteSchema)
+  .inputSchema(addFavoriteSchema)
   .action(async ({ parsedInput, ctx }) => {
     const count = await prisma.favorite.count({
       where: {

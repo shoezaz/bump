@@ -11,7 +11,7 @@ import { addContactTaskSchema } from '~/schemas/contacts/add-contact-task-schema
 
 export const addContactTask = authOrganizationActionClient
   .metadata({ actionName: 'addContactTask' })
-  .schema(addContactTaskSchema)
+  .inputSchema(addContactTaskSchema)
   .action(async ({ parsedInput, ctx }) => {
     const count = await prisma.contact.count({
       where: {

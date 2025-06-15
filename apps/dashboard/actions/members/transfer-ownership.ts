@@ -15,7 +15,7 @@ import { transferOwnershipSchema } from '~/schemas/members/transfer-ownership-sc
 
 export const transferOwnership = authOrganizationActionClient
   .metadata({ actionName: 'transferOwnership' })
-  .schema(transferOwnershipSchema)
+  .inputSchema(transferOwnershipSchema)
   .action(async ({ parsedInput, ctx }) => {
     if (ctx.session.user.id === parsedInput.targetId) {
       throw new ForbiddenError("You can't transfer ownership on yoursef.");

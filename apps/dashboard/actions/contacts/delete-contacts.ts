@@ -10,7 +10,7 @@ import { deleteContactsSchema } from '~/schemas/contacts/delete-contacts-schema'
 
 export const deleteContacts = authOrganizationActionClient
   .metadata({ actionName: 'deleteContacts' })
-  .schema(deleteContactsSchema)
+  .inputSchema(deleteContactsSchema)
   .action(async ({ parsedInput, ctx }) => {
     const contactIdsToDelete = parsedInput.ids;
     const organizationId = ctx.organization.id;

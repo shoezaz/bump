@@ -12,7 +12,7 @@ import { createBillingCustomer } from './_create-billing-customer';
 
 export const updateBillingAddress = authOrganizationActionClient
   .metadata({ actionName: 'updateBillingAddress' })
-  .schema(updateBillingAddressSchema)
+  .inputSchema(updateBillingAddressSchema)
   .action(async ({ parsedInput, ctx }) => {
     if (!ctx.organization.billingCustomerId) {
       await createBillingCustomer(ctx);

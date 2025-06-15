@@ -12,7 +12,7 @@ import { changeEmailSchema } from '~/schemas/account/change-email-schema';
 
 export const changeEmail = actionClient
   .metadata({ actionName: 'changeEmail' })
-  .schema(changeEmailSchema)
+  .inputSchema(changeEmailSchema)
   .action(async ({ parsedInput }) => {
     const request = await prisma.changeEmailRequest.findFirst({
       where: { id: parsedInput.id },

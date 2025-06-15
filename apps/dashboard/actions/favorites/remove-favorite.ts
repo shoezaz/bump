@@ -11,7 +11,7 @@ import { removeFavoriteSchema } from '~/schemas/favorites/remove-favorite-schema
 
 export const removeFavorite = authOrganizationActionClient
   .metadata({ actionName: 'removeFavorite' })
-  .schema(removeFavoriteSchema)
+  .inputSchema(removeFavoriteSchema)
   .action(async ({ parsedInput, ctx }) => {
     await prisma.$transaction([
       prisma.favorite.deleteMany({

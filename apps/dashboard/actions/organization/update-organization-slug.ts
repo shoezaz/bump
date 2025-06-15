@@ -12,7 +12,7 @@ import { updateOrganizationSlugSchema } from '~/schemas/organization/update-orga
 
 export const updateOrganizationSlug = authOrganizationActionClient
   .metadata({ actionName: 'updateOrganizationSlug' })
-  .schema(updateOrganizationSlugSchema)
+  .inputSchema(updateOrganizationSlugSchema)
   .action(async ({ parsedInput, ctx }) => {
     if (parsedInput.slug !== ctx.organization.slug) {
       await prisma.organization.update({

@@ -10,7 +10,7 @@ import { addContactCommentSchema } from '~/schemas/contacts/add-contact-comment-
 
 export const addContactComment = authOrganizationActionClient
   .metadata({ actionName: 'addContactComment' })
-  .schema(addContactCommentSchema)
+  .inputSchema(addContactCommentSchema)
   .action(async ({ parsedInput, ctx }) => {
     await prisma.contactComment.create({
       data: {

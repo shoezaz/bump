@@ -10,7 +10,7 @@ import { resendEmailConfirmationSchema } from '~/schemas/auth/resend-email-confi
 
 export const resendEmailConfirmation = actionClient
   .metadata({ actionName: 'resendEmailConfirmation' })
-  .schema(resendEmailConfirmationSchema)
+  .inputSchema(resendEmailConfirmationSchema)
   .action(async ({ parsedInput }) => {
     const normalizedEmail = parsedInput.email.toLowerCase();
     const maybeUser = await prisma.user.findUnique({

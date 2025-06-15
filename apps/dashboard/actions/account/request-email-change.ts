@@ -13,7 +13,7 @@ import { requestEmailChangeSchema } from '~/schemas/account/request-email-change
 
 export const requestEmailChange = authActionClient
   .metadata({ actionName: 'requestEmailChange' })
-  .schema(requestEmailChangeSchema)
+  .inputSchema(requestEmailChangeSchema)
   .action(async ({ parsedInput, ctx }) => {
     const normalizedEmail = parsedInput.email.toLowerCase();
     const countUsers = await prisma.user.count({

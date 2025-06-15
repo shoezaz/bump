@@ -10,7 +10,7 @@ import { updateMarketingEmailsSchema } from '~/schemas/account/update-marketing-
 
 export const updateMarketingEmails = authActionClient
   .metadata({ actionName: 'updateMarketingEmails' })
-  .schema(updateMarketingEmailsSchema)
+  .inputSchema(updateMarketingEmailsSchema)
   .action(async ({ parsedInput, ctx }) => {
     await prisma.user.update({
       where: { id: ctx.session.user.id },

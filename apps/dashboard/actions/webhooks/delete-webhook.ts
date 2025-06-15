@@ -11,7 +11,7 @@ import { deleteWebhookSchema } from '~/schemas/webhooks/delete-webhook-schema';
 
 export const deleteWebhook = authOrganizationActionClient
   .metadata({ actionName: 'deleteWebhook' })
-  .schema(deleteWebhookSchema)
+  .inputSchema(deleteWebhookSchema)
   .action(async ({ parsedInput, ctx }) => {
     const count = await prisma.webhook.count({
       where: {

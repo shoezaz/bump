@@ -13,7 +13,7 @@ import { updateInvitationSchema } from '~/schemas/invitations/update-invitation-
 
 export const updateInvitation = authOrganizationActionClient
   .metadata({ actionName: 'updateInvitation' })
-  .schema(updateInvitationSchema)
+  .inputSchema(updateInvitationSchema)
   .action(async ({ parsedInput, ctx }) => {
     const invitation = await prisma.invitation.findFirst({
       where: {

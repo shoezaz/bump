@@ -101,7 +101,7 @@ import { addItemSchema } from "~/schemas/items/add-item-schema";
 
 export const addItem = authOrganizationActionClient
   .metadata({ actionName: "addItem" })
-  .schema(addItemSchema)
+  .inputSchema(addItemSchema)
   .action(async ({ parsedInput, ctx }) => {
     // Implementation
   });

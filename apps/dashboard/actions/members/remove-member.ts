@@ -15,7 +15,7 @@ import { removeMemberSchema } from '~/schemas/members/remove-member-schema';
 
 export const removeMember = authOrganizationActionClient
   .metadata({ actionName: 'removeMember' })
-  .schema(removeMemberSchema)
+  .inputSchema(removeMemberSchema)
   .action(async ({ parsedInput, ctx }) => {
     const isLeaving = ctx.session.user.id === parsedInput.id;
     if (!isLeaving) {

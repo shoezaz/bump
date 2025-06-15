@@ -8,7 +8,7 @@ import { signOutSchema } from '~/schemas/auth/sign-out-schema';
 
 export const signOut = actionClient
   .metadata({ actionName: 'signOut' })
-  .schema(signOutSchema)
+  .inputSchema(signOutSchema)
   .action(async ({ parsedInput }) => {
     return await NextSignOut({
       redirect: parsedInput.redirect,

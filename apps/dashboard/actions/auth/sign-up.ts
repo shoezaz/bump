@@ -14,7 +14,7 @@ import { signUpSchema } from '~/schemas/auth/sign-up-schema';
 
 export const signUp = actionClient
   .metadata({ actionName: 'signUp' })
-  .schema(signUpSchema)
+  .inputSchema(signUpSchema)
   .action(async ({ parsedInput }) => {
     const normalizedEmail = parsedInput.email.toLowerCase();
     const countUsers = await prisma.user.count({

@@ -12,7 +12,7 @@ import { signOutSessionSchema } from '~/schemas/account/sign-out-session-schema'
 
 export const signOutSession = authActionClient
   .metadata({ actionName: 'signOutSession' })
-  .schema(signOutSessionSchema)
+  .inputSchema(signOutSessionSchema)
   .action(async ({ parsedInput, ctx }) => {
     const sessionFromDb = await prisma.session.findFirst({
       where: {

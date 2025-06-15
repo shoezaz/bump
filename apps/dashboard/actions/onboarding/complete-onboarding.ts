@@ -42,7 +42,7 @@ type Transaction = Prisma.PrismaPromise<unknown>;
 
 export const completeOnboarding = authActionClient
   .metadata({ actionName: 'completeOnboarding' })
-  .schema(completeOnboardingSchema)
+  .inputSchema(completeOnboardingSchema)
   .action(async ({ parsedInput, ctx }) => {
     const transactions: Transaction[] = [];
     const organizationId = v4();

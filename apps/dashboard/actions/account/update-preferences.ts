@@ -10,7 +10,7 @@ import { updatePreferencesSchema } from '~/schemas/account/update-preferences-sc
 
 export const updatePreferences = authActionClient
   .metadata({ actionName: 'updatePreferences' })
-  .schema(updatePreferencesSchema)
+  .inputSchema(updatePreferencesSchema)
   .action(async ({ parsedInput, ctx }) => {
     await prisma.user.update({
       where: { id: ctx.session.user.id },
