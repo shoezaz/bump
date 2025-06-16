@@ -7,6 +7,10 @@ import { type SubmitHandler } from 'react-hook-form';
 
 import { routes } from '@workspace/routes';
 import { Alert, AlertDescription } from '@workspace/ui/components/alert';
+import {
+  GoogleIcon,
+  MicrosoftIcon
+} from '@workspace/ui/components/brand-icons';
 import { Button } from '@workspace/ui/components/button';
 import {
   Card,
@@ -35,8 +39,6 @@ import { signUp } from '~/actions/auth/sign-up';
 import { OrContinueWith } from '~/components/auth/or-continue-with';
 import { PasswordFormMessage } from '~/components/auth/password-form-message';
 import { useZodForm } from '~/hooks/use-zod-form';
-import GoogleLogo from '~/public/assets/logos/google-logo.svg';
-import MicrosoftLogo from '~/public/assets/logos/microsoft-logo.svg';
 import { signUpSchema, type SignUpSchema } from '~/schemas/auth/sign-up-schema';
 
 export function SignUpCard({
@@ -189,7 +191,7 @@ export function SignUpCard({
             disabled={methods.formState.isSubmitting}
             onClick={handleSignInWithGoogle}
           >
-            <GoogleLogo
+            <GoogleIcon
               width="20"
               height="20"
             />
@@ -202,7 +204,7 @@ export function SignUpCard({
             disabled={methods.formState.isSubmitting}
             onClick={handleSignInWithMicrosoft}
           >
-            <MicrosoftLogo
+            <MicrosoftIcon
               width="20"
               height="20"
             />

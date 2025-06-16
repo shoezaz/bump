@@ -12,6 +12,10 @@ import {
 import { AuthErrorCode } from '@workspace/auth/errors';
 import { routes } from '@workspace/routes';
 import { Alert, AlertDescription } from '@workspace/ui/components/alert';
+import {
+  GoogleIcon,
+  MicrosoftIcon
+} from '@workspace/ui/components/brand-icons';
 import { Button, buttonVariants } from '@workspace/ui/components/button';
 import {
   Card,
@@ -41,8 +45,6 @@ import { signInWithCredentials } from '~/actions/auth/sign-in-with-credentials';
 import { OrContinueWith } from '~/components/auth/or-continue-with';
 import { useZodForm } from '~/hooks/use-zod-form';
 import { authErrorLabels } from '~/lib/labels';
-import GoogleLogo from '~/public/assets/logos/google-logo.svg';
-import MicrosoftLogo from '~/public/assets/logos/microsoft-logo.svg';
 import {
   passThroughCredentialsSchema,
   type PassThroughCredentialsSchema
@@ -230,7 +232,7 @@ export function SignInCard({
             disabled={!canSubmit}
             onClick={handleSignInWithGoogle}
           >
-            <GoogleLogo
+            <GoogleIcon
               width="20"
               height="20"
             />
@@ -243,7 +245,7 @@ export function SignInCard({
             disabled={!canSubmit}
             onClick={handleSignInWithMicrosoft}
           >
-            <MicrosoftLogo
+            <MicrosoftIcon
               width="20"
               height="20"
             />

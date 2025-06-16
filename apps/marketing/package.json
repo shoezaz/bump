@@ -51,7 +51,6 @@
     "@content-collections/mdx": "0.2.2",
     "@content-collections/next": "0.2.6",
     "@next/bundle-analyzer": "15.3.3",
-    "@svgr/webpack": "8.1.0",
     "@types/mdast": "4.0.4",
     "@types/node": "22.15.30",
     "@types/react": "19.0.8",

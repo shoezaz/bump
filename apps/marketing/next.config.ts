@@ -26,30 +26,7 @@ const nextConfig: NextConfig = {
     ]
   },
   turbopack: {
-    rules: {
-      '*.svg': {
-        loaders: [
-          {
-            loader: '@svgr/webpack',
-            options: {
-              svgoConfig: {
-                plugins: [
-                  {
-                    name: 'preset-default',
-                    params: {
-                      overrides: {
-                        removeViewBox: false // Preserve the viewBox attribute
-                      }
-                    }
-                  }
-                ]
-              }
-            }
-          }
-        ],
-        as: '*.js'
-      }
-    }
+    //
   },
   images: {
     remotePatterns: [

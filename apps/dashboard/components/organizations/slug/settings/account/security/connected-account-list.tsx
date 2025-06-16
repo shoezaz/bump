@@ -3,6 +3,10 @@
 import * as React from 'react';
 
 import { OAuthProvider } from '@workspace/auth/providers.types';
+import {
+  GoogleIcon,
+  MicrosoftIcon
+} from '@workspace/ui/components/brand-icons';
 import { Button } from '@workspace/ui/components/button';
 import { toast } from '@workspace/ui/components/sonner';
 import { cn } from '@workspace/ui/lib/utils';
@@ -10,8 +14,6 @@ import { cn } from '@workspace/ui/lib/utils';
 import { connectAccount } from '~/actions/account/connect-account';
 import { disconnectAccount } from '~/actions/account/disconnect-account';
 import { identityProviderLabels } from '~/lib/labels';
-import GoogleLogo from '~/public/assets/logos/google-logo.svg';
-import MicrosoftLogo from '~/public/assets/logos/microsoft-logo.svg';
 import type { ConnectedAccountDto } from '~/types/dtos/connected-account-dto';
 
 export type ConnectedAccountListProps =
@@ -115,14 +117,14 @@ function Icon({
   switch (connectedAccount.id) {
     case OAuthProvider.Google:
       return (
-        <GoogleLogo
+        <GoogleIcon
           width="20"
           height="20"
         />
       );
     case OAuthProvider.MicrosoftEntraId:
       return (
-        <MicrosoftLogo
+        <MicrosoftIcon
           width="20"
           height="20"
         />
