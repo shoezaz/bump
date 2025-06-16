@@ -11,15 +11,13 @@ const nextConfig: NextConfig = {
   experimental: {
     optimizePackageImports: INTERNAL_PACKAGES
   },
-  turbopack: {
-    //
-  },
   reactStrictMode: false,
   poweredByHeader: false
 };
 
-const bundleAnalyzerConfig = withBundleAnalyzer({
-  enabled: process.env.BUNDLE_ANALYZER === 'true'
-});
+const bundleAnalyzerConfig =
+  process.env.ANALYZE === 'true'
+    ? withBundleAnalyzer({ enabled: true })(nextConfig)
+    : nextConfig;
 
-export default bundleAnalyzerConfig(nextConfig);
+export default bundleAnalyzerConfig;

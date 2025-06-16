@@ -30,9 +30,6 @@ const nextConfig: NextConfig = {
       ...INTERNAL_PACKAGES
     ]
   },
-  turbopack: {
-    //
-  },
   reactStrictMode: true,
   poweredByHeader: false,
   async headers() {
@@ -85,8 +82,9 @@ const nextConfig: NextConfig = {
   }
 };
 
-const bundleAnalyzerConfig = withBundleAnalyzer({
-  enabled: process.env.BUNDLE_ANALYZER === 'true'
-});
+const bundleAnalyzerConfig =
+  process.env.ANALYZE === 'true'
+    ? withBundleAnalyzer({ enabled: true })(nextConfig)
+    : nextConfig;
 
-export default MonitoringProvider.withConfig(bundleAnalyzerConfig(nextConfig));
+export default MonitoringProvider.withConfig(bundleAnalyzerConfig);

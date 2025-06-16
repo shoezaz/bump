@@ -25,9 +25,6 @@ const nextConfig: NextConfig = {
       ...INTERNAL_PACKAGES
     ]
   },
-  turbopack: {
-    //
-  },
   images: {
     remotePatterns: [
       {
@@ -62,8 +59,9 @@ const nextConfig: NextConfig = {
   }
 };
 
-const bundleAnalyzerConfig = withBundleAnalyzer({
-  enabled: process.env.BUNDLE_ANALYZER === 'true'
-});
+const bundleAnalyzerConfig =
+  process.env.ANALYZE === 'true'
+    ? withBundleAnalyzer({ enabled: true })(nextConfig)
+    : nextConfig;
 
-export default withContentCollections(bundleAnalyzerConfig(nextConfig));
+export default withContentCollections(bundleAnalyzerConfig);

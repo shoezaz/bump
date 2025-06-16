@@ -37,8 +37,6 @@ export function detectTransport(): NodemailerTransport {
     }
   }
 
-  console.log('Using fallback transport.');
-
   // Fallback to sendmail if no URL is provided or if parsing fails
   return {
     sendmail: true,
