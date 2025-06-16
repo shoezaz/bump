@@ -80,7 +80,7 @@ export function MobileMenu({
           <motion.div
             className="w-5 origin-center border-t-2 border-primary"
             animate={
-              open ? { rotate: '45deg', translateY: '5px' } : { rotate: '0deg' }
+              open ? { rotate: '45deg', y: '5px' } : { rotate: '0deg', y: 0 }
             }
             transition={{ bounce: 0, duration: 0.1 }}
           />
@@ -89,8 +89,8 @@ export function MobileMenu({
             transition={{ bounce: 0, duration: 0.1 }}
             animate={
               open
-                ? { rotate: '-45deg', translateY: '-5px' }
-                : { rotate: '0deg', scaleX: 1 }
+                ? { rotate: '-45deg', y: '-5px' }
+                : { rotate: '0deg', scaleX: 1, y: 0 }
             }
           />
         </Button>
