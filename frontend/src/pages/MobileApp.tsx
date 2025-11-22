@@ -37,17 +37,15 @@ export const MobileApp = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex justify-center items-center font-sans text-slate-900 p-4 md:p-0">
-      {/* Mobile Container */}
-      <div className="w-full max-w-[400px] h-[850px] bg-[#F8F9FA] relative overflow-hidden shadow-2xl rounded-[36px] flex flex-col ring-8 ring-black border border-slate-200">
+    <div className="min-h-screen bg-[#F8F9FA] flex flex-col font-sans text-slate-900">
 
-        {/* Status Bar */}
-        <StatusBar />
+      {/* Status Bar */}
+      <StatusBar />
 
-        {/* Header */}
-        <Header
-          view={currentView}
-          onBack={() => {
+      {/* Header */}
+      <Header
+        view={currentView}
+        onBack={() => {
             if (currentView === 'passport') setCurrentView('dashboard');
             else if (currentView === 'transfer') setCurrentView('passport');
             else if (currentView === 'stolen') setCurrentView('passport');
@@ -84,12 +82,11 @@ export const MobileApp = () => {
             />
           )}
 
-        </div>
-
-        {/* Bottom Navigation */}
-        <BottomNav activeTab={currentView} onNavigate={setCurrentView} />
-
       </div>
+
+      {/* Bottom Navigation */}
+      <BottomNav activeTab={currentView} onNavigate={setCurrentView} />
+
     </div>
   );
 };
@@ -371,7 +368,7 @@ const Header = ({ view, onBack }: any) => {
 };
 
 const BottomNav = ({ activeTab, onNavigate }: any) => (
-  <div className="absolute bottom-6 left-4 right-4 h-[72px] bg-white/90 backdrop-blur-xl rounded-[2.5rem] border border-slate-200/60 flex items-center justify-around px-2 shadow-[0_8px_30px_rgb(0,0,0,0.06)] z-50">
+  <div className="fixed bottom-6 left-6 right-6 h-[72px] bg-white/90 backdrop-blur-xl rounded-[2.5rem] border border-slate-200/60 flex items-center justify-around px-2 shadow-[0_8px_30px_rgb(0,0,0,0.06)] z-50">
     <button onClick={() => onNavigate('dashboard')} className={`flex flex-col items-center gap-1 transition-colors ${activeTab === 'dashboard' ? 'text-slate-900' : 'text-slate-400'}`}>
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
         <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
