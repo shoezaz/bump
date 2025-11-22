@@ -83,16 +83,25 @@ app.post('/api/auth/login', async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    // Find user
-    const user = users.find(u => u.email === email);
-    if (!user) {
-      return res.status(401).json({ message: 'Invalid credentials' });
-    }
+    // 🔓 MODE TEST: Accept ANY email/password
+    // Find existing user or create a new one on the fly
+    let user = users.find(u => u.email === email);
 
-    // Check password
-    const validPassword = bcrypt.compareSync(password, user.password);
-    if (!validPassword) {
-      return res.status(401).json({ message: 'Invalid credentials' });
+    if (!user) {
+      // Create user automatically if doesn't exist
+      user = {
+        id: uuidv4(),
+        email,
+        password: bcrypt.hashSync(password, 10),
+        firstName: 'Test',
+        lastName: 'User',
+        kycStatus: 'verified',
+        kycVerifiedAt: new Date().toISOString(),
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      };
+      users.push(user);
+      console.log(`✅ Auto-created user: ${email}`);
     }
 
     // Generate token
@@ -355,6 +364,7 @@ app.get('/', (req, res) => {
   res.json({
     name: 'Watch Passport Mock API',
     version: '1.0.0',
+    mode: '🔓 TEST MODE - Any email/password accepted',
     endpoints: {
       auth: '/api/auth/login, /api/auth/register',
       watches: '/api/watches',
@@ -362,9 +372,12 @@ app.get('/', (req, res) => {
       reports: '/api/reports',
       users: '/api/users',
     },
-    demo: {
-      email: 'demo@watchpassport.com',
-      password: 'demo123',
+    info: {
+      message: 'Use ANY email and ANY password to login - users are created automatically!',
+      example: {
+        email: 'test@example.com',
+        password: 'anything',
+      },
     },
   });
 });
@@ -372,7 +385,7 @@ app.get('/', (req, res) => {
 // Start server
 app.listen(PORT, () => {
   console.log(`🚀 Watch Passport Mock Backend running on port ${PORT}`);
-  console.log(`📧 Demo credentials: demo@watchpassport.com / demo123`);
+  console.log(`🔓 TEST MODE: Any email/password accepted - users auto-created!`);
   console.log(`🌐 API: http://localhost:${PORT}/api`);
 });
 
