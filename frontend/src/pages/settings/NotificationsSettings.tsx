@@ -18,13 +18,16 @@ export const NotificationsSettings = () => {
   });
 
   const handleToggle = (category: 'emailNotifications' | 'pushNotifications', key: string) => {
-    setPreferences((prev) => ({
-      ...prev,
-      [category]: {
-        ...prev[category],
-        [key]: !prev[category][key as keyof typeof prev.emailNotifications],
-      },
-    }));
+    setPreferences((prev) => {
+      const currentCategory = prev[category];
+      return {
+        ...prev,
+        [category]: {
+          ...currentCategory,
+          [key]: !(currentCategory as any)[key],
+        },
+      };
+    });
     toast.success('Preferences updated');
   };
 
