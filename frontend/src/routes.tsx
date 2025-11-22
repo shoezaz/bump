@@ -9,6 +9,12 @@ import { WatchDetailPage } from './pages/watches/WatchDetailPage';
 import { AddWatchPage } from './pages/watches/AddWatchPage';
 import { TransferPage } from './pages/transfers/TransferPage';
 import { ProfilePage } from './pages/profile/ProfilePage';
+import { SettingsLayout } from './pages/settings/SettingsLayout';
+import { AccountSettings } from './pages/settings/AccountSettings';
+import { SecuritySettings } from './pages/settings/SecuritySettings';
+import { NotificationsSettings } from './pages/settings/NotificationsSettings';
+import { PrivacySettings } from './pages/settings/PrivacySettings';
+import { HelpSettings } from './pages/settings/HelpSettings';
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
@@ -57,6 +63,16 @@ export const AppRoutes = () => {
         <Route path="watches/:id" element={<WatchDetailPage />} />
         <Route path="transfer/:watchId" element={<TransferPage />} />
         <Route path="profile" element={<ProfilePage />} />
+
+        {/* Settings routes */}
+        <Route path="settings" element={<SettingsLayout />}>
+          <Route index element={<Navigate to="account" replace />} />
+          <Route path="account" element={<AccountSettings />} />
+          <Route path="security" element={<SecuritySettings />} />
+          <Route path="notifications" element={<NotificationsSettings />} />
+          <Route path="privacy" element={<PrivacySettings />} />
+          <Route path="help" element={<HelpSettings />} />
+        </Route>
       </Route>
 
       {/* Default redirect */}

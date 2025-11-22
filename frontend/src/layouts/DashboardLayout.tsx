@@ -4,6 +4,7 @@ import {
   Home,
   Watch,
   User,
+  Settings,
   LogOut,
   Menu,
   X,
@@ -26,6 +27,7 @@ export const DashboardLayout = () => {
     { name: 'Dashboard', href: '/dashboard', icon: Home },
     { name: 'My Watches', href: '/dashboard/watches', icon: Watch },
     { name: 'Profile', href: '/dashboard/profile', icon: User },
+    { name: 'Settings', href: '/dashboard/settings', icon: Settings },
   ];
 
   const isActive = (path: string) => {
