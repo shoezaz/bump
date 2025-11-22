@@ -20,7 +20,7 @@ export const HelpSettings = () => {
     {
       question: 'How long does KYC verification take?',
       answer:
-        'KYC verification typically takes 1-3 business days. You'll receive an email notification once your verification is complete.',
+        'KYC verification typically takes 1-3 business days. You\'ll receive an email notification once your verification is complete.',
     },
   ];
 
