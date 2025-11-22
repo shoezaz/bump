@@ -13,9 +13,26 @@ import {
   MapPin,
   ChevronRight,
   FileText,
-  Smartphone
+  Smartphone,
+  Bell,
+  TrendingUp,
+  Activity,
+  Shield,
+  Calendar,
+  DollarSign,
+  BarChart3
 } from 'lucide-react';
-import { MOCK_WATCHES, getMockWatchHistory } from '../lib/mockData';
+import {
+  MOCK_WATCHES,
+  getMockWatchHistory,
+  MOCK_NOTIFICATIONS,
+  MOCK_MARKET_TRENDS,
+  MOCK_ACTIVITY_FEED,
+  MOCK_PORTFOLIO_STATS,
+  MOCK_INSURANCE_POLICIES,
+  MOCK_CERTIFICATIONS,
+  MOCK_SERVICE_REMINDERS
+} from '../lib/mockData';
 
 // Main Mobile App Component
 export const MobileApp = () => {
@@ -49,8 +66,11 @@ export const MobileApp = () => {
             if (currentView === 'passport') setCurrentView('dashboard');
             else if (currentView === 'transfer') setCurrentView('passport');
             else if (currentView === 'stolen') setCurrentView('passport');
+            else if (currentView === 'notifications') setCurrentView('dashboard');
+            else if (currentView === 'insights') setCurrentView('dashboard');
             else setCurrentView('dashboard');
           }}
+        onNotifications={() => setCurrentView('notifications')}
         />
 
         {/* Main Content */}
@@ -82,6 +102,14 @@ export const MobileApp = () => {
             />
           )}
 
+          {currentView === 'notifications' && (
+            <NotificationsView />
+          )}
+
+          {currentView === 'insights' && (
+            <InsightsView />
+          )}
+
       </div>
 
       {/* Bottom Navigation */}
@@ -97,28 +125,43 @@ const DashboardView = ({ watches, onSelectWatch }: any) => {
     acc + (curr.status !== 'stolen' ? curr.estimatedValue : 0), 0
   );
 
+  const unreadNotifs = MOCK_NOTIFICATIONS.filter(n => !n.read).length;
+  const upcomingReminders = MOCK_SERVICE_REMINDERS.filter(r => !r.dismissed && new Date(r.dueDate) > new Date()).length;
+
   return (
     <div className="px-6 pt-2 animate-fadeIn">
 
       {/* Net Worth Card */}
-      <div className="bg-white rounded-3xl p-6 shadow-sm border border-slate-100 mb-8 relative overflow-hidden">
+      <div className="bg-white rounded-3xl p-6 shadow-sm border border-slate-100 mb-6 relative overflow-hidden">
         <div className="absolute top-0 right-0 w-32 h-32 bg-blue-50 rounded-full -mr-10 -mt-10 opacity-50"></div>
         <div className="relative z-10">
           <span className="text-slate-400 text-xs font-semibold tracking-wider uppercase">Valeur Portefeuille</span>
           <div className="flex items-baseline gap-1 mt-1">
             <h1 className="text-4xl font-bold text-slate-900">€{totalValue.toLocaleString()}</h1>
           </div>
-          <div className="mt-3 flex items-center gap-2">
+          <div className="mt-3 flex items-center gap-2 flex-wrap">
             <span className="bg-emerald-50 text-emerald-600 px-2 py-1 rounded-lg text-xs font-bold flex items-center gap-1">
-              <ArrowUpRight className="w-3 h-3" /> +12.4%
+              <ArrowUpRight className="w-3 h-3" /> +{MOCK_PORTFOLIO_STATS.appreciationPercentage.toFixed(1)}%
             </span>
-            <span className="text-slate-400 text-xs">depuis l'achat</span>
+            <span className="text-slate-400 text-xs">€{MOCK_PORTFOLIO_STATS.totalAppreciation.toLocaleString()} de plus-value</span>
           </div>
         </div>
       </div>
 
+      {/* Quick Stats */}
+      <div className="grid grid-cols-2 gap-3 mb-6">
+        <div className="bg-white rounded-2xl p-4 border border-slate-100">
+          <div className="text-slate-400 text-xs mb-1">Montres</div>
+          <div className="text-2xl font-bold text-slate-900">{MOCK_PORTFOLIO_STATS.numberOfWatches}</div>
+        </div>
+        <div className="bg-white rounded-2xl p-4 border border-slate-100">
+          <div className="text-slate-400 text-xs mb-1">Valeur moy.</div>
+          <div className="text-2xl font-bold text-slate-900">€{Math.round(MOCK_PORTFOLIO_STATS.averageWatchValue / 1000)}K</div>
+        </div>
+      </div>
+
       {/* Quick Actions */}
-      <div className="grid grid-cols-2 gap-4 mb-8">
+      <div className="grid grid-cols-2 gap-4 mb-6">
         <button className="bg-slate-900 text-white rounded-2xl p-4 flex flex-col items-center gap-2 shadow-lg active:scale-95 transition-transform">
           <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center">
             <Plus className="w-5 h-5 text-white" />
@@ -131,6 +174,44 @@ const DashboardView = ({ watches, onSelectWatch }: any) => {
           </div>
           <span className="text-sm font-medium">Scanner QR</span>
         </button>
+      </div>
+
+      {/* Activity Feed */}
+      <div className="mb-6">
+        <h3 className="text-sm font-bold text-slate-900 mb-3 flex items-center gap-2">
+          <Activity className="w-4 h-4" /> Activité récente
+        </h3>
+        <div className="space-y-2">
+          {MOCK_ACTIVITY_FEED.slice(0, 3).map((activity) => (
+            <div key={activity.id} className="bg-white rounded-xl p-3 border border-slate-100 flex items-center gap-3">
+              <div className="text-2xl">{activity.icon}</div>
+              <div className="flex-1 min-w-0">
+                <div className="text-xs font-bold text-slate-900">{activity.title}</div>
+                <div className="text-xs text-slate-500 truncate">{activity.description}</div>
+              </div>
+              <div className="text-xs text-slate-400">{new Date(activity.timestamp).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' })}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Market Trends */}
+      <div className="mb-6">
+        <h3 className="text-sm font-bold text-slate-900 mb-3 flex items-center gap-2">
+          <TrendingUp className="w-4 h-4" /> Tendances du marché
+        </h3>
+        <div className="grid grid-cols-2 gap-3">
+          {Object.entries(MOCK_MARKET_TRENDS).slice(0, 4).map(([brand, data]: any) => (
+            <div key={brand} className="bg-white rounded-xl p-3 border border-slate-100">
+              <div className="text-xs text-slate-500 mb-1 capitalize">{brand === 'patekPhilippe' ? 'Patek Philippe' : brand === 'audemarsPiguet' ? 'AP' : brand === 'tagHeuer' ? 'TAG' : brand}</div>
+              <div className="flex items-baseline gap-1">
+                <span className={`text-lg font-bold ${data.trend === 'up' ? 'text-emerald-600' : 'text-red-600'}`}>
+                  {data.change > 0 ? '+' : ''}{data.change}%
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
 
       {/* Watch List */}
@@ -177,6 +258,8 @@ const DashboardView = ({ watches, onSelectWatch }: any) => {
 const PassportView = ({ watch, onTransfer, onReportStolen }: any) => {
   const isStolen = watch.status === 'stolen';
   const history = getMockWatchHistory(watch.id);
+  const insurance = MOCK_INSURANCE_POLICIES.find(p => p.watchId === watch.id);
+  const certification = MOCK_CERTIFICATIONS.find(c => c.watchId === watch.id);
 
   return (
     <div className="animate-slideUp">
@@ -211,7 +294,7 @@ const PassportView = ({ watch, onTransfer, onReportStolen }: any) => {
         </div>
 
         {/* Actions */}
-        <div className="flex gap-3 mb-8">
+        <div className="flex gap-3 mb-6">
           <button
             onClick={onTransfer}
             disabled={isStolen}
@@ -222,6 +305,30 @@ const PassportView = ({ watch, onTransfer, onReportStolen }: any) => {
           <button className="flex-1 bg-white text-slate-900 border border-slate-200 py-3 rounded-xl font-medium shadow-sm active:scale-95 transition-transform flex items-center justify-center gap-2">
             <FileText className="w-4 h-4" /> Certificat
           </button>
+        </div>
+
+        {/* Insurance & Certification Info */}
+        <div className="grid grid-cols-2 gap-3 mb-6">
+          {insurance && (
+            <div className="bg-blue-50 border border-blue-100 rounded-2xl p-3">
+              <div className="flex items-center gap-2 mb-2">
+                <Shield className="w-4 h-4 text-blue-600" />
+                <span className="text-xs font-bold text-blue-900">Assuré</span>
+              </div>
+              <div className="text-lg font-bold text-blue-900">€{insurance.coverageAmount.toLocaleString()}</div>
+              <div className="text-xs text-blue-700 mt-1">{insurance.provider}</div>
+            </div>
+          )}
+          {certification && (
+            <div className="bg-emerald-50 border border-emerald-100 rounded-2xl p-3">
+              <div className="flex items-center gap-2 mb-2">
+                <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+                <span className="text-xs font-bold text-emerald-900">Certifié</span>
+              </div>
+              <div className="text-lg font-bold text-emerald-900">{certification.conditionGrade}</div>
+              <div className="text-xs text-emerald-700 mt-1">{certification.issuedBy}</div>
+            </div>
+          )}
         </div>
 
         {/* Timeline */}
@@ -331,14 +438,185 @@ const StolenDeclarationView = ({ watch, onConfirm }: any) => {
   );
 };
 
+// Notifications View
+const NotificationsView = () => {
+  return (
+    <div className="px-6 pt-4 animate-fadeIn">
+      <h2 className="text-2xl font-bold text-slate-900 mb-6">Notifications</h2>
+
+      <div className="space-y-3">
+        {MOCK_NOTIFICATIONS.map((notif) => (
+          <div
+            key={notif.id}
+            className={`bg-white rounded-2xl p-4 border border-slate-100 ${notif.read ? 'opacity-60' : ''}`}
+          >
+            <div className="flex items-start gap-3">
+              <div className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 ${
+                notif.type === 'reminder' ? 'bg-orange-50' :
+                notif.type === 'valuation' ? 'bg-emerald-50' :
+                'bg-blue-50'
+              }`}>
+                {notif.type === 'reminder' && <Calendar className="w-5 h-5 text-orange-600" />}
+                {notif.type === 'valuation' && <TrendingUp className="w-5 h-5 text-emerald-600" />}
+                {notif.type === 'document' && <FileText className="w-5 h-5 text-blue-600" />}
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-start justify-between gap-2 mb-1">
+                  <h3 className="font-bold text-slate-900 text-sm">{notif.title}</h3>
+                  {!notif.read && <div className="w-2 h-2 bg-blue-500 rounded-full flex-shrink-0 mt-1"></div>}
+                </div>
+                <p className="text-xs text-slate-600">{notif.message}</p>
+                <p className="text-xs text-slate-400 mt-2">
+                  {new Date(notif.createdAt).toLocaleDateString('fr-FR', {
+                    day: 'numeric',
+                    month: 'long',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                  })}
+                </p>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Service Reminders */}
+      <h3 className="text-lg font-bold text-slate-900 mt-8 mb-4">Rappels</h3>
+      <div className="space-y-3">
+        {MOCK_SERVICE_REMINDERS.filter(r => !r.dismissed).map((reminder) => (
+          <div
+            key={reminder.id}
+            className={`bg-white rounded-2xl p-4 border ${
+              reminder.urgency === 'high' ? 'border-orange-200 bg-orange-50/30' : 'border-slate-100'
+            }`}
+          >
+            <div className="flex items-start gap-3">
+              <Calendar className={`w-5 h-5 flex-shrink-0 mt-0.5 ${
+                reminder.urgency === 'high' ? 'text-orange-600' : 'text-slate-600'
+              }`} />
+              <div className="flex-1">
+                <h4 className="font-bold text-slate-900 text-sm mb-1">{reminder.title}</h4>
+                <p className="text-xs text-slate-600 mb-2">{reminder.description}</p>
+                <p className="text-xs text-slate-400">
+                  Échéance: {new Date(reminder.dueDate).toLocaleDateString('fr-FR', {
+                    day: 'numeric',
+                    month: 'long',
+                    year: 'numeric'
+                  })}
+                </p>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+// Insights View
+const InsightsView = () => {
+  return (
+    <div className="px-6 pt-4 animate-fadeIn pb-8">
+      <h2 className="text-2xl font-bold text-slate-900 mb-6">Analyses</h2>
+
+      {/* Portfolio Overview */}
+      <div className="bg-gradient-to-br from-slate-900 to-slate-800 rounded-3xl p-6 mb-6 text-white">
+        <h3 className="text-sm font-semibold opacity-80 mb-4">Vue d'ensemble</h3>
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <div className="text-xs opacity-60 mb-1">Valeur totale</div>
+            <div className="text-2xl font-bold">€{MOCK_PORTFOLIO_STATS.totalValue.toLocaleString()}</div>
+          </div>
+          <div>
+            <div className="text-xs opacity-60 mb-1">Plus-value</div>
+            <div className="text-2xl font-bold text-emerald-400">+{MOCK_PORTFOLIO_STATS.appreciationPercentage.toFixed(1)}%</div>
+          </div>
+          <div>
+            <div className="text-xs opacity-60 mb-1">Montres</div>
+            <div className="text-xl font-bold">{MOCK_PORTFOLIO_STATS.numberOfWatches}</div>
+          </div>
+          <div>
+            <div className="text-xs opacity-60 mb-1">Valeur moy.</div>
+            <div className="text-xl font-bold">€{Math.round(MOCK_PORTFOLIO_STATS.averageWatchValue).toLocaleString()}</div>
+          </div>
+        </div>
+      </div>
+
+      {/* Top Watch */}
+      <div className="bg-white rounded-2xl p-4 border border-slate-100 mb-6">
+        <h3 className="text-sm font-bold text-slate-900 mb-3 flex items-center gap-2">
+          <BarChart3 className="w-4 h-4" /> Montre la plus précieuse
+        </h3>
+        <div className="flex items-center gap-3">
+          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-slate-100 to-slate-50 flex items-center justify-center">
+            <Watch className="w-8 h-8 text-slate-300" />
+          </div>
+          <div className="flex-1">
+            <div className="font-bold text-slate-900">{MOCK_PORTFOLIO_STATS.mostValuableWatch.model}</div>
+            <div className="text-xs text-slate-500">{MOCK_PORTFOLIO_STATS.mostValuableWatch.brand}</div>
+          </div>
+          <div className="text-right">
+            <div className="font-bold text-slate-900">€{MOCK_PORTFOLIO_STATS.mostValuableWatch.estimatedValue.toLocaleString()}</div>
+          </div>
+        </div>
+      </div>
+
+      {/* Market Trends Full */}
+      <div className="bg-white rounded-2xl p-4 border border-slate-100 mb-6">
+        <h3 className="text-sm font-bold text-slate-900 mb-4 flex items-center gap-2">
+          <TrendingUp className="w-4 h-4" /> Tendances du marché
+        </h3>
+        <div className="space-y-3">
+          {Object.entries(MOCK_MARKET_TRENDS).map(([brand, data]: any) => (
+            <div key={brand} className="flex items-center justify-between">
+              <div>
+                <div className="text-sm font-medium text-slate-900 capitalize">
+                  {brand === 'patekPhilippe' ? 'Patek Philippe' :
+                   brand === 'audemarsPiguet' ? 'Audemars Piguet' :
+                   brand === 'tagHeuer' ? 'TAG Heuer' : brand}
+                </div>
+                <div className="text-xs text-slate-500">Prix moy. €{data.avgPrice.toLocaleString()}</div>
+              </div>
+              <div className="text-right">
+                <div className={`text-lg font-bold ${data.trend === 'up' ? 'text-emerald-600' : 'text-red-600'}`}>
+                  {data.change > 0 ? '+' : ''}{data.change}%
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Brand Distribution */}
+      <div className="bg-white rounded-2xl p-4 border border-slate-100">
+        <h3 className="text-sm font-bold text-slate-900 mb-4">Répartition par marque</h3>
+        <div className="space-y-2">
+          {Object.entries(MOCK_PORTFOLIO_STATS.brandDistribution).map(([brand, count]: any) => (
+            <div key={brand} className="flex items-center gap-3">
+              <div className="flex-1">
+                <div className="text-xs font-medium text-slate-900">{brand}</div>
+              </div>
+              <div className="text-xs text-slate-500">{count} montre{count > 1 ? 's' : ''}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
+
 // UI Components
-const Header = ({ view, onBack }: any) => {
+const Header = ({ view, onBack, onNotifications }: any) => {
   const titles: any = {
     dashboard: 'Veritas',
     passport: 'Passeport',
     transfer: 'Transfert',
     stolen: 'Sécurité',
+    notifications: 'Notifications',
+    insights: 'Analyses',
   };
+
+  const unreadCount = MOCK_NOTIFICATIONS.filter(n => !n.read).length;
 
   return (
     <header className="flex items-center justify-between px-6 py-4 z-20 bg-[#F8F9FA]/90 backdrop-blur-md sticky top-0">
@@ -359,10 +637,17 @@ const Header = ({ view, onBack }: any) => {
         {view !== 'dashboard' && titles[view]}
       </div>
 
-      <div className="w-10 h-10 bg-white rounded-full border border-slate-100 flex items-center justify-center shadow-sm relative">
-        <User className="w-5 h-5 text-slate-600" />
-        <div className="absolute top-0 right-0 w-2.5 h-2.5 bg-emerald-500 border-2 border-white rounded-full"></div>
-      </div>
+      <button
+        onClick={onNotifications}
+        className="w-10 h-10 bg-white rounded-full border border-slate-100 flex items-center justify-center shadow-sm relative active:scale-95 transition-transform"
+      >
+        <Bell className="w-5 h-5 text-slate-600" />
+        {unreadCount > 0 && (
+          <div className="absolute top-0 right-0 w-5 h-5 bg-red-500 border-2 border-white rounded-full flex items-center justify-center">
+            <span className="text-white text-[10px] font-bold">{unreadCount}</span>
+          </div>
+        )}
+      </button>
     </header>
   );
 };
@@ -378,9 +663,9 @@ const BottomNav = ({ activeTab, onNavigate }: any) => (
     <div className="w-14 h-14 bg-slate-900 rounded-full flex items-center justify-center shadow-lg -mt-8 border-4 border-[#F8F9FA] cursor-pointer active:scale-95 transition-transform">
       <QrCode className="w-6 h-6 text-white" />
     </div>
-    <button className="flex flex-col items-center gap-1 text-slate-400">
-      <Watch className="w-6 h-6" />
-      <span className="text-[10px] font-medium">Coffre</span>
+    <button onClick={() => onNavigate('insights')} className={`flex flex-col items-center gap-1 transition-colors ${activeTab === 'insights' ? 'text-slate-900' : 'text-slate-400'}`}>
+      <BarChart3 className="w-6 h-6" />
+      <span className="text-[10px] font-medium">Analyses</span>
     </button>
   </div>
 );
