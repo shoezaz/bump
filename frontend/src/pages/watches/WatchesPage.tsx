@@ -1,21 +1,14 @@
-import { useQuery } from '@tanstack/react-query';
-import { useAuthStore } from '../../stores/authStore';
-import { watchesAPI } from '../../lib/api';
+import { useMockWatches } from '../../hooks/useMockData';
 import { Link } from 'react-router-dom';
 import { Watch, Plus, Search } from 'lucide-react';
 import { LoadingSpinner } from '../../components/Loading';
 import { useState } from 'react';
 
 export const WatchesPage = () => {
-  const user = useAuthStore((state) => state.user);
   const [searchQuery, setSearchQuery] = useState('');
 
-  const { data: watchesData, isLoading } = useQuery({
-    queryKey: ['watches', user?.id],
-    queryFn: () => watchesAPI.getAll(user?.id),
-  });
-
-  const watches = watchesData?.data || [];
+  // 🔓 MODE DEMO: Using mock data
+  const { data: watches, isLoading } = useMockWatches();
   const filteredWatches = watches.filter((watch: any) =>
     watch.brand.toLowerCase().includes(searchQuery.toLowerCase()) ||
     watch.model.toLowerCase().includes(searchQuery.toLowerCase()) ||

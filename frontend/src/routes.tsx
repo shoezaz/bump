@@ -1,5 +1,6 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { useAuthStore } from './stores/authStore';
+import { MobileApp } from './pages/MobileApp';
 import { LoginPage } from './pages/auth/LoginPage';
 import { RegisterPage } from './pages/auth/RegisterPage';
 import { DashboardLayout } from './layouts/DashboardLayout';
@@ -75,9 +76,9 @@ export const AppRoutes = () => {
         </Route>
       </Route>
 
-      {/* Default redirect */}
-      <Route path="/" element={<Navigate to="/dashboard" replace />} />
-      <Route path="*" element={<Navigate to="/dashboard" replace />} />
+      {/* Mobile App - Default View */}
+      <Route path="/" element={<MobileApp />} />
+      <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
 };

@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
-import { watchesAPI } from '../../lib/api';
+import { useMockWatch, useMockWatchHistory } from '../../hooks/useMockData';
 import { ArrowLeft, Share2, AlertTriangle, Calendar, DollarSign } from 'lucide-react';
 import { LoadingSpinner } from '../../components/Loading';
 import { ReportStolenModal } from '../../components/watches/ReportStolenModal';
@@ -11,18 +10,9 @@ export const WatchDetailPage = () => {
   const navigate = useNavigate();
   const [showReportModal, setShowReportModal] = useState(false);
 
-  const { data: watchData, isLoading } = useQuery({
-    queryKey: ['watch', id],
-    queryFn: () => watchesAPI.getById(id!),
-  });
-
-  const { data: historyData } = useQuery({
-    queryKey: ['watch-history', id],
-    queryFn: () => watchesAPI.getHistory(id!),
-  });
-
-  const watch = watchData?.data;
-  const history = historyData?.data || [];
+  // 🔓 MODE DEMO: Using mock data
+  const { data: watch, isLoading } = useMockWatch(id!);
+  const { data: history } = useMockWatchHistory(id!);
 
   if (isLoading) {
     return (
