@@ -31,7 +31,8 @@ import {
   MOCK_PORTFOLIO_STATS,
   MOCK_INSURANCE_POLICIES,
   MOCK_CERTIFICATIONS,
-  MOCK_SERVICE_REMINDERS
+  MOCK_SERVICE_REMINDERS,
+  MOCK_AUCTION_RESULTS
 } from '../lib/mockData';
 
 // Main Mobile App Component
@@ -39,6 +40,7 @@ export const MobileApp = () => {
   const [currentView, setCurrentView] = useState('dashboard');
   const [selectedWatch, setSelectedWatch] = useState<any>(null);
   const [watches, setWatches] = useState(MOCK_WATCHES);
+  const [selectedBrand, setSelectedBrand] = useState<string | null>(null);
 
   const goToPassport = (watch: any) => {
     setSelectedWatch(watch);
@@ -51,6 +53,29 @@ export const MobileApp = () => {
     );
     setWatches(updatedWatches);
     setSelectedWatch({ ...selectedWatch, status: 'stolen' });
+  };
+
+  const goToAddWatch = () => {
+    setCurrentView('addWatch');
+  };
+
+  const goToScanQR = () => {
+    setCurrentView('scanQR');
+  };
+
+  const goToBrandDetails = (brand: string) => {
+    setSelectedBrand(brand);
+    setCurrentView('brandDetails');
+  };
+
+  const goToCertificate = (watch: any) => {
+    setSelectedWatch(watch);
+    setCurrentView('certificate');
+  };
+
+  const goToInsuranceDetails = (watch: any) => {
+    setSelectedWatch(watch);
+    setCurrentView('insuranceDetails');
   };
 
   return (
@@ -68,6 +93,11 @@ export const MobileApp = () => {
             else if (currentView === 'stolen') setCurrentView('passport');
             else if (currentView === 'notifications') setCurrentView('dashboard');
             else if (currentView === 'insights') setCurrentView('dashboard');
+            else if (currentView === 'addWatch') setCurrentView('dashboard');
+            else if (currentView === 'scanQR') setCurrentView('dashboard');
+            else if (currentView === 'brandDetails') setCurrentView('insights');
+            else if (currentView === 'certificate') setCurrentView('passport');
+            else if (currentView === 'insuranceDetails') setCurrentView('passport');
             else setCurrentView('dashboard');
           }}
         onNotifications={() => setCurrentView('notifications')}
@@ -77,7 +107,12 @@ export const MobileApp = () => {
         <div className="flex-1 overflow-y-auto pb-24 bg-[#F8F9FA]">
 
           {currentView === 'dashboard' && (
-            <DashboardView watches={watches} onSelectWatch={goToPassport} />
+            <DashboardView
+              watches={watches}
+              onSelectWatch={goToPassport}
+              onAddWatch={goToAddWatch}
+              onScanQR={goToScanQR}
+            />
           )}
 
           {currentView === 'passport' && selectedWatch && (
@@ -85,6 +120,8 @@ export const MobileApp = () => {
               watch={selectedWatch}
               onTransfer={() => setCurrentView('transfer')}
               onReportStolen={() => setCurrentView('stolen')}
+              onViewCertificate={() => goToCertificate(selectedWatch)}
+              onViewInsurance={() => goToInsuranceDetails(selectedWatch)}
             />
           )}
 
@@ -103,24 +140,44 @@ export const MobileApp = () => {
           )}
 
           {currentView === 'notifications' && (
-            <NotificationsView />
+            <NotificationsView onSelectWatch={goToPassport} />
           )}
 
           {currentView === 'insights' && (
-            <InsightsView />
+            <InsightsView onSelectBrand={goToBrandDetails} />
+          )}
+
+          {currentView === 'addWatch' && (
+            <AddWatchView onComplete={() => setCurrentView('dashboard')} />
+          )}
+
+          {currentView === 'scanQR' && (
+            <ScanQRView />
+          )}
+
+          {currentView === 'brandDetails' && selectedBrand && (
+            <BrandDetailsView brand={selectedBrand} />
+          )}
+
+          {currentView === 'certificate' && selectedWatch && (
+            <CertificateView watch={selectedWatch} />
+          )}
+
+          {currentView === 'insuranceDetails' && selectedWatch && (
+            <InsuranceDetailsView watch={selectedWatch} />
           )}
 
       </div>
 
       {/* Bottom Navigation */}
-      <BottomNav activeTab={currentView} onNavigate={setCurrentView} />
+      <BottomNav activeTab={currentView} onNavigate={setCurrentView} onScanQR={goToScanQR} />
 
     </div>
   );
 };
 
 // Dashboard View
-const DashboardView = ({ watches, onSelectWatch }: any) => {
+const DashboardView = ({ watches, onSelectWatch, onAddWatch, onScanQR }: any) => {
   const totalValue = watches.reduce((acc: number, curr: any) =>
     acc + (curr.status !== 'stolen' ? curr.estimatedValue : 0), 0
   );
@@ -162,13 +219,19 @@ const DashboardView = ({ watches, onSelectWatch }: any) => {
 
       {/* Quick Actions */}
       <div className="grid grid-cols-2 gap-4 mb-6">
-        <button className="bg-slate-900 text-white rounded-2xl p-4 flex flex-col items-center gap-2 shadow-lg active:scale-95 transition-transform">
+        <button
+          onClick={onAddWatch}
+          className="bg-slate-900 text-white rounded-2xl p-4 flex flex-col items-center gap-2 shadow-lg active:scale-95 transition-transform"
+        >
           <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center">
             <Plus className="w-5 h-5 text-white" />
           </div>
           <span className="text-sm font-medium">Ajouter une montre</span>
         </button>
-        <button className="bg-white text-slate-900 border border-slate-100 rounded-2xl p-4 flex flex-col items-center gap-2 shadow-sm active:scale-95 transition-all">
+        <button
+          onClick={onScanQR}
+          className="bg-white text-slate-900 border border-slate-100 rounded-2xl p-4 flex flex-col items-center gap-2 shadow-sm active:scale-95 transition-all"
+        >
           <div className="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center text-slate-600">
             <QrCode className="w-5 h-5" />
           </div>
@@ -255,7 +318,7 @@ const DashboardView = ({ watches, onSelectWatch }: any) => {
 };
 
 // Passport View
-const PassportView = ({ watch, onTransfer, onReportStolen }: any) => {
+const PassportView = ({ watch, onTransfer, onReportStolen, onViewCertificate, onViewInsurance }: any) => {
   const isStolen = watch.status === 'stolen';
   const history = getMockWatchHistory(watch.id);
   const insurance = MOCK_INSURANCE_POLICIES.find(p => p.watchId === watch.id);
@@ -302,7 +365,10 @@ const PassportView = ({ watch, onTransfer, onReportStolen }: any) => {
           >
             <ArrowUpRight className="w-4 h-4" /> Transférer
           </button>
-          <button className="flex-1 bg-white text-slate-900 border border-slate-200 py-3 rounded-xl font-medium shadow-sm active:scale-95 transition-transform flex items-center justify-center gap-2">
+          <button
+            onClick={onViewCertificate}
+            className="flex-1 bg-white text-slate-900 border border-slate-200 py-3 rounded-xl font-medium shadow-sm active:scale-95 transition-transform flex items-center justify-center gap-2"
+          >
             <FileText className="w-4 h-4" /> Certificat
           </button>
         </div>
@@ -310,24 +376,30 @@ const PassportView = ({ watch, onTransfer, onReportStolen }: any) => {
         {/* Insurance & Certification Info */}
         <div className="grid grid-cols-2 gap-3 mb-6">
           {insurance && (
-            <div className="bg-blue-50 border border-blue-100 rounded-2xl p-3">
+            <button
+              onClick={onViewInsurance}
+              className="bg-blue-50 border border-blue-100 rounded-2xl p-3 active:scale-95 transition-transform text-left"
+            >
               <div className="flex items-center gap-2 mb-2">
                 <Shield className="w-4 h-4 text-blue-600" />
                 <span className="text-xs font-bold text-blue-900">Assuré</span>
               </div>
               <div className="text-lg font-bold text-blue-900">€{insurance.coverageAmount.toLocaleString()}</div>
               <div className="text-xs text-blue-700 mt-1">{insurance.provider}</div>
-            </div>
+            </button>
           )}
           {certification && (
-            <div className="bg-emerald-50 border border-emerald-100 rounded-2xl p-3">
+            <button
+              onClick={onViewCertificate}
+              className="bg-emerald-50 border border-emerald-100 rounded-2xl p-3 active:scale-95 transition-transform text-left"
+            >
               <div className="flex items-center gap-2 mb-2">
                 <CheckCircle2 className="w-4 h-4 text-emerald-600" />
                 <span className="text-xs font-bold text-emerald-900">Certifié</span>
               </div>
               <div className="text-lg font-bold text-emerald-900">{certification.conditionGrade}</div>
               <div className="text-xs text-emerald-700 mt-1">{certification.issuedBy}</div>
-            </div>
+            </button>
           )}
         </div>
 
@@ -439,16 +511,16 @@ const StolenDeclarationView = ({ watch, onConfirm }: any) => {
 };
 
 // Notifications View
-const NotificationsView = () => {
+const NotificationsView = ({ onSelectWatch }: any) => {
   return (
     <div className="px-6 pt-4 animate-fadeIn">
       <h2 className="text-2xl font-bold text-slate-900 mb-6">Notifications</h2>
 
       <div className="space-y-3">
         {MOCK_NOTIFICATIONS.map((notif) => (
-          <div
+          <button
             key={notif.id}
-            className={`bg-white rounded-2xl p-4 border border-slate-100 ${notif.read ? 'opacity-60' : ''}`}
+            className={`w-full bg-white rounded-2xl p-4 border border-slate-100 ${notif.read ? 'opacity-60' : ''} active:scale-95 transition-all text-left`}
           >
             <div className="flex items-start gap-3">
               <div className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 ${
@@ -476,7 +548,7 @@ const NotificationsView = () => {
                 </p>
               </div>
             </div>
-          </div>
+          </button>
         ))}
       </div>
 
@@ -514,7 +586,7 @@ const NotificationsView = () => {
 };
 
 // Insights View
-const InsightsView = () => {
+const InsightsView = ({ onSelectBrand }: any) => {
   return (
     <div className="px-6 pt-4 animate-fadeIn pb-8">
       <h2 className="text-2xl font-bold text-slate-900 mb-6">Analyses</h2>
@@ -568,8 +640,12 @@ const InsightsView = () => {
         </h3>
         <div className="space-y-3">
           {Object.entries(MOCK_MARKET_TRENDS).map(([brand, data]: any) => (
-            <div key={brand} className="flex items-center justify-between">
-              <div>
+            <button
+              key={brand}
+              onClick={() => onSelectBrand(brand)}
+              className="w-full flex items-center justify-between p-2 rounded-xl hover:bg-slate-50 active:scale-95 transition-all"
+            >
+              <div className="text-left">
                 <div className="text-sm font-medium text-slate-900 capitalize">
                   {brand === 'patekPhilippe' ? 'Patek Philippe' :
                    brand === 'audemarsPiguet' ? 'Audemars Piguet' :
@@ -577,12 +653,13 @@ const InsightsView = () => {
                 </div>
                 <div className="text-xs text-slate-500">Prix moy. €{data.avgPrice.toLocaleString()}</div>
               </div>
-              <div className="text-right">
+              <div className="text-right flex items-center gap-2">
                 <div className={`text-lg font-bold ${data.trend === 'up' ? 'text-emerald-600' : 'text-red-600'}`}>
                   {data.change > 0 ? '+' : ''}{data.change}%
                 </div>
+                <ChevronRight className="w-4 h-4 text-slate-400" />
               </div>
-            </div>
+            </button>
           ))}
         </div>
       </div>
@@ -605,6 +682,315 @@ const InsightsView = () => {
   );
 };
 
+// Add Watch View
+const AddWatchView = ({ onComplete }: any) => {
+  return (
+    <div className="px-6 pt-4 animate-fadeIn pb-8">
+      <h2 className="text-2xl font-bold text-slate-900 mb-6">Ajouter une montre</h2>
+
+      <form className="space-y-4" onSubmit={(e) => { e.preventDefault(); onComplete(); }}>
+        <div>
+          <label className="block text-xs font-medium text-slate-500 mb-1">Marque</label>
+          <input type="text" placeholder="Rolex, Patek Philippe..." className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm" />
+        </div>
+        <div>
+          <label className="block text-xs font-medium text-slate-500 mb-1">Modèle</label>
+          <input type="text" placeholder="Submariner, Nautilus..." className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm" />
+        </div>
+        <div>
+          <label className="block text-xs font-medium text-slate-500 mb-1">Numéro de série</label>
+          <input type="text" placeholder="ABC-123-456..." className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm" />
+        </div>
+        <div>
+          <label className="block text-xs font-medium text-slate-500 mb-1">Référence</label>
+          <input type="text" placeholder="126610LN..." className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm" />
+        </div>
+        <div>
+          <label className="block text-xs font-medium text-slate-500 mb-1">Année de production</label>
+          <input type="number" placeholder="2023" className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm" />
+        </div>
+        <div>
+          <label className="block text-xs font-medium text-slate-500 mb-1">Valeur estimée (€)</label>
+          <input type="number" placeholder="12500" className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm" />
+        </div>
+
+        <div className="pt-4">
+          <button
+            type="submit"
+            className="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-4 rounded-xl shadow-lg active:scale-[0.98] transition-all"
+          >
+            Enregistrer la montre
+          </button>
+        </div>
+      </form>
+    </div>
+  );
+};
+
+// Scan QR View
+const ScanQRView = () => {
+  return (
+    <div className="px-6 pt-10 h-full flex flex-col items-center animate-fadeIn bg-slate-900">
+      <div className="text-center mb-8">
+        <h2 className="text-2xl font-bold text-white">Scanner un QR Code</h2>
+        <p className="text-slate-300 text-sm mt-2">Positionnez le code QR dans le cadre</p>
+      </div>
+
+      <div className="relative w-72 h-72 mb-8">
+        <div className="absolute inset-0 border-4 border-white/30 rounded-3xl"></div>
+        <div className="absolute top-0 left-0 w-16 h-16 border-t-4 border-l-4 border-white rounded-tl-3xl"></div>
+        <div className="absolute top-0 right-0 w-16 h-16 border-t-4 border-r-4 border-white rounded-tr-3xl"></div>
+        <div className="absolute bottom-0 left-0 w-16 h-16 border-b-4 border-l-4 border-white rounded-bl-3xl"></div>
+        <div className="absolute bottom-0 right-0 w-16 h-16 border-b-4 border-r-4 border-white rounded-br-3xl"></div>
+
+        <div className="absolute inset-0 flex items-center justify-center">
+          <QrCode className="w-32 h-32 text-white/20" />
+        </div>
+      </div>
+
+      <div className="w-full max-w-xs bg-white/10 backdrop-blur-sm p-4 rounded-2xl border border-white/20">
+        <p className="text-white text-sm text-center">
+          Scannez le code QR d'une montre pour voir son passeport ou accepter un transfert
+        </p>
+      </div>
+    </div>
+  );
+};
+
+// Brand Details View
+const BrandDetailsView = ({ brand }: any) => {
+  const brandData = MOCK_MARKET_TRENDS[brand as keyof typeof MOCK_MARKET_TRENDS];
+  const brandName = brand === 'patekPhilippe' ? 'Patek Philippe' :
+                    brand === 'audemarsPiguet' ? 'Audemars Piguet' :
+                    brand === 'tagHeuer' ? 'TAG Heuer' :
+                    brand.charAt(0).toUpperCase() + brand.slice(1);
+
+  const auctionResults = MOCK_AUCTION_RESULTS.filter(a =>
+    a.brand.toLowerCase().replace(/\s+/g, '') === brand.toLowerCase()
+  );
+
+  return (
+    <div className="px-6 pt-4 animate-fadeIn pb-8">
+      <h2 className="text-2xl font-bold text-slate-900 mb-2">{brandName}</h2>
+      <p className="text-slate-500 text-sm mb-6">Analyse de marché et tendances</p>
+
+      {/* Trend Card */}
+      <div className={`rounded-3xl p-6 mb-6 ${brandData.trend === 'up' ? 'bg-gradient-to-br from-emerald-500 to-emerald-600' : 'bg-gradient-to-br from-red-500 to-red-600'}`}>
+        <div className="text-white">
+          <div className="text-sm opacity-80 mb-2">Tendance 12 mois</div>
+          <div className="text-5xl font-bold mb-2">{brandData.change > 0 ? '+' : ''}{brandData.change}%</div>
+          <div className="text-sm opacity-90">Prix moyen: €{brandData.avgPrice.toLocaleString()}</div>
+        </div>
+      </div>
+
+      {/* Auction Results */}
+      {auctionResults.length > 0 && (
+        <div className="bg-white rounded-2xl p-4 border border-slate-100 mb-6">
+          <h3 className="text-sm font-bold text-slate-900 mb-4">Résultats d'enchères récentes</h3>
+          <div className="space-y-3">
+            {auctionResults.map((auction) => (
+              <div key={auction.id} className="p-3 bg-slate-50 rounded-xl">
+                <div className="flex justify-between items-start mb-2">
+                  <div>
+                    <div className="font-bold text-slate-900 text-sm">{auction.model}</div>
+                    <div className="text-xs text-slate-500">{auction.auctionHouse}</div>
+                  </div>
+                  <div className="text-right">
+                    <div className="font-bold text-slate-900">€{auction.hammerPrice.toLocaleString()}</div>
+                    <div className="text-xs text-slate-500">{new Date(auction.auctionDate).toLocaleDateString('fr-FR')}</div>
+                  </div>
+                </div>
+                <div className="text-xs text-slate-500">
+                  Estimation: €{auction.estimateLow.toLocaleString()} - €{auction.estimateHigh.toLocaleString()}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Market Stats */}
+      <div className="bg-white rounded-2xl p-4 border border-slate-100">
+        <h3 className="text-sm font-bold text-slate-900 mb-4">Statistiques de marché</h3>
+        <div className="space-y-3">
+          <div className="flex justify-between">
+            <span className="text-sm text-slate-500">Tendance</span>
+            <span className={`text-sm font-bold ${brandData.trend === 'up' ? 'text-emerald-600' : 'text-red-600'}`}>
+              {brandData.trend === 'up' ? '📈 Hausse' : '📉 Baisse'}
+            </span>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-sm text-slate-500">Prix moyen</span>
+            <span className="text-sm font-bold text-slate-900">€{brandData.avgPrice.toLocaleString()}</span>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-sm text-slate-500">Variation annuelle</span>
+            <span className={`text-sm font-bold ${brandData.change > 0 ? 'text-emerald-600' : 'text-red-600'}`}>
+              {brandData.change > 0 ? '+' : ''}{brandData.change}%
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Certificate View
+const CertificateView = ({ watch }: any) => {
+  const cert = MOCK_CERTIFICATIONS.find(c => c.watchId === watch.id);
+
+  return (
+    <div className="px-6 pt-4 animate-fadeIn pb-8">
+      <h2 className="text-2xl font-bold text-slate-900 mb-6">Certificat d'authenticité</h2>
+
+      <div className="bg-white rounded-3xl p-6 border-2 border-slate-200 mb-6 shadow-lg">
+        <div className="text-center mb-6">
+          <div className="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <ShieldCheck className="w-10 h-10 text-emerald-600" />
+          </div>
+          <h3 className="text-xl font-bold text-slate-900 mb-1">{watch.brand} {watch.model}</h3>
+          <p className="text-sm text-slate-500">Certifié Authentique</p>
+        </div>
+
+        {cert && (
+          <div className="space-y-4 border-t border-slate-100 pt-4">
+            <div className="flex justify-between">
+              <span className="text-sm text-slate-500">Numéro de certificat</span>
+              <span className="text-sm font-mono font-bold text-slate-900">{cert.certificateNumber}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-sm text-slate-500">Émis par</span>
+              <span className="text-sm font-bold text-slate-900">{cert.issuedBy}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-sm text-slate-500">Date de certification</span>
+              <span className="text-sm font-bold text-slate-900">
+                {new Date(cert.certificationDate).toLocaleDateString('fr-FR')}
+              </span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-sm text-slate-500">État / Grade</span>
+              <span className="text-sm font-bold text-emerald-600">{cert.conditionGrade}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-sm text-slate-500">Valeur estimée</span>
+              <span className="text-sm font-bold text-slate-900">€{cert.estimatedValue.toLocaleString()}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-sm text-slate-500">Expiration</span>
+              <span className="text-sm font-bold text-slate-900">
+                {new Date(cert.expiryDate).toLocaleDateString('fr-FR')}
+              </span>
+            </div>
+          </div>
+        )}
+
+        <div className="mt-6 p-4 bg-slate-50 rounded-xl">
+          <div className="text-xs text-slate-500 mb-2">Hash Blockchain</div>
+          <div className="text-xs font-mono text-slate-900 break-all">{watch.blockchainHash}</div>
+        </div>
+
+        {cert && (
+          <div className="mt-4">
+            <div className="text-xs text-slate-500 mb-2">Notes</div>
+            <p className="text-sm text-slate-700">{cert.notes}</p>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+// Insurance Details View
+const InsuranceDetailsView = ({ watch }: any) => {
+  const insurance = MOCK_INSURANCE_POLICIES.find(p => p.watchId === watch.id);
+
+  if (!insurance) {
+    return (
+      <div className="px-6 pt-4 animate-fadeIn pb-8">
+        <h2 className="text-2xl font-bold text-slate-900 mb-6">Assurance</h2>
+        <div className="bg-slate-50 rounded-3xl p-8 text-center">
+          <Shield className="w-16 h-16 text-slate-300 mx-auto mb-4" />
+          <p className="text-slate-500">Aucune assurance enregistrée pour cette montre</p>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="px-6 pt-4 animate-fadeIn pb-8">
+      <h2 className="text-2xl font-bold text-slate-900 mb-6">Détails de l'assurance</h2>
+
+      {/* Policy Header */}
+      <div className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-3xl p-6 mb-6 text-white">
+        <div className="flex items-center gap-3 mb-4">
+          <Shield className="w-8 h-8" />
+          <div>
+            <div className="text-sm opacity-80">Police d'assurance</div>
+            <div className="text-xl font-bold">{insurance.provider}</div>
+          </div>
+        </div>
+        <div className="text-3xl font-bold">€{insurance.coverageAmount.toLocaleString()}</div>
+        <div className="text-sm opacity-90 mt-1">Couverture maximale</div>
+      </div>
+
+      {/* Policy Details */}
+      <div className="bg-white rounded-2xl p-4 border border-slate-100 mb-6">
+        <h3 className="text-sm font-bold text-slate-900 mb-4">Détails de la police</h3>
+        <div className="space-y-3">
+          <div className="flex justify-between">
+            <span className="text-sm text-slate-500">Numéro de police</span>
+            <span className="text-sm font-mono font-bold text-slate-900">{insurance.policyNumber}</span>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-sm text-slate-500">Prime annuelle</span>
+            <span className="text-sm font-bold text-slate-900">€{insurance.premium}</span>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-sm text-slate-500">Franchise</span>
+            <span className="text-sm font-bold text-slate-900">€{insurance.deductible}</span>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-sm text-slate-500">Fréquence de paiement</span>
+            <span className="text-sm font-bold text-slate-900 capitalize">{insurance.paymentFrequency}</span>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-sm text-slate-500">Date de début</span>
+            <span className="text-sm font-bold text-slate-900">
+              {new Date(insurance.startDate).toLocaleDateString('fr-FR')}
+            </span>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-sm text-slate-500">Date de fin</span>
+            <span className="text-sm font-bold text-slate-900">
+              {new Date(insurance.endDate).toLocaleDateString('fr-FR')}
+            </span>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-sm text-slate-500">Renouvellement</span>
+            <span className="text-sm font-bold text-slate-900">
+              {new Date(insurance.renewalDate).toLocaleDateString('fr-FR')}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      {/* Coverage */}
+      <div className="bg-white rounded-2xl p-4 border border-slate-100">
+        <h3 className="text-sm font-bold text-slate-900 mb-4">Couvertures incluses</h3>
+        <div className="space-y-2">
+          {insurance.coverage.map((item: string, index: number) => (
+            <div key={index} className="flex items-center gap-2">
+              <CheckCircle2 className="w-4 h-4 text-emerald-600 flex-shrink-0" />
+              <span className="text-sm text-slate-700 capitalize">{item}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
+
 // UI Components
 const Header = ({ view, onBack, onNotifications }: any) => {
   const titles: any = {
@@ -614,6 +1000,11 @@ const Header = ({ view, onBack, onNotifications }: any) => {
     stolen: 'Sécurité',
     notifications: 'Notifications',
     insights: 'Analyses',
+    addWatch: 'Ajouter une montre',
+    scanQR: 'Scanner QR',
+    brandDetails: 'Détails marque',
+    certificate: 'Certificat',
+    insuranceDetails: 'Assurance',
   };
 
   const unreadCount = MOCK_NOTIFICATIONS.filter(n => !n.read).length;
@@ -652,7 +1043,7 @@ const Header = ({ view, onBack, onNotifications }: any) => {
   );
 };
 
-const BottomNav = ({ activeTab, onNavigate }: any) => (
+const BottomNav = ({ activeTab, onNavigate, onScanQR }: any) => (
   <div className="fixed bottom-6 left-6 right-6 h-[72px] bg-white/90 backdrop-blur-xl rounded-[2.5rem] border border-slate-200/60 flex items-center justify-around px-2 shadow-[0_8px_30px_rgb(0,0,0,0.06)] z-50">
     <button onClick={() => onNavigate('dashboard')} className={`flex flex-col items-center gap-1 transition-colors ${activeTab === 'dashboard' ? 'text-slate-900' : 'text-slate-400'}`}>
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -660,9 +1051,12 @@ const BottomNav = ({ activeTab, onNavigate }: any) => (
       </svg>
       <span className="text-[10px] font-medium">Accueil</span>
     </button>
-    <div className="w-14 h-14 bg-slate-900 rounded-full flex items-center justify-center shadow-lg -mt-8 border-4 border-[#F8F9FA] cursor-pointer active:scale-95 transition-transform">
+    <button
+      onClick={onScanQR}
+      className="w-14 h-14 bg-slate-900 rounded-full flex items-center justify-center shadow-lg -mt-8 border-4 border-[#F8F9FA] cursor-pointer active:scale-95 transition-transform"
+    >
       <QrCode className="w-6 h-6 text-white" />
-    </div>
+    </button>
     <button onClick={() => onNavigate('insights')} className={`flex flex-col items-center gap-1 transition-colors ${activeTab === 'insights' ? 'text-slate-900' : 'text-slate-400'}`}>
       <BarChart3 className="w-6 h-6" />
       <span className="text-[10px] font-medium">Analyses</span>
