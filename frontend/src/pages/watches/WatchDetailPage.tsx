@@ -76,16 +76,16 @@ export const WatchDetailPage = () => {
                   <p className="text-sm text-gray-600">Serial Number</p>
                   <p className="font-semibold text-gray-900">{watch.serialNumber}</p>
                 </div>
-                {watch.reference && (
+                {watch.referenceNumber && (
                   <div>
                     <p className="text-sm text-gray-600">Reference</p>
-                    <p className="font-semibold text-gray-900">{watch.reference}</p>
+                    <p className="font-semibold text-gray-900">{watch.referenceNumber}</p>
                   </div>
                 )}
-                {watch.year && (
+                {watch.yearOfProduction && (
                   <div>
                     <p className="text-sm text-gray-600">Year</p>
-                    <p className="font-semibold text-gray-900">{watch.year}</p>
+                    <p className="font-semibold text-gray-900">{watch.yearOfProduction}</p>
                   </div>
                 )}
               </div>
@@ -155,22 +155,22 @@ export const WatchDetailPage = () => {
                   </span>
                 </div>
               )}
-              {watch.currentValue && (
+              {watch.estimatedValue && (
                 <div className="flex items-center justify-between">
                   <span className="text-gray-600 text-sm">Current Value</span>
                   <span className="font-semibold text-green-600">
-                    ${watch.currentValue.toLocaleString()}
+                    ${watch.estimatedValue.toLocaleString()}
                   </span>
                 </div>
               )}
-              {watch.purchasePrice && watch.currentValue && (
+              {watch.purchasePrice && watch.estimatedValue && (
                 <div className="pt-3 border-t border-gray-200">
                   <div className="flex items-center justify-between">
                     <span className="text-gray-600 text-sm">Appreciation</span>
                     <span className={`font-semibold ${
-                      watch.currentValue > watch.purchasePrice ? 'text-green-600' : 'text-red-600'
+                      watch.estimatedValue > watch.purchasePrice ? 'text-green-600' : 'text-red-600'
                     }`}>
-                      {((watch.currentValue - watch.purchasePrice) / watch.purchasePrice * 100).toFixed(1)}%
+                      {((watch.estimatedValue - watch.purchasePrice) / watch.purchasePrice * 100).toFixed(1)}%
                     </span>
                   </div>
                 </div>
