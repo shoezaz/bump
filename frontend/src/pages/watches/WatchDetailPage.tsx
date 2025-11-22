@@ -1,12 +1,15 @@
+import { useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { watchesAPI } from '../../lib/api';
 import { ArrowLeft, Share2, AlertTriangle, Calendar, DollarSign } from 'lucide-react';
 import { LoadingSpinner } from '../../components/Loading';
+import { ReportStolenModal } from '../../components/watches/ReportStolenModal';
 
 export const WatchDetailPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const [showReportModal, setShowReportModal] = useState(false);
 
   const { data: watchData, isLoading } = useQuery({
     queryKey: ['watch', id],
@@ -106,7 +109,10 @@ export const WatchDetailPage = () => {
                   Transfer Ownership
                 </Link>
                 {watch.status !== 'stolen' && (
-                  <button className="px-4 py-2 border border-red-600 text-red-600 hover:bg-red-50 font-semibold rounded-lg transition-colors">
+                  <button
+                    onClick={() => setShowReportModal(true)}
+                    className="px-4 py-2 border border-red-600 text-red-600 hover:bg-red-50 font-semibold rounded-lg transition-colors"
+                  >
                     Report Stolen
                   </button>
                 )}
@@ -196,6 +202,13 @@ export const WatchDetailPage = () => {
           )}
         </div>
       </div>
+
+      {/* Report Stolen Modal */}
+      <ReportStolenModal
+        watch={watch}
+        isOpen={showReportModal}
+        onClose={() => setShowReportModal(false)}
+      />
     </div>
   );
 };
