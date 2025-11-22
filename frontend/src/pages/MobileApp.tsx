@@ -258,25 +258,6 @@ const DashboardView = ({ watches, onSelectWatch, onAddWatch, onScanQR }: any) =>
         </div>
       </div>
 
-      {/* Market Trends */}
-      <div className="mb-6">
-        <h3 className="text-sm font-bold text-slate-900 mb-3 flex items-center gap-2">
-          <TrendingUp className="w-4 h-4" /> Tendances du marché
-        </h3>
-        <div className="grid grid-cols-2 gap-3">
-          {Object.entries(MOCK_MARKET_TRENDS).slice(0, 4).map(([brand, data]: any) => (
-            <div key={brand} className="bg-white rounded-xl p-3 border border-slate-100">
-              <div className="text-xs text-slate-500 mb-1 capitalize">{brand === 'patekPhilippe' ? 'Patek Philippe' : brand === 'audemarsPiguet' ? 'AP' : brand === 'tagHeuer' ? 'TAG' : brand}</div>
-              <div className="flex items-baseline gap-1">
-                <span className={`text-lg font-bold ${data.trend === 'up' ? 'text-emerald-600' : 'text-red-600'}`}>
-                  {data.change > 0 ? '+' : ''}{data.change}%
-                </span>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
       {/* Watch List */}
       <div className="flex justify-between items-end mb-4">
         <h2 className="text-xl font-bold text-slate-900">Ma Collection</h2>
@@ -729,6 +710,41 @@ const AddWatchView = ({ onComplete }: any) => {
 
 // Scan QR View
 const ScanQRView = () => {
+  const [isScanning, setIsScanning] = useState(true);
+  const [scanResult, setScanResult] = useState<string | null>(null);
+
+  const randomNames = ['Sophie', 'Marc', 'Julie', 'Pierre', 'Emma', 'Lucas', 'Léa', 'Thomas', 'Chloé', 'Antoine'];
+  const randomWatchBrands = ['Rolex Submariner', 'Patek Philippe Nautilus', 'Audemars Piguet Royal Oak', 'Omega Speedmaster'];
+
+  // Simulate scanning for 2.5 seconds
+  if (isScanning && !scanResult) {
+    setTimeout(() => {
+      const randomName = randomNames[Math.floor(Math.random() * randomNames.length)];
+      const randomWatch = randomWatchBrands[Math.floor(Math.random() * randomWatchBrands.length)];
+      setScanResult(`${randomWatch} de ${randomName}`);
+      setIsScanning(false);
+    }, 2500);
+  }
+
+  if (!isScanning && scanResult) {
+    return (
+      <div className="px-6 pt-10 h-full flex flex-col items-center justify-center animate-fadeIn bg-slate-900">
+        <div className="w-24 h-24 bg-emerald-500 rounded-full flex items-center justify-center mb-6 animate-scaleIn">
+          <CheckCircle2 className="w-16 h-16 text-white" />
+        </div>
+        <h2 className="text-2xl font-bold text-white mb-4 text-center">Scan réussi !</h2>
+        <div className="bg-white/10 backdrop-blur-sm p-6 rounded-2xl border border-white/20 max-w-sm">
+          <p className="text-white text-center mb-2">
+            Vous venez de prendre la montre de
+          </p>
+          <p className="text-2xl font-bold text-emerald-400 text-center">
+            {scanResult}
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="px-6 pt-10 h-full flex flex-col items-center animate-fadeIn bg-slate-900">
       <div className="text-center mb-8">
@@ -738,10 +754,13 @@ const ScanQRView = () => {
 
       <div className="relative w-72 h-72 mb-8">
         <div className="absolute inset-0 border-4 border-white/30 rounded-3xl"></div>
-        <div className="absolute top-0 left-0 w-16 h-16 border-t-4 border-l-4 border-white rounded-tl-3xl"></div>
-        <div className="absolute top-0 right-0 w-16 h-16 border-t-4 border-r-4 border-white rounded-tr-3xl"></div>
-        <div className="absolute bottom-0 left-0 w-16 h-16 border-b-4 border-l-4 border-white rounded-bl-3xl"></div>
-        <div className="absolute bottom-0 right-0 w-16 h-16 border-b-4 border-r-4 border-white rounded-br-3xl"></div>
+        <div className="absolute top-0 left-0 w-16 h-16 border-t-4 border-l-4 border-emerald-400 rounded-tl-3xl"></div>
+        <div className="absolute top-0 right-0 w-16 h-16 border-t-4 border-r-4 border-emerald-400 rounded-tr-3xl"></div>
+        <div className="absolute bottom-0 left-0 w-16 h-16 border-b-4 border-l-4 border-emerald-400 rounded-bl-3xl"></div>
+        <div className="absolute bottom-0 right-0 w-16 h-16 border-b-4 border-r-4 border-emerald-400 rounded-br-3xl"></div>
+
+        {/* Scanning Line Animation */}
+        <div className="absolute inset-x-4 top-0 h-1 bg-gradient-to-r from-transparent via-emerald-400 to-transparent animate-scan"></div>
 
         <div className="absolute inset-0 flex items-center justify-center">
           <QrCode className="w-32 h-32 text-white/20" />
@@ -749,8 +768,12 @@ const ScanQRView = () => {
       </div>
 
       <div className="w-full max-w-xs bg-white/10 backdrop-blur-sm p-4 rounded-2xl border border-white/20">
-        <p className="text-white text-sm text-center">
-          Scannez le code QR d'une montre pour voir son passeport ou accepter un transfert
+        <div className="flex items-center justify-center gap-2 mb-2">
+          <div className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></div>
+          <p className="text-white text-sm font-bold">Scan en cours...</p>
+        </div>
+        <p className="text-slate-300 text-xs text-center">
+          Maintenez le QR code stable dans le cadre
         </p>
       </div>
     </div>
