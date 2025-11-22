@@ -22,6 +22,7 @@ const fakeUser = {
   email: 'test@watchpassport.com',
   firstName: 'Test',
   lastName: 'User',
+  userType: 'collector' as const,
   kycStatus: 'verified' as const,
   kycVerifiedAt: new Date().toISOString(),
   createdAt: new Date().toISOString(),
